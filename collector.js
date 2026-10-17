@@ -22,11 +22,14 @@
   // ---------- league + teams ----------
   const info = await fxea('getLeagueInfo?leagueId=' + LEAGUE);
   const settings = (await fx(LEAGUE, 'getFantasyLeagueInfo')).fantasySettings || {};
-  const periods = info.scoringPeriods.map(p => ({ n: p.number, start: parseTs(p.startDate), end: parseTs(p.endDate) }));
+  // A week counts as finished from midnight (local time) on its closing day: Fantrax closes the period Monday evening,
+  // but the last games are Sunday night, so a Monday-morning run can already recap it.
+  const dayStart = (ts) => { const d = new Date(ts); d.setHours(0, 0, 0, 0); return d.getTime(); };
+  const periods = info.scoringPeriods.map(p => { const end = parseTs(p.endDate); return { n: p.number, start: parseTs(p.startDate), end, done: dayStart(end) }; });
   const lastRegular = info.playoffs ? info.playoffs.lastRegularSeasonPeriod : periods.length;
-  const completed = periods.filter(p => p.end < now).map(p => p.n);
+  const completed = periods.filter(p => p.done <= now).map(p => p.n);
   const lastCompleted = completed.length ? Math.max(...completed) : 0;
-  const current = (periods.find(p => p.start <= now && now <= p.end) || {}).n || (lastCompleted ? lastCompleted + 1 : 1);
+  const current = lastCompleted ? Math.min(lastCompleted + 1, periods.length) : 1;
   const phase = lastCompleted === 0 && now < periods[0].start ? 'preseason' : (lastCompleted >= periods.length ? 'complete' : 'inseason');
 
   const standingsRaw = await fx(LEAGUE, 'getStandings', { view: 'ALL' });
@@ -70,7 +73,7 @@
   }
   const schedRaw = await fx(LEAGUE, 'getStandings', { view: 'SCHEDULE' });
   const schedule = parseSchedule(schedRaw);
-  schedule.forEach(s => { const p = periods.find(x => x.n === s.n); s.complete = !!p && p.end < now; s.playoff = s.n > lastRegular; });
+  schedule.forEach(s => { const p = periods.find(x => x.n === s.n); s.complete = !!p && p.done <= now; s.playoff = s.n > lastRegular; });
 
   // ---------- players ----------
   const seasonCode = (settings.season && settings.season.id) || '41n';

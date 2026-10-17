@@ -442,6 +442,25 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
         rows.map((r, i) => '<tr><td class="rk l">' + (i + 1) + '</td><td class="l">' + teamCell(nameToId[r.name], r.name) + (r.name === ls.champion ? ' <span class="chip good">Champion</span>' : r.name === ls.runnerUp ? ' <span class="chip">Runner-up</span>' : "") + "</td><td>" + r.w + "–" + r.l + (r.t ? "–" + r.t : "") + "</td><td>" + esc(r.pct) + "</td><td>" + r.pf + "</td><td>" + r.pa + "</td></tr>").join("") +
         "</tbody></table></div></section>";
     }
+    // Fantrax may not post a finished week to its table until the period formally closes (Monday evening).
+    // When our results know about more regular-season games than the table does, recount from the results.
+    const reg = M.done.filter((wk) => !wk.playoff);
+    D.standings.forEach((t) => {
+      t.rows.forEach((r) => {
+        const games = M.results[r.id].filter((x) => reg.some((wk) => wk.n === x.n));
+        if (games.length <= (r.w || 0) + (r.l || 0) + (r.t || 0)) return;
+        let w = 0, l = 0, tt = 0, pf = 0, pa = 0;
+        reg.forEach((wk) => wk.matchups.forEach((m) => [[m.away, m.home], [m.home, m.away]].forEach(([s, o]) => {
+          if (s.id !== r.id || !realSide(o) || s.w == null) return;
+          if (s.w > o.w) w++; else if (s.w < o.w) l++; else tt++;
+          pf += s.w + (s.t || 0) / 2; pa += o.w + (o.t || 0) / 2;
+        })));
+        Object.assign(r, { w, l, t: tt, pf, pa, pct: ((w + tt / 2) / Math.max(1, w + l + tt)).toFixed(3).replace(/^0/, "") });
+      });
+      t.rows.sort((a, b) => (parseFloat(b.pct) || 0) - (parseFloat(a.pct) || 0) || b.pf - a.pf);
+      const lead = t.rows[0];
+      t.rows.forEach((r, i) => { r.rank = i + 1; const g = ((lead.w - r.w) + (r.l - lead.l)) / 2; r.gb = g === 0 ? "0" : String(g); });
+    });
     const allRows = D.standings.flatMap((t) => t.rows);
     const overall = allRows.slice().sort((a, b) => (parseFloat(b.pct) || 0) - (parseFloat(a.pct) || 0) || b.pf - a.pf);
     const inLine = new Set(overall.slice(0, D.numPlayoffTeams || 6).map((r) => r.id));
