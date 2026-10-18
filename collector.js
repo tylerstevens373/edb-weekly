@@ -99,25 +99,47 @@
     const ytd = await playerTable(LEAGUE, 'SEASON_' + seasonCode + '_YEAR_TO_DATE', {});
     players.season = ytd.filter(p => p.cats.PTS).sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 60);
   }
-  // projected team strength (used for previews and preseason power rankings)
-  const proj = {};
-  // top 13 projected players per team (roughly the guys who actually play)
-  const byTeam = {};
-  rostered.filter(p => p.ros === 'Act' || p.ros === 'Res').forEach(p => { (byTeam[p.owner] = byTeam[p.owner] || []).push(p); });
-  Object.values(byTeam).flatMap(arr => arr.sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 13)).forEach(p => {
-    const t = proj[p.owner] || (proj[p.owner] = { n: 0, PTS: 0, REB: 0, AST: 0, ST: 0, BLK: 0, '3PTM': 0, TO: 0, fgw: 0, ftw: 0 });
-    t.n++; ['PTS', 'REB', 'AST', 'ST', 'BLK', '3PTM', 'TO'].forEach(k => t[k] += p.cats[k] || 0);
-    if (p.cats['FG%'] != null) { t.fgw += p.cats['FG%'] * (p.cats.PTS || 0); }
-    if (p.cats['FT%'] != null) { t.ftw += p.cats['FT%'] * (p.cats.PTS || 0); }
-  });
-  Object.values(proj).forEach(t => { t['FG%'] = t.PTS ? t.fgw / t.PTS : null; t['FT%'] = t.PTS ? t.ftw / t.PTS : null; delete t.fgw; delete t.ftw; });
   players.topProjected = rostered.filter(p => p.ros === 'Act' || p.ros === 'Res').sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 36)
     .map(p => ({ id: p.id, name: p.name, nba: p.nba, pos: p.pos, img: p.img, owner: p.owner, age: p.age, score: p.score }));
 
   // ---------- dynasty inputs: per-game projections for every rostered player, future picks, last rookie draft ----------
   const perGame = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_EVENT_PROJECTED_WEEKLY', { scoringCategoryType: '7' });
   const gpById = {}; rostered.forEach(p => { gpById[p.id] = p.gp; });
-  const dynPlayers = perGame.filter(p => p.owner).map(p => Object.assign({ id: p.id, n: p.name, t: p.nba, pos: p.pos, own: p.owner, ros: p.ros, age: p.age, gp: gpById[p.id] || 0 }, p.cats));
+  // Blend Fantrax's projection with last season's per-game stats. Fantrax projections sometimes miss role changes
+  // (a new starter projected as a backup), so last season gets up to 60% weight, scaled down for players who
+  // played fewer than 50 games. Rookies and players with under 10 games keep the pure projection.
+  const lastCode = (await (async () => {
+    const d = await fx(LEAGUE, 'getPlayerStats', { statusOrTeamFilter: 'ALL_TAKEN', pageNumber: '1', maxResultsPerPage: '1' });
+    const list = (d.displayedLists && d.displayedLists.displayedSeasonOrProjections) || [];
+    const m = list.map(x => x.code).find(c => /^SEASON_\w+_YEAR_TO_DATE$/.test(c) && c !== 'SEASON_' + seasonCode + '_YEAR_TO_DATE');
+    return m || null;
+  })());
+  const last = {};
+  if (lastCode) {
+    const lpg = await playerTable(LEAGUE, lastCode, { statusOrTeamFilter: 'ALL', timeframeTypeCode: 'YEAR_TO_DATE', maxResultsPerPage: '1500', scoringCategoryType: '7' });
+    const ltot = await playerTable(LEAGUE, lastCode, { statusOrTeamFilter: 'ALL', timeframeTypeCode: 'YEAR_TO_DATE', maxResultsPerPage: '1500', scoringCategoryType: '5' });
+    const lgp = {}; ltot.forEach(p => { lgp[p.id] = p.gp || 0; });
+    lpg.forEach(p => { if ((lgp[p.id] || 0) >= 10) last[p.id] = { gp: lgp[p.id], cats: p.cats }; });
+  }
+  const dynPlayers = perGame.filter(p => p.owner).map(p => {
+    const l = last[p.id];
+    const w = l ? 0.6 * Math.min(1, l.gp / 50) : 0;
+    const cats = {};
+    CATS.forEach(c => { const pr = p.cats[c] || 0; cats[c] = l ? +(w * (l.cats[c] || 0) + (1 - w) * pr).toFixed(3) : pr; });
+    return Object.assign({ id: p.id, n: p.name, t: p.nba, pos: p.pos, own: p.owner, ros: p.ros, age: p.age, gp: gpById[p.id] || 0, sc: p.score, w: +w.toFixed(2), lastGp: l ? l.gp : 0 }, cats);
+  });
+  // projected team strength (used for previews and preseason power rankings): each team's top 10 (the starting lineup) by blended production, over projected games
+  const proj = {};
+  const byTeam = {};
+  dynPlayers.filter(p => p.ros === 'Act' || p.ros === 'Res').forEach(p => { (byTeam[p.own] = byTeam[p.own] || []).push(p); });
+  const prod = (p) => p.PTS + p.REB + p.AST + 2 * (p.ST + p.BLK) + p['3PTM'] - p.TO;
+  Object.values(byTeam).flatMap(arr => arr.sort((a, b) => prod(b) - prod(a)).slice(0, 10)).forEach(p => {
+    const t = proj[p.own] || (proj[p.own] = { n: 0, PTS: 0, REB: 0, AST: 0, ST: 0, BLK: 0, '3PTM': 0, TO: 0, fgw: 0, ftw: 0 });
+    const g = p.gp || 60;
+    t.n++; ['PTS', 'REB', 'AST', 'ST', 'BLK', '3PTM', 'TO'].forEach(k => t[k] += (p[k] || 0) * g);
+    t.fgw += (p['FG%'] || 0) * p.PTS * g; t.ftw += (p['FT%'] || 0) * p.PTS * g;
+  });
+  Object.values(proj).forEach(t => { t['FG%'] = t.PTS ? t.fgw / t.PTS : null; t['FT%'] = t.PTS ? t.ftw / t.PTS : null; delete t.fgw; delete t.ftw; });
   const nameById = {}; perGame.forEach(p => { nameById[p.id] = p; });
   const pickData = await fxea('getDraftPicks?leagueId=' + LEAGUE);
   const futurePicks = (pickData.futureDraftPicks || []).map(p => ({ year: p.year, round: p.round, owner: p.currentOwnerTeamId, orig: p.originalOwnerTeamId }));
@@ -135,7 +157,7 @@
       }) };
     }
   } catch (e) { rookieDraft = null; }
-  const dynasty = { season: parseInt((settings.season && settings.season.displayYear) || '', 10) || new Date(now).getFullYear(), players: dynPlayers, picks: futurePicks, draft: rookieDraft };
+  const dynasty = { lastSeason: lastCode, season: parseInt((settings.season && settings.season.displayYear) || '', 10) || new Date(now).getFullYear(), players: dynPlayers, picks: futurePicks, draft: rookieDraft };
 
   const injuries = rostered.filter(p => p.inj.length && p.ros !== 'Min').map(p => ({ name: p.name, nba: p.nba, owner: p.owner, ros: p.ros, img: p.img, note: p.inj[0] }));
 

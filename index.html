@@ -452,7 +452,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   function previewHTML(wk) {
     const games = wk.matchups.filter((m) => realSide(m.away) && realSide(m.home));
     if (!games.length) return '<div class="empty">Matchups for this week are not set yet.</div>';
-    const basis = M.done.length ? "blends season-to-date weekly averages with preseason projections" : "uses Fantrax season projections for each team's top 13 players";
+    const basis = M.done.length ? "blends season-to-date weekly averages with preseason projections" : "uses each team's top 10 players, blending Fantrax projections with last season's per-game stats";
     const cards = games.map((m) => {
       const a = m.away.id, h = m.home.id, sa = M.strength[a] || {}, sh = M.strength[h] || {};
       const r = h2h(sa, sh);
@@ -669,7 +669,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     const assets = '<div class="tscroll"><table class="st"><thead><tr><th class="l">#</th><th class="l">Player</th><th>Age in ' + titleSeason + '</th><th class="l">Owner</th><th>Value today</th><th>Value ' + seasonLabel(titleSeason) + "</th></tr></thead><tbody>" +
       top.map((p, i) => '<tr><td class="rk l">' + (i + 1) + '</td><td class="l"><b>' + esc(p.n) + '</b> <span class="muted">' + esc(p.t) + (p.ped ? " · NBA pick " + p.ped : "") + "</span></td><td>" + (p.age + ty) + '</td><td class="l">' + teamCell(p.own) + "</td><td>" + Math.round(100 * p.var[0] / maxV) + '</td><td><span class="bar"><b style="width:' + Math.round(100 * p.var[ty] / maxV) + '%"></b></span> <b>' + Math.round(100 * p.var[ty] / maxV) + "</b></td></tr>").join("") + "</tbody></table></div>";
     const method = '<details class="method"><summary>How the projection works</summary><ul>' +
-      "<li>Every rostered player starts from his Fantrax per-game projection for this season, scored across all nine categories against the league's top 156 players.</li>" +
+      "<li>Every rostered player starts from a blend of his Fantrax per-game projection and last season's per-game stats (up to 60% last season, less for players who missed time; rookies use the projection only), scored across all nine categories against the league's top 156 players.</li>" +
       "<li>Players age one year per season. Young players improve, most through age 25, and faster if they already produce or were high NBA draft picks. Players start declining around 29, steeply after 33, and anyone 40 or older is assumed retired.</li>" +
       "<li>Rookies' current projections mostly reflect small early roles, so for the " + (DM.season) + " class the model blends them with where the NBA drafted them.</li>" +
       "<li>Each future league pick becomes a rookie who develops the same way. Draft slot is estimated from how strong the original team is today. Fantrax only lists " + [...new Set(DM.picks.map((k) => k.year))].join(", ") + " picks, so later picks are not counted.</li>" +
