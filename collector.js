@@ -114,6 +114,29 @@
   players.topProjected = rostered.filter(p => p.ros === 'Act' || p.ros === 'Res').sort((a, b) => (b.score || 0) - (a.score || 0)).slice(0, 36)
     .map(p => ({ id: p.id, name: p.name, nba: p.nba, pos: p.pos, img: p.img, owner: p.owner, age: p.age, score: p.score }));
 
+  // ---------- dynasty inputs: per-game projections for every rostered player, future picks, last rookie draft ----------
+  const perGame = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_EVENT_PROJECTED_WEEKLY', { scoringCategoryType: '7' });
+  const gpById = {}; rostered.forEach(p => { gpById[p.id] = p.gp; });
+  const dynPlayers = perGame.filter(p => p.owner).map(p => Object.assign({ id: p.id, n: p.name, t: p.nba, pos: p.pos, own: p.owner, ros: p.ros, age: p.age, gp: gpById[p.id] || 0 }, p.cats));
+  const nameById = {}; perGame.forEach(p => { nameById[p.id] = p; });
+  const pickData = await fxea('getDraftPicks?leagueId=' + LEAGUE);
+  const futurePicks = (pickData.futureDraftPicks || []).map(p => ({ year: p.year, round: p.round, owner: p.currentOwnerTeamId, orig: p.originalOwnerTeamId }));
+  let rookieDraft = null;
+  try {
+    const dr = await fxea('getDraftResults?leagueId=' + LEAGUE);
+    if (dr && dr.draftPicks && dr.draftPicks.length) {
+      let ids = null;
+      const missing = dr.draftPicks.some(p => !nameById[p.playerId]);
+      if (missing) ids = await fxea('getPlayerIds?sport=NBA');
+      const flip = (s) => s && s.indexOf(', ') > 0 ? s.split(', ').reverse().join(' ') : s;
+      rookieDraft = { year: dr.draftDate ? parseInt(dr.draftDate, 10) : null, picks: dr.draftPicks.filter(p => p.playerId).map(p => {
+        const known = nameById[p.playerId] || {}; const alt = ids && ids[p.playerId] || {};
+        return { pick: p.pick, round: p.round, team: p.teamId, id: p.playerId, n: known.name || flip(alt.name) || p.playerId, t: known.nba || alt.team || '' };
+      }) };
+    }
+  } catch (e) { rookieDraft = null; }
+  const dynasty = { season: parseInt((settings.season && settings.season.displayYear) || '', 10) || new Date(now).getFullYear(), players: dynPlayers, picks: futurePicks, draft: rookieDraft };
+
   const injuries = rostered.filter(p => p.inj.length && p.ros !== 'Min').map(p => ({ name: p.name, nba: p.nba, owner: p.owner, ros: p.ros, img: p.img, note: p.inj[0] }));
 
   // ---------- transactions (last 10 days) ----------
@@ -152,7 +175,7 @@
   const data = {
     generatedAt: new Date(now).toISOString(), league: { id: LEAGUE, name: info.leagueName, season: settings.season ? settings.season.displayYear : '' },
     phase, currentPeriod: current, lastCompleted, lastRegular, numPlayoffTeams: info.playoffs ? info.playoffs.numPlayoffTeams : null,
-    cats: CATS, teams, divisions: ((standingsRaw.displayedLists || {}).tabs || []).slice(0, 2).map(t => t.name), standings, schedule, proj, players, injuries,
+    cats: CATS, dynasty, teams, divisions: ((standingsRaw.displayedLists || {}).tabs || []).slice(0, 2).map(t => t.name), standings, schedule, proj, players, injuries,
     transactions: { trades: trades.filter(t => t.ts >= cutoff), moves: moves.filter(m => m.ts >= cutoff && m.type !== 'Lineup Change') },
     history: { seasons, lastSeason }, notes: null
   };

@@ -1,0 +1,20 @@
+{
+  "_about": "Real NBA draft slot for recent draft classes, used as a talent signal for young players in the dynasty model. Keys are player names as Fantrax shows them.",
+  "2026": {
+    "AJ Dybantsa": 1, "Darryn Peterson": 2, "Cameron Boozer": 3, "Caleb Wilson": 4, "Keaton Wagler": 5,
+    "Mikel Brown": 6, "Darius Acuff": 7, "Kingston Flemings": 8, "Morez Johnson": 9, "Brayden Burries": 10,
+    "Yaxel Lendeborg": 11, "Aday Mara": 12, "Nate Ament": 13, "Hannes Steinbach": 14, "Dailyn Swain": 15,
+    "Bennett Stirtz": 16, "Ebuka Okorie": 17, "Christian Anderson": 18, "Allen Graves": 19, "Jayden Quaintance": 20,
+    "Karim Lopez": 21, "Labaron Philon": 22, "Zuby Ejiofor": 23, "Cameron Carr": 24, "Sergio De Larrea": 25,
+    "Tarris Reed": 26, "Chris Cenac": 27, "Joshua Jefferson": 28, "Alex Karaban": 29, "Koa Peat": 30,
+    "Bruce Thornton": 31, "Isaiah Evans": 33, "Meleek Thomas": 34, "Trevon Brazile": 35, "Ryan Conwell": 37, "Emanuel Sharp": 45
+  },
+  "2025": {
+    "Cooper Flagg": 1, "Dylan Harper": 2, "VJ Edgecombe": 3, "Kon Knueppel": 4, "Ace Bailey": 5,
+    "Tre Johnson": 6, "Jeremiah Fears": 7, "Egor Demin": 8, "Collin Murray-Boyles": 9, "Khaman Maluach": 10,
+    "Cedric Coward": 11, "Noa Essengue": 12, "Derik Queen": 13, "Carter Bryant": 14, "Thomas Sorber": 15,
+    "Yang Hansen": 16, "Joan Beringer": 17, "Walter Clayton": 18, "Nolan Traore": 19, "Kasparas Jakucionis": 20,
+    "Will Riley": 21, "Drake Powell": 22, "Asa Newell": 23, "Nique Clifford": 24, "Jase Richardson": 25,
+    "Ben Saraf": 26, "Danny Wolf": 27, "Hugo Gonzalez": 28, "Liam McNeeley": 29, "Yanic Konan Niederhauser": 30
+  }
+}

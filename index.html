@@ -180,6 +180,63 @@ table.st td.rk { font-family: var(--display); font-weight: 800; font-size: 20px;
 .champ .yr { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1; }
 .champ .w { font-weight: 700; }
 
+/* ---------- toolbar ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 6; background: var(--bg); display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs a { font-family: var(--mono); font-size: 12.5px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 13px 12px 11px; border-bottom: 3px solid transparent; white-space: nowrap; }
+.tabs a:hover { color: var(--ink); }
+.tabs a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
+.mast.compact { grid-template-columns: 1fr; padding-block: 22px 16px; }
+.mast.compact .week, .mast.compact .dek { display: none; }
+.mast.compact .headline { font-size: clamp(26px, 3.4vw, 36px); }
+
+/* ---------- dynasty ---------- */
+.callout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); margin-bottom: 18px; }
+.callout b { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1; }
+ol.bruno { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.brow { display: grid; grid-template-columns: 54px minmax(0, 1fr) 170px 110px; gap: 8px 22px; align-items: center; padding-block: 16px; border-bottom: 1px solid var(--line); }
+.brow .rk { font-family: var(--display); font-weight: 900; font-size: 44px; line-height: .85; color: var(--muted); }
+.brow.first .rk { color: var(--accent); }
+.bmain { display: grid; gap: 6px; min-width: 0; }
+.bteam { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; font-weight: 700; font-size: 16px; }
+.bteam .today { font-family: var(--mono); font-size: 11.5px; font-weight: 400; }
+.blurb { margin: 0; font-size: 14px; max-width: 70ch; }
+.coreline { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 13px; }
+.coreline .label { min-width: 0; }
+.core b { font-weight: 600; }
+.bwin { display: grid; gap: 2px; justify-items: start; }
+.bscore { display: grid; gap: 6px; justify-items: end; }
+.bscore .sn { font-family: var(--display); font-weight: 900; font-size: 38px; line-height: .9; }
+.bscore .bar { width: 100%; max-width: 110px; }
+.spark { display: block; max-width: 100%; height: auto; overflow: visible; }
+.sk-base { stroke: var(--line); stroke-width: 1; }
+.sk-mark { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 3; opacity: .7; }
+.sk-area { fill: color-mix(in oklab, var(--accent) 14%, transparent); stroke: none; }
+.sk-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.sk-dot { fill: var(--accent); stroke: var(--surface); stroke-width: 1.5; }
+.sk-now { fill: var(--muted); }
+details.method { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 13.5px; }
+details.method summary { cursor: pointer; font-family: var(--mono); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+details.method ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6px; max-width: 78ch; }
+@media (max-width: 760px) {
+  .brow { grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .brow .rk { font-size: 34px; grid-row: span 2; align-self: start; }
+  .bmain { grid-column: 2 / 4; }
+  .bwin { grid-column: 2; }
+  .bscore { grid-column: 3; }
+}
+
+/* ---------- draft ---------- */
+.grades { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 270px), 1fr)); gap: 12px; }
+.gcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 14px; align-content: start; }
+.gcard .gl { font-family: var(--display); font-weight: 900; font-size: 56px; line-height: .8; min-width: 1.2ch; }
+.gl.gA { color: var(--win); } .gl.gB { color: var(--accent); } .gl.gC { color: var(--warn); } .gl.gD { color: var(--loss); }
+.gmeta { display: grid; gap: 4px; align-content: start; min-width: 0; }
+.gpicks { grid-column: 1 / -1; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); font-size: 13.5px; }
+.gpicks li { padding: 5px 0; border-bottom: 1px solid var(--line); }
+.gnote { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
+
 .empty { padding: 18px; border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); font-size: 14px; }
 footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: grid; gap: 6px; }
 #err { padding: 24px 0; }
@@ -198,12 +255,13 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       <div class="dek" id="dek"></div>
     </div>
   </header>
-  <nav class="sections" id="nav" aria-label="Sections"></nav>
+  <nav class="tabs" id="nav" aria-label="Pages"></nav>
   <div id="err" hidden></div>
   <main id="main"></main>
   <footer id="foot"></footer>
 </div>
 
+<script src="model.js"></script>
 <script>
 (function () {
   "use strict";
@@ -569,44 +627,154 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       s.slice().sort((a, b) => b.year - a.year).map((x) => '<div class="champ"><span class="yr">' + x.year + "–" + String(x.year + 1).slice(2) + '</span><span class="w">' + esc(x.champion) + '</span><span class="muted" style="font-size:12.5px">over ' + esc(x.runnerUp || "—") + "</span></div>").join("") + "</div></section>";
   }
 
+  // ---------- dynasty: Bruno Caboclo rankings ----------
+  let DM = null, DG = null, PED = null;
+  function seasonLabel(y) { return y + "–" + String(y + 1).slice(2); }
+  function spark(strength, maxS, mark) {
+    const W = 156, H = 44, px = 5, py = 6, n = strength.length;
+    const x = (i) => px + i * (W - 2 * px) / (n - 1), y = (v) => H - py - (Math.max(0, v) / maxS) * (H - 2 * py);
+    const pts = strength.map((v, i) => x(i).toFixed(1) + "," + y(v).toFixed(1)).join(" ");
+    const area = x(0).toFixed(1) + "," + (H - py) + " " + pts + " " + x(n - 1).toFixed(1) + "," + (H - py);
+    return '<svg class="spark" viewBox="0 0 ' + W + " " + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="Projected team strength from this season to ' + seasonLabel(DM.season + n - 1) + '">' +
+      '<line class="sk-base" x1="' + px + '" x2="' + (W - px) + '" y1="' + (H - py) + '" y2="' + (H - py) + '"/>' +
+      '<line class="sk-mark" x1="' + x(mark) + '" x2="' + x(mark) + '" y1="2" y2="' + (H - 2) + '"/>' +
+      '<polygon class="sk-area" points="' + area + '"/><polyline class="sk-line" points="' + pts + '"/>' +
+      '<circle class="sk-now" cx="' + x(0) + '" cy="' + y(strength[0]) + '" r="2.5"/><circle class="sk-dot" cx="' + x(mark) + '" cy="' + y(strength[mark]) + '" r="3.5"/></svg>';
+  }
+  function pickChip(k) {
+    const r = ["", "1st", "2nd", "3rd"][k.round] || k.round + "th";
+    return '<span class="chip' + (k.round === 1 ? " good" : "") + '" title="Projected around pick ' + k.slot + (k.orig !== k.owner && T[k.orig] ? ", from " + esc(T[k.orig].name) : "") + '">’' + String(k.year).slice(2) + " " + r + (k.orig !== k.owner && T[k.orig] ? " via " + esc(shortOf(T[k.orig])) : "") + "</span>";
+  }
+  function dynastySection() {
+    if (!DM) return '<section class="block"><div class="empty">Dynasty projections are not available in this week\'s data.</div></section>';
+    const ty = DM.titleYear, titleSeason = DM.season + ty;
+    const maxTitle = Math.max.apply(null, DM.teams.map((t) => t.title)) || 1;
+    const maxS = Math.max.apply(null, DM.teams.flatMap((t) => t.strength)) || 1;
+    const notes = (D.notes && D.notes.bruno) || {};
+    const rows = DM.teams.map((t) => {
+      const mv = t.nowRank - t.rank;
+      const core = t.core.map((p) => '<span class="core"><b>' + esc(p.n) + '</b> <span class="muted">' + (p.age + ty) + "</span></span>").join("");
+      const blurb = notes[t.id] || ("Projected to peak in " + seasonLabel(DM.season + t.peak) + ".");
+      return '<li class="brow' + (t.rank === 1 ? " first" : "") + '"><span class="rk">' + t.rank + "</span>" +
+        '<div class="bmain"><div class="bteam">' + teamCell(t.id) + ' <span class="move">' + (mv > 0 ? '<span class="pos">▲' + mv + "</span>" : mv < 0 ? '<span class="neg">▼' + (-mv) + "</span>" : '<span class="muted">–</span>') + '</span><span class="muted today">#' + t.nowRank + " today</span></div>" +
+        '<p class="blurb">' + esc(blurb) + "</p>" +
+        '<div class="coreline"><span class="label">Core in ' + seasonLabel(titleSeason) + "</span>" + core + "</div>" +
+        (t.picks.length ? '<div class="coreline"><span class="label">Picks</span>' + t.picks.map(pickChip).join("") + "</div>" : "") + "</div>" +
+        '<div class="bwin">' + spark(t.strength, maxS, ty) + '<span class="label">Peak ' + seasonLabel(DM.season + t.peak) + "</span></div>" +
+        '<div class="bscore"><span class="sn">' + Math.round(100 * t.title / maxTitle) + '</span><span class="bar"><b style="width:' + Math.round(100 * t.title / maxTitle) + '%"></b></span></div></li>';
+    }).join("");
+    const champ = DM.teams[0];
+    const top = DM.players.slice().sort((a, b) => b.var[ty] - a.var[ty]).slice(0, 25);
+    const maxV = top.length ? top[0].var[ty] : 1;
+    const assets = '<div class="tscroll"><table class="st"><thead><tr><th class="l">#</th><th class="l">Player</th><th>Age in ' + titleSeason + '</th><th class="l">Owner</th><th>Value today</th><th>Value ' + seasonLabel(titleSeason) + "</th></tr></thead><tbody>" +
+      top.map((p, i) => '<tr><td class="rk l">' + (i + 1) + '</td><td class="l"><b>' + esc(p.n) + '</b> <span class="muted">' + esc(p.t) + (p.ped ? " · NBA pick " + p.ped : "") + "</span></td><td>" + (p.age + ty) + '</td><td class="l">' + teamCell(p.own) + "</td><td>" + Math.round(100 * p.var[0] / maxV) + '</td><td><span class="bar"><b style="width:' + Math.round(100 * p.var[ty] / maxV) + '%"></b></span> <b>' + Math.round(100 * p.var[ty] / maxV) + "</b></td></tr>").join("") + "</tbody></table></div>";
+    const method = '<details class="method"><summary>How the projection works</summary><ul>' +
+      "<li>Every rostered player starts from his Fantrax per-game projection for this season, scored across all nine categories against the league's top 156 players.</li>" +
+      "<li>Players age one year per season. Young players improve, most through age 25, and faster if they already produce or were high NBA draft picks. Players start declining around 29, steeply after 33, and anyone 40 or older is assumed retired.</li>" +
+      "<li>Rookies' current projections mostly reflect small early roles, so for the " + (DM.season) + " class the model blends them with where the NBA drafted them.</li>" +
+      "<li>Each future league pick becomes a rookie who develops the same way. Draft slot is estimated from how strong the original team is today. Fantrax only lists " + [...new Set(DM.picks.map((k) => k.year))].join(", ") + " picks, so later picks are not counted.</li>" +
+      "<li>Team strength is the value of the best " + EDBModel.LINEUP + " assets above replacement level. The ranking uses the " + seasonLabel(titleSeason) + " season: two years away from being two years away. Scores are relative, with the top team at 100.</li>" +
+      "<li>This is a model, not a crystal ball. Breakouts, injuries and trades will move it every week.</li></ul></details>";
+    return '<section class="block" id="bruno"><div class="block-head"><h2>Bruno Caboclo Rankings</h2><p>Two years away from being two years away: who is built to win the ' + seasonLabel(titleSeason) + " title. The line shows each roster's projected strength from this season (grey dot) to " + seasonLabel(DM.season + DM.horizon) + "; the blue dot is " + seasonLabel(titleSeason) + ".</p></div>" +
+      '<div class="callout"><span class="label">Projected ' + (titleSeason + 1) + " champion</span><b>" + esc(T[champ.id].name) + "</b><span class=\"muted\">" + esc(champ.core.slice(0, 2).map((p) => p.n).join(" and ")) + " lead the way.</span></div>" +
+      '<ol class="bruno">' + rows + "</ol>" +
+      '<div style="margin-top:34px"><div class="tcap"><h3>Top 25 dynasty assets</h3><span class="label">Value above replacement, top player = 100</span></div>' + assets + "</div>" + method + "</section>";
+  }
+
+  // ---------- rookie draft ----------
+  function gradeClass(g) { return g ? "g" + g[0] : ""; }
+  function draftSection() {
+    if (!DG) return '<section class="block"><div class="empty">The most recent rookie draft is not available in this week\'s data.</div></section>';
+    const notes = (D.notes && D.notes.draftGrades) || {};
+    const graded = DG.grades.filter((g) => g.grade), none = DG.grades.filter((g) => !g.grade);
+    const cards = graded.map((g) => '<article class="gcard"><span class="gl ' + gradeClass(g.grade) + '">' + g.grade + '</span><div class="gmeta">' + teamCell(g.id) +
+      '<span class="label">' + g.picks.length + " pick" + (g.picks.length > 1 ? "s" : "") + " · value vs. slot " + (g.surplus >= 0 ? "+" : "−") + Math.abs(Math.round(g.surplus)) + "</span></div>" +
+      '<ol class="gpicks">' + g.picks.slice().sort((a, b) => a.pick - b.pick).map((r) => "<li><span class=\"mono muted\">#" + r.pick + "</span> " + esc(r.n) + ' <span class="mono">' + r.value + "</span>" + (r.diff >= 4 ? ' <span class="chip good">steal</span>' : r.diff <= -4 ? ' <span class="chip bad">reach</span>' : "") + "</li>").join("") + "</ol>" +
+      (notes[g.id] ? '<p class="gnote">' + esc(notes[g.id]) + "</p>" : (g.best ? '<p class="gnote">Best value: ' + esc(g.best.n) + " at #" + g.best.pick + ".</p>" : "")) + "</article>").join("");
+    const board = '<div class="tscroll"><table class="st"><thead><tr><th class="l">Rank</th><th class="l">Player</th><th>Age</th><th class="l">NBA</th><th class="l">Taken</th><th class="l">Prospect score</th><th>vs. slot</th></tr></thead><tbody>' +
+      DG.rows.map((r) => '<tr><td class="rk l">' + r.rank + '</td><td class="l"><b>' + esc(r.n) + "</b>" + (r.dropped ? ' <span class="chip">dropped</span>' : "") + "</td><td>" + (r.age || "–") + '</td><td class="l mono">' + esc(r.t || "") + (r.ped ? ' <span class="muted">#' + r.ped + "</span>" : "") + '</td><td class="l"><span class="mono muted">#' + r.pick + "</span> " + badge(r.team) + '</td><td class="l"><span class="bar"><b style="width:' + r.value + '%"></b></span> <b class="mono">' + r.value + "</b></td><td>" +
+        (r.diff > 0 ? '<span class="pos">+' + r.diff + "</span>" : r.diff < 0 ? '<span class="neg">−' + (-r.diff) + "</span>" : '<span class="muted">0</span>') + "</td></tr>").join("") + "</tbody></table></div>";
+    const method = '<details class="method"><summary>How the grades work</summary><ul>' +
+      "<li>Each rookie gets a prospect score from the same five-year projection that drives the Bruno Caboclo rankings, scaled so the best player in the class is 100.</li>" +
+      "<li>“vs. slot” compares where a player went with where he ranks on this board. +6 means he went six picks later than his ranking.</li>" +
+      "<li>A team's grade adds up how much each pick beat or trailed the typical return of that draft slot. Trading up for a top pick and getting a top player is fair value, so it grades out around a B+.</li>" +
+      "<li>NBA draft position is part of the input, so a player the NBA took early starts with a higher ceiling.</li></ul></details>";
+    return '<section class="block" id="draft"><div class="block-head"><h2>' + (DG.year || "") + ' rookie draft</h2><p>Team grades and a re-ranked board for the league\'s most recent rookie draft. Grades will move as the rookies play.</p></div>' +
+      '<div class="tcap"><h3>Team grades</h3><span class="label">Best to worst</span></div><div class="grades">' + cards + "</div>" +
+      (none.length ? '<p class="muted" style="font-size:13px;margin:10px 0 0">No picks: ' + none.map((g) => esc(T[g.id].name)).join(", ") + ".</p>" : "") +
+      '<div style="margin-top:34px"><div class="tcap"><h3>Player rankings</h3><span class="label">Ranked by prospect score</span></div>' + board + "</div>" + method + "</section>";
+  }
+
   // ---------- render ----------
+  const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"]];
+  const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", injuries: "league", moves: "league", history: "league", bruno: "dynasty" };
+  let view = "week";
+  function readRoute() {
+    const h = (location.hash || "").slice(1);
+    const m = /^week-(\d+)$/.exec(h);
+    if (m && weekOf(+m[1])) { selWeek = +m[1]; return "week"; }
+    if (VIEWS.some((v) => v[0] === h)) return h;
+    return ALIAS[h] || "week";
+  }
   function render() {
     const pre = D.phase === "preseason";
     const wk = weekOf(selWeek || M.lastN || D.currentPeriod);
+    const n = D.notes || {};
+    const isWeek = view === "week";
+    $("#top").classList.toggle("compact", !isWeek);
     $("#mastKicker").textContent = pre ? "PRESEASON · WEEK" : (wk && wk.complete ? "RECAP · WEEK" : "PREVIEW · WEEK");
     $("#mastNum").textContent = String(pre ? 1 : (selWeek || M.lastN || D.currentPeriod)).padStart(2, "0");
     $("#brand").textContent = (D.league.name || "EDB") + " · " + (D.league.season || "");
-    const n = D.notes || {};
-    $("#headline").textContent = n.headline || (pre ? "Season preview" : "Week " + (M.lastN) + " in the books");
-    $("#dek").textContent = n.dek || "";
-    const html = [storiesHTML(), scoresSection(), powerSection(), standingsSection(), heatSection(), playersSection(), injuriesSection(), movesSection(), historySection()].join("");
-    $("#main").innerHTML = html;
-    const links = [["storylines", "Storylines"], ["scores", pre ? "Week 1" : "Scores"], ["power", "Power"], ["standings", "Standings"], ["categories", "Categories"], ["players", "Players"], ["injuries", "Injuries"], ["moves", "Moves"], ["history", "Banners"]]
-      .filter(([id]) => document.getElementById(id));
-    $("#nav").innerHTML = links.map(([id, l]) => '<a href="#' + id + '">' + l + "</a>").join("");
+    const titles = { standings: "Standings, power and categories", dynasty: "The long view", draft: "Rookie draft report card", league: "Injuries, moves and banners" };
+    $("#headline").textContent = isWeek ? (n.headline || (pre ? "Season preview" : "Week " + M.lastN + " in the books")) : titles[view];
+    $("#dek").textContent = isWeek ? (n.dek || "") : "";
+    const parts = {
+      week: [storiesHTML(), scoresSection(), playersSection()],
+      standings: [powerSection(), standingsSection(), heatSection()],
+      dynasty: [dynastySection()],
+      draft: [draftSection()],
+      league: [injuriesSection(), movesSection(), historySection()],
+    };
+    $("#main").innerHTML = parts[view].join("");
+    $("#nav").innerHTML = VIEWS.map(([id, l]) => '<a href="#' + id + '"' + (id === view ? ' aria-current="page"' : "") + ">" + l + "</a>").join("");
+    document.title = isWeek ? "EDB Weekly" : "EDB Weekly · " + VIEWS.find((v) => v[0] === view)[1];
     const gen = new Date(D.generatedAt);
-    $("#foot").innerHTML = "<span>Updated " + esc(gen.toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })) + " ET from Fantrax league data. Rebuilt automatically every Tuesday morning after the scoring week closes.</span>" +
+    $("#foot").innerHTML = "<span>Updated " + esc(gen.toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })) + " ET from Fantrax league data. Rebuilt automatically every Monday morning after the scoring week ends.</span>" +
       "<span>Unofficial fan page. The commissioner's recap remains the paper of record; projections are estimates, not guarantees.</span>";
     document.querySelectorAll(".weeks button").forEach((b) => b.addEventListener("click", () => {
-      selWeek = +b.dataset.week; try { history.replaceState(null, "", "#week-" + selWeek); } catch (e) {}
+      selWeek = +b.dataset.week;
       const y = document.getElementById("scores").getBoundingClientRect().top + window.scrollY;
+      try { history.replaceState(null, "", "#week-" + selWeek); } catch (e) {}
       render(); window.scrollTo(0, y);
     }));
   }
 
-  function init(data) {
+  function init(data, pedigree) {
     D = data; T = {}; D.teams.forEach((t) => (T[t.id] = t));
+    PED = pedigree || {};
     M = buildModel();
-    const m = /^#week-(\d+)$/.exec(location.hash || "");
-    if (m && weekOf(+m[1])) selWeek = +m[1];
+    try {
+      if (D.dynasty && window.EDBModel) {
+        DM = EDBModel.project(JSON.parse(JSON.stringify(D.dynasty)), D.teams, PED);
+        DG = EDBModel.gradeDraft(DM, D.dynasty.draft, D.teams);
+      }
+    } catch (e) { DM = null; DG = null; console.warn("Dynasty model failed", e); }
+    view = readRoute();
     render();
-    if (location.hash && !m) { const el = document.getElementById(location.hash.slice(1)); if (el) el.scrollIntoView(); }
+    const h = (location.hash || "").slice(1);
+    if (ALIAS[h] && h !== "scores") { const el = document.getElementById(h); if (el) el.scrollIntoView(); }
+    window.addEventListener("hashchange", () => {
+      const prev = view; view = readRoute();
+      if (/^week-\d+$/.test((location.hash || "").slice(1)) && prev === "week") return;
+      render(); if (prev !== view) window.scrollTo(0, 0);
+    });
   }
   window.__edbInit = init; // used by tests
 
-  fetch("data.json", { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(init).catch((e) => {
+  const getJson = (u) => fetch(u, { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(u + ": HTTP " + r.status); return r.json(); });
+  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({}))]).then(([d, p]) => init(d, p)).catch((e) => {
     $("#headline").textContent = "The recap data didn't load";
-    const er = $("#err"); er.hidden = false; er.textContent = "Couldn't read data.json (" + e.message + "). Refresh the page; if it keeps happening, the weekly update may have failed.";
+    const er = $("#err"); er.hidden = false; er.textContent = "Couldn't read the league data (" + e.message + "). Refresh the page; if it keeps happening, the weekly update may have failed.";
   });
 })();
 </script>
