@@ -339,7 +339,10 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     });
     // projected per-week strength
     const projWeek = {};
-    ids.forEach((id) => { const p = D.proj && D.proj[id]; if (!p) return; projWeek[id] = {}; D.cats.forEach((c) => { projWeek[id][c] = PCT[c] ? p[c] : p[c] / WEEKS_IN_SEASON; }); });
+    ids.forEach((id) => {
+      if (D.projWeekly && D.projWeekly[id]) { projWeek[id] = D.projWeekly[id]; return; }
+      const p = D.proj && D.proj[id]; if (!p) return; projWeek[id] = {}; D.cats.forEach((c) => { projWeek[id][c] = PCT[c] ? p[c] : p[c] / WEEKS_IN_SEASON; });
+    });
     // blended strength used for previews
     const strength = {};
     ids.forEach((id) => {
@@ -452,7 +455,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   function previewHTML(wk) {
     const games = wk.matchups.filter((m) => realSide(m.away) && realSide(m.home));
     if (!games.length) return '<div class="empty">Matchups for this week are not set yet.</div>';
-    const basis = M.done.length ? "blends season-to-date weekly averages with preseason projections" : "uses each team's top 10 players, blending Fantrax projections with last season's per-game stats";
+    const basis = M.done.length ? "blends season-to-date weekly averages with preseason projections" : "simulates a season of daily lineups from each team's 20-man roster (bench players fill in on nights starters sit), using Fantrax projections blended with last season's per-game stats";
     const cards = games.map((m) => {
       const a = m.away.id, h = m.home.id, sa = M.strength[a] || {}, sh = M.strength[h] || {};
       const r = h2h(sa, sh);
@@ -553,7 +556,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
         '<td><span class="bar"><b style="width:' + Math.round(p.score * 100) + '%"></b></span> <span class="mono">' + p.score.toFixed(3).replace(/^0/, "") + '</span></td><td class="l">' + buildChips(p.id) + "</td></tr>";
     }).join("");
     const desc = pre
-      ? "Preseason order: each team's projected weekly categories compared against every other team. Chips show each team's two best and two worst projected categories."
+      ? "Preseason order: each team's projected weekly categories, from a simulated season of daily lineups, compared against every other team. Chips show each team's two best and two worst projected categories."
       : "Ranked by all-play win rate: 60% full season, 40% the last three weeks. Arrows compare with last week's order. Chips show each team's two best and two worst categories.";
     return '<section class="block" id="power"><div class="block-head"><h2>' + (pre ? "Preseason power rankings" : "Power rankings") + "</h2><p>" + desc + '</p></div><div class="tscroll"><table class="st"><thead><tr><th class="l">#</th><th></th><th class="l">Team</th>' + (pre ? "" : "<th>Record</th>") + '<th>' + (pre ? "Proj. all-play" : "Power score") + '</th><th class="l">Build</th></tr></thead><tbody>' + rows + "</tbody></table></div></section>";
   }
@@ -752,6 +755,8 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   function init(data, pedigree) {
     D = data; T = {}; D.teams.forEach((t) => (T[t.id] = t));
     PED = pedigree || {};
+    // projected weekly categories from a simulated season of daily lineups (bench players fill in on off nights)
+    try { if (D.dynasty && window.EDBModel && EDBModel.simulateSeason) D.projWeekly = EDBModel.simulateSeason(D.dynasty.players, D.teams); } catch (e) { console.warn("Lineup simulation failed", e); }
     M = buildModel();
     try {
       if (D.dynasty && window.EDBModel) {

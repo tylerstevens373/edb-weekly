@@ -161,6 +161,51 @@
     if (x >= -10) return "B"; if (x >= -18) return "B-"; if (x >= -28) return "C+"; if (x >= -40) return "C"; if (x >= -55) return "C-"; return "D";
   }
 
-  const api = { project, gradeDraft, HORIZON, TITLE_YEAR, LINEUP };
+
+  // ---------- daily-lineup season simulation ----------
+  // Each night every player plays with probability (projected games / season days). The best available players
+  // fill the 10 lineup slots, respecting position eligibility; the rest sit. Returns per-week averages for each team.
+  const SLOTS = ["PG", "SG", "G", "SF", "PF", "F", "C", "F/C", "Flx", "Flx"];
+  const SLOT_OK = { PG: ["PG"], SG: ["SG"], G: ["PG", "SG", "G"], SF: ["SF"], PF: ["PF"], F: ["SF", "PF", "F"], C: ["C"], "F/C": ["SF", "PF", "C", "F"], Flx: null };
+  const SIM_COUNT = ["3PTM", "PTS", "REB", "AST", "ST", "BLK", "TO"];
+  function rng(seed) { let a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  function lineupValue(p) { return (p.PTS || 0) + 1.2 * (p.REB || 0) + 1.5 * (p.AST || 0) + 3 * ((p.ST || 0) + (p.BLK || 0)) + 2 * (p["3PTM"] || 0) - 2 * (p.TO || 0); }
+  function simulateSeason(allPlayers, teams, opts) {
+    opts = opts || {};
+    const DAYS = opts.days || 165, SIMS = opts.sims || 6, ROSTER = opts.roster || 20;
+    const out = {};
+    teams.forEach((team, ti) => {
+      const roster = allPlayers.filter((p) => p.own === team.id && (p.ros === "Act" || p.ros === "Res"))
+        .sort((a, b) => lineupValue(b) - lineupValue(a)).slice(0, ROSTER)
+        .map((p) => ({ p, pos: String(p.pos || "").split(","), prob: Math.min(1, (p.gp || 55) / DAYS) }));
+      const elig = roster.map((r) => SLOTS.map((s) => SLOT_OK[s] === null || SLOT_OK[s].some((x) => r.pos.indexOf(x) >= 0)));
+      const rand = rng(1234 + ti * 7919);
+      const tot = { PTS: 0, REB: 0, AST: 0, ST: 0, BLK: 0, "3PTM": 0, TO: 0 }; let fgw = 0, ftw = 0, pts = 0, games = 0;
+      for (let s = 0; s < SIMS; s++) for (let day = 0; day < DAYS; day++) {
+        const playing = []; roster.forEach((r, i) => { if (rand() < r.prob) playing.push(i); });
+        const who = new Array(SLOTS.length).fill(-1);
+        const place = (i, seen) => {
+          for (let k = 0; k < SLOTS.length; k++) {
+            if (seen[k] || !elig[i][k]) continue; seen[k] = true;
+            if (who[k] < 0 || place(who[k], seen)) { who[k] = i; return true; }
+          }
+          return false;
+        };
+        playing.forEach((i) => place(i, new Array(SLOTS.length).fill(false)));
+        who.forEach((i) => {
+          if (i < 0) return; const p = roster[i].p; games++;
+          SIM_COUNT.forEach((c) => (tot[c] += p[c] || 0));
+          fgw += (p["FG%"] || 0) * (p.PTS || 0); ftw += (p["FT%"] || 0) * (p.PTS || 0); pts += p.PTS || 0;
+        });
+      }
+      const weeks = (DAYS / 7) * SIMS, w = {};
+      SIM_COUNT.forEach((c) => (w[c] = tot[c] / weeks));
+      w["FG%"] = pts ? fgw / pts : null; w["FT%"] = pts ? ftw / pts : null; w.games = games / weeks;
+      out[team.id] = w;
+    });
+    return out;
+  }
+
+  const api = { simulateSeason, project, gradeDraft, HORIZON, TITLE_YEAR, LINEUP };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.EDBModel = api;
 })(typeof window !== "undefined" ? window : this);
