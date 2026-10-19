@@ -631,7 +631,13 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   }
 
   // ---------- dynasty: Bruno Caboclo rankings ----------
-  let DM = null, DG = null, PED = null;
+  let DM = null, DG = null, PED = null, CONS = null;
+  function consRank(name) {
+    if (!CONS) return null;
+    if (!CONS._by) { CONS._by = {}; CONS.players.forEach((p) => (CONS._by[p.name] = p)); }
+    const p = CONS._by[name]; return p ? p.consensus : null;
+  }
+  function consCell(name) { const r = consRank(name); return r ? '<span class="mono">' + r + "</span>" : '<span class="muted">–</span>'; }
   function seasonLabel(y) { return y + "–" + String(y + 1).slice(2); }
   function spark(strength, maxS, mark) {
     const W = 156, H = 44, px = 5, py = 6, n = strength.length;
@@ -669,19 +675,21 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     const champ = DM.teams[0];
     const top = DM.players.slice().sort((a, b) => b.var[ty] - a.var[ty]).slice(0, 25);
     const maxV = top.length ? top[0].var[ty] : 1;
-    const assets = '<div class="tscroll"><table class="st"><thead><tr><th class="l">#</th><th class="l">Player</th><th>Age in ' + titleSeason + '</th><th class="l">Owner</th><th>Value today</th><th>Value ' + seasonLabel(titleSeason) + "</th></tr></thead><tbody>" +
-      top.map((p, i) => '<tr><td class="rk l">' + (i + 1) + '</td><td class="l"><b>' + esc(p.n) + '</b> <span class="muted">' + esc(p.t) + (p.ped ? " · NBA pick " + p.ped : "") + "</span></td><td>" + (p.age + ty) + '</td><td class="l">' + teamCell(p.own) + "</td><td>" + Math.round(100 * p.var[0] / maxV) + '</td><td><span class="bar"><b style="width:' + Math.round(100 * p.var[ty] / maxV) + '%"></b></span> <b>' + Math.round(100 * p.var[ty] / maxV) + "</b></td></tr>").join("") + "</tbody></table></div>";
+    const assets = '<div class="tscroll"><table class="st"><thead><tr><th class="l">#</th><th class="l">Player</th><th>Age in ' + titleSeason + '</th><th class="l">Owner</th><th title="Average of published dynasty rankings">Market rank</th><th>Value today</th><th>Value ' + seasonLabel(titleSeason) + "</th></tr></thead><tbody>" +
+      top.map((p, i) => '<tr><td class="rk l">' + (i + 1) + '</td><td class="l"><b>' + esc(p.n) + '</b> <span class="muted">' + esc(p.t) + (p.ped ? " · NBA pick " + p.ped : "") + "</span></td><td>" + (p.age + ty) + '</td><td class="l">' + teamCell(p.own) + "</td><td>" + consCell(p.n) + "</td><td>" + Math.round(100 * p.var[0] / maxV) + '</td><td><span class="bar"><b style="width:' + Math.round(100 * p.var[ty] / maxV) + '%"></b></span> <b>' + Math.round(100 * p.var[ty] / maxV) + "</b></td></tr>").join("") + "</tbody></table></div>";
     const method = '<details class="method"><summary>How the projection works</summary><ul>' +
       "<li>Every rostered player starts from a blend of his Fantrax per-game projection and last season's per-game stats (up to 60% last season, less for players who missed time; rookies use the projection only), scored across all nine categories against the league's top 156 players.</li>" +
       "<li>Players age one year per season. Young players improve, most through age 25, and faster if they already produce or were high NBA draft picks. Players start declining around 29, steeply after 33, and anyone 40 or older is assumed retired.</li>" +
       "<li>Rookies' current projections mostly reflect small early roles, so for the " + (DM.season) + " class the model blends them with where the NBA drafted them.</li>" +
       "<li>Each future league pick becomes a rookie who develops the same way. Draft slot is estimated from how strong the original team is today. Fantrax only lists " + [...new Set(DM.picks.map((k) => k.year))].join(", ") + " picks, so later picks are not counted.</li>" +
       "<li>Team strength is the value of the best " + EDBModel.LINEUP + " assets above replacement level. The ranking uses the " + seasonLabel(titleSeason) + " season: two years away from being two years away. Scores are relative, with the top team at 100.</li>" +
-      "<li>This is a model, not a crystal ball. Breakouts, injuries and trades will move it every week.</li></ul></details>";
+      "<li>This is a model, not a crystal ball. Breakouts, injuries and trades will move it every week.</li>" +
+      (CONS ? "<li>Market rank is the average of published dynasty rankings (" + CONS.sources.map((s) => '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.name) + "</a>").join(", ") + "), last gathered " + esc(CONS.updated) + ". Where the model and the market disagree is usually where trade opportunities are.</li>" : "") +
+      "</ul></details>";
     return '<section class="block" id="bruno"><div class="block-head"><h2>Bruno Caboclo Rankings</h2><p>Two years away from being two years away: who is built to win the ' + seasonLabel(titleSeason) + " title. The line shows each roster's projected strength from this season (grey dot) to " + seasonLabel(DM.season + DM.horizon) + "; the blue dot is " + seasonLabel(titleSeason) + ".</p></div>" +
       '<div class="callout"><span class="label">Projected ' + (titleSeason + 1) + " champion</span><b>" + esc(T[champ.id].name) + "</b><span class=\"muted\">" + esc(champ.core.slice(0, 2).map((p) => p.n).join(" and ")) + " lead the way.</span></div>" +
       '<ol class="bruno">' + rows + "</ol>" +
-      '<div style="margin-top:34px"><div class="tcap"><h3>Top 25 dynasty assets</h3><span class="label">Value above replacement, top player = 100</span></div>' + assets + "</div>" + method + "</section>";
+      '<div style="margin-top:34px"><div class="tcap"><h3>Top 25 dynasty assets</h3><span class="label">Model value above replacement, top player = 100</span></div>' + assets + "</div>" + method + "</section>";
   }
 
   // ---------- rookie draft ----------
@@ -694,8 +702,8 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       '<span class="label">' + g.picks.length + " pick" + (g.picks.length > 1 ? "s" : "") + " · value vs. slot " + (g.surplus >= 0 ? "+" : "−") + Math.abs(Math.round(g.surplus)) + "</span></div>" +
       '<ol class="gpicks">' + g.picks.slice().sort((a, b) => a.pick - b.pick).map((r) => "<li><span class=\"mono muted\">#" + r.pick + "</span> " + esc(r.n) + ' <span class="mono">' + r.value + "</span>" + (r.diff >= 4 ? ' <span class="chip good">steal</span>' : r.diff <= -4 ? ' <span class="chip bad">reach</span>' : "") + "</li>").join("") + "</ol>" +
       (notes[g.id] ? '<p class="gnote">' + esc(notes[g.id]) + "</p>" : (g.best ? '<p class="gnote">Best value: ' + esc(g.best.n) + " at #" + g.best.pick + ".</p>" : "")) + "</article>").join("");
-    const board = '<div class="tscroll"><table class="st"><thead><tr><th class="l">Rank</th><th class="l">Player</th><th>Age</th><th class="l">NBA</th><th class="l">Taken</th><th class="l">Prospect score</th><th>vs. slot</th></tr></thead><tbody>' +
-      DG.rows.map((r) => '<tr><td class="rk l">' + r.rank + '</td><td class="l"><b>' + esc(r.n) + "</b>" + (r.dropped ? ' <span class="chip">dropped</span>' : "") + "</td><td>" + (r.age || "–") + '</td><td class="l mono">' + esc(r.t || "") + (r.ped ? ' <span class="muted">#' + r.ped + "</span>" : "") + '</td><td class="l"><span class="mono muted">#' + r.pick + "</span> " + badge(r.team) + '</td><td class="l"><span class="bar"><b style="width:' + r.value + '%"></b></span> <b class="mono">' + r.value + "</b></td><td>" +
+    const board = '<div class="tscroll"><table class="st"><thead><tr><th class="l">Rank</th><th class="l">Player</th><th>Age</th><th class="l">NBA</th><th class="l">Taken</th><th class="l">Prospect score</th><th title="Overall rank in published dynasty rankings">Market rank</th><th>vs. slot</th></tr></thead><tbody>' +
+      DG.rows.map((r) => '<tr><td class="rk l">' + r.rank + '</td><td class="l"><b>' + esc(r.n) + "</b>" + (r.dropped ? ' <span class="chip">dropped</span>' : "") + "</td><td>" + (r.age || "–") + '</td><td class="l mono">' + esc(r.t || "") + (r.ped ? ' <span class="muted">#' + r.ped + "</span>" : "") + '</td><td class="l"><span class="mono muted">#' + r.pick + "</span> " + badge(r.team) + '</td><td class="l"><span class="bar"><b style="width:' + r.value + '%"></b></span> <b class="mono">' + r.value + "</b></td><td>" + consCell(r.n) + "</td><td>" +
         (r.diff > 0 ? '<span class="pos">+' + r.diff + "</span>" : r.diff < 0 ? '<span class="neg">−' + (-r.diff) + "</span>" : '<span class="muted">0</span>') + "</td></tr>").join("") + "</tbody></table></div>";
     const method = '<details class="method"><summary>How the grades work</summary><ul>' +
       "<li>Each rookie gets a prospect score from the same five-year projection that drives the Bruno Caboclo rankings, scaled so the best player in the class is 100.</li>" +
@@ -777,7 +785,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   window.__edbInit = init; // used by tests
 
   const getJson = (u) => fetch(u, { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(u + ": HTTP " + r.status); return r.json(); });
-  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({}))]).then(([d, p]) => init(d, p)).catch((e) => {
+  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({})), getJson("consensus.json").catch(() => null)]).then(([d, p, c]) => { CONS = c; init(d, p); }).catch((e) => {
     $("#headline").textContent = "The recap data didn't load";
     const er = $("#err"); er.hidden = false; er.textContent = "Couldn't read the league data (" + e.message + "). Refresh the page; if it keeps happening, the weekly update may have failed.";
   });

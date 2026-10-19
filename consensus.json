@@ -1,0 +1,2068 @@
+{
+"updated": "2026-10-19",
+"sources": [
+{
+"name": "RotoWire",
+"updated": "2026-10-16",
+"url": "https://www.rotowire.com/basketball/article/fantasy-basketball-dynasty-rankings-2026-27-top-150-players-to-draft-141439"
+},
+{
+"name": "LineupExperts",
+"updated": "2026-10-18",
+"url": "https://www.lineupexperts.com/basketball/dynasty-draft-rankings"
+},
+{
+"name": "Dynatyze",
+"updated": "2026-10-19",
+"url": "https://dynatyze.com/basketball/dynasty-rankings"
+},
+{
+"name": "Hashtag Basketball",
+"updated": "2026-09-24",
+"url": "https://hashtagbasketball.com/fantasy-basketball-dynasty-rankings"
+}
+],
+"method": "Average rank across sources; a player missing from a list counts as that list's length + 30.",
+"players": [
+{
+"name": "Victor Wembanyama",
+"ranks": {
+"RotoWire": 1,
+"LineupExperts": 1,
+"Dynatyze": 1,
+"Hashtag Basketball": 1
+},
+"avg": 1.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 1
+},
+{
+"name": "Luka Doncic",
+"ranks": {
+"RotoWire": 4,
+"LineupExperts": 2,
+"Dynatyze": 3,
+"Hashtag Basketball": 3
+},
+"avg": 3.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 2
+},
+{
+"name": "Nikola Jokic",
+"ranks": {
+"RotoWire": 2,
+"LineupExperts": 3,
+"Dynatyze": 4,
+"Hashtag Basketball": 4
+},
+"avg": 3.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 3
+},
+{
+"name": "Shai Gilgeous-Alexander",
+"ranks": {
+"RotoWire": 3,
+"LineupExperts": 7,
+"Dynatyze": 2,
+"Hashtag Basketball": 2
+},
+"avg": 3.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 4
+},
+{
+"name": "Cade Cunningham",
+"ranks": {
+"RotoWire": 5,
+"LineupExperts": 4,
+"Dynatyze": 6,
+"Hashtag Basketball": 5
+},
+"avg": 5.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 5
+},
+{
+"name": "Cooper Flagg",
+"ranks": {
+"RotoWire": 6,
+"LineupExperts": 5,
+"Dynatyze": 5,
+"Hashtag Basketball": 6
+},
+"avg": 5.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 6
+},
+{
+"name": "Tyrese Maxey",
+"ranks": {
+"RotoWire": 10,
+"LineupExperts": 6,
+"Dynatyze": 9,
+"Hashtag Basketball": 8
+},
+"avg": 8.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 7
+},
+{
+"name": "Anthony Edwards",
+"ranks": {
+"RotoWire": 9,
+"LineupExperts": 10,
+"Dynatyze": 8,
+"Hashtag Basketball": 7
+},
+"avg": 8.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 8
+},
+{
+"name": "Jayson Tatum",
+"ranks": {
+"RotoWire": 7,
+"LineupExperts": 11,
+"Dynatyze": 7,
+"Hashtag Basketball": 11
+},
+"avg": 9.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 9
+},
+{
+"name": "Jalen Johnson",
+"ranks": {
+"RotoWire": 8,
+"LineupExperts": 8,
+"Dynatyze": 10,
+"Hashtag Basketball": 10
+},
+"avg": 9.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 10
+},
+{
+"name": "Scottie Barnes",
+"ranks": {
+"RotoWire": 11,
+"LineupExperts": 15,
+"Dynatyze": 13,
+"Hashtag Basketball": 12
+},
+"avg": 12.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 11
+},
+{
+"name": "Giannis Antetokounmpo",
+"ranks": {
+"RotoWire": 19,
+"LineupExperts": 9,
+"Dynatyze": 17,
+"Hashtag Basketball": 20
+},
+"avg": 16.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 12
+},
+{
+"name": "Alperen Sengun",
+"ranks": {
+"RotoWire": 25,
+"LineupExperts": 12,
+"Dynatyze": 15,
+"Hashtag Basketball": 16
+},
+"avg": 17.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 13
+},
+{
+"name": "Tyrese Haliburton",
+"ranks": {
+"RotoWire": 12,
+"LineupExperts": 40,
+"Dynatyze": 11,
+"Hashtag Basketball": 13
+},
+"avg": 19.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 14
+},
+{
+"name": "Amen Thompson",
+"ranks": {
+"RotoWire": 15,
+"LineupExperts": 20,
+"Dynatyze": 20,
+"Hashtag Basketball": 21
+},
+"avg": 19.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 15
+},
+{
+"name": "Evan Mobley",
+"ranks": {
+"RotoWire": 16,
+"LineupExperts": 29,
+"Dynatyze": 18,
+"Hashtag Basketball": 15
+},
+"avg": 19.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 16
+},
+{
+"name": "Donovan Mitchell",
+"ranks": {
+"RotoWire": 20,
+"LineupExperts": 19,
+"Dynatyze": 23,
+"Hashtag Basketball": 18
+},
+"avg": 20.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 17
+},
+{
+"name": "Cameron Boozer",
+"ranks": {
+"RotoWire": 14,
+"LineupExperts": 48,
+"Dynatyze": 12,
+"Hashtag Basketball": 9
+},
+"avg": 20.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 18
+},
+{
+"name": "Jalen Williams",
+"ranks": {
+"RotoWire": 18,
+"LineupExperts": 28,
+"Dynatyze": 22,
+"Hashtag Basketball": 19
+},
+"avg": 21.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 19
+},
+{
+"name": "Josh Giddey",
+"ranks": {
+"RotoWire": 13,
+"LineupExperts": 17,
+"Dynatyze": 32,
+"Hashtag Basketball": 33
+},
+"avg": 23.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 20
+},
+{
+"name": "Chet Holmgren",
+"ranks": {
+"RotoWire": 17,
+"LineupExperts": 50,
+"Dynatyze": 16,
+"Hashtag Basketball": 14
+},
+"avg": 24.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 21
+},
+{
+"name": "Deni Avdija",
+"ranks": {
+"RotoWire": 22,
+"LineupExperts": 13,
+"Dynatyze": 28,
+"Hashtag Basketball": 36
+},
+"avg": 24.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 22
+},
+{
+"name": "Karl-Anthony Towns",
+"ranks": {
+"RotoWire": 21,
+"LineupExperts": 18,
+"Dynatyze": 35,
+"Hashtag Basketball": 27
+},
+"avg": 25.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 23
+},
+{
+"name": "Austin Reaves",
+"ranks": {
+"RotoWire": 27,
+"LineupExperts": 27,
+"Dynatyze": 25,
+"Hashtag Basketball": 22
+},
+"avg": 25.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 24
+},
+{
+"name": "Devin Booker",
+"ranks": {
+"RotoWire": 30,
+"LineupExperts": 24,
+"Dynatyze": 33,
+"Hashtag Basketball": 24
+},
+"avg": 27.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 25
+},
+{
+"name": "LaMelo Ball",
+"ranks": {
+"RotoWire": 28,
+"LineupExperts": 14,
+"Dynatyze": 30,
+"Hashtag Basketball": 40
+},
+"avg": 28.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 26
+},
+{
+"name": "Jamal Murray",
+"ranks": {
+"RotoWire": 32,
+"LineupExperts": 25,
+"Dynatyze": 31,
+"Hashtag Basketball": 32
+},
+"avg": 30.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 27
+},
+{
+"name": "Kon Knueppel",
+"ranks": {
+"RotoWire": 40,
+"LineupExperts": 33,
+"Dynatyze": 27,
+"Hashtag Basketball": 25
+},
+"avg": 31.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 28
+},
+{
+"name": "Trae Young",
+"ranks": {
+"RotoWire": 29,
+"LineupExperts": 30,
+"Dynatyze": 39,
+"Hashtag Basketball": 29
+},
+"avg": 31.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 29
+},
+{
+"name": "Jalen Brunson",
+"ranks": {
+"RotoWire": 31,
+"LineupExperts": 23,
+"Dynatyze": 36,
+"Hashtag Basketball": 38
+},
+"avg": 32.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 30
+},
+{
+"name": "Trey Murphy",
+"ranks": {
+"RotoWire": 23,
+"LineupExperts": 49,
+"Dynatyze": 34,
+"Hashtag Basketball": 23
+},
+"avg": 32.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 31
+},
+{
+"name": "Franz Wagner",
+"ranks": {
+"RotoWire": 44,
+"LineupExperts": 39,
+"Dynatyze": 24,
+"Hashtag Basketball": 30
+},
+"avg": 34.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 32
+},
+{
+"name": "Bam Adebayo",
+"ranks": {
+"RotoWire": 26,
+"LineupExperts": 22,
+"Dynatyze": 44,
+"Hashtag Basketball": 46
+},
+"avg": 34.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 33
+},
+{
+"name": "AJ Dybantsa",
+"ranks": {
+"RotoWire": 41,
+"LineupExperts": 43,
+"Dynatyze": 19,
+"Hashtag Basketball": 37
+},
+"avg": 35.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 34
+},
+{
+"name": "Jaylen Brown",
+"ranks": {
+"RotoWire": 34,
+"LineupExperts": 21,
+"Dynatyze": 42,
+"Hashtag Basketball": 50
+},
+"avg": 36.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 35
+},
+{
+"name": "Caleb Wilson",
+"ranks": {
+"RotoWire": 36,
+"LineupExperts": 61,
+"Dynatyze": 26,
+"Hashtag Basketball": 26
+},
+"avg": 37.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 36
+},
+{
+"name": "Jalen Duren",
+"ranks": {
+"RotoWire": 48,
+"LineupExperts": 32,
+"Dynatyze": 37,
+"Hashtag Basketball": 34
+},
+"avg": 37.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 37
+},
+{
+"name": "Paolo Banchero",
+"ranks": {
+"RotoWire": 50,
+"LineupExperts": 16,
+"Dynatyze": 40,
+"Hashtag Basketball": 47
+},
+"avg": 38.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 38
+},
+{
+"name": "Brandon Miller",
+"ranks": {
+"RotoWire": 24,
+"LineupExperts": 41,
+"Dynatyze": 45,
+"Hashtag Basketball": 44
+},
+"avg": 38.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 39
+},
+{
+"name": "Stephon Castle",
+"ranks": {
+"RotoWire": 35,
+"LineupExperts": 38,
+"Dynatyze": 48,
+"Hashtag Basketball": 43
+},
+"avg": 41.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 40
+},
+{
+"name": "Dylan Harper",
+"ranks": {
+"RotoWire": 39,
+"LineupExperts": 88,
+"Dynatyze": 21,
+"Hashtag Basketball": 17
+},
+"avg": 41.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 41
+},
+{
+"name": "Darryn Peterson",
+"ranks": {
+"RotoWire": 37,
+"LineupExperts": 90,
+"Dynatyze": 14,
+"Hashtag Basketball": 28
+},
+"avg": 42.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 42
+},
+{
+"name": "Darius Garland",
+"ranks": {
+"RotoWire": 38,
+"LineupExperts": 67,
+"Dynatyze": 29,
+"Hashtag Basketball": 42
+},
+"avg": 44.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 43
+},
+{
+"name": "Jaren Jackson",
+"ranks": {
+"RotoWire": 51,
+"LineupExperts": 57,
+"Dynatyze": 38,
+"Hashtag Basketball": 35
+},
+"avg": 45.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 44
+},
+{
+"name": "Keyonte George",
+"ranks": {
+"RotoWire": 52,
+"LineupExperts": 35,
+"Dynatyze": 52,
+"Hashtag Basketball": 51
+},
+"avg": 47.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 45
+},
+{
+"name": "Domantas Sabonis",
+"ranks": {
+"RotoWire": 49,
+"LineupExperts": 26,
+"Dynatyze": 57,
+"Hashtag Basketball": 64
+},
+"avg": 49.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 46
+},
+{
+"name": "Alex Sarr",
+"ranks": {
+"RotoWire": 47,
+"LineupExperts": 72,
+"Dynatyze": 47,
+"Hashtag Basketball": 31
+},
+"avg": 49.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 47
+},
+{
+"name": "Lauri Markkanen",
+"ranks": {
+"RotoWire": 54,
+"LineupExperts": 46,
+"Dynatyze": 46,
+"Hashtag Basketball": 54
+},
+"avg": 50.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 48
+},
+{
+"name": "Anthony Davis",
+"ranks": {
+"RotoWire": 57,
+"LineupExperts": 31,
+"Dynatyze": 61,
+"Hashtag Basketball": 52
+},
+"avg": 50.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 49
+},
+{
+"name": "Desmond Bane",
+"ranks": {
+"RotoWire": 33,
+"LineupExperts": 54,
+"Dynatyze": 49,
+"Hashtag Basketball": 67
+},
+"avg": 50.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 50
+},
+{
+"name": "VJ Edgecombe",
+"ranks": {
+"RotoWire": 45,
+"LineupExperts": 71,
+"Dynatyze": 43,
+"Hashtag Basketball": 49
+},
+"avg": 52.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 51
+},
+{
+"name": "Donovan Clingan",
+"ranks": {
+"RotoWire": 43,
+"LineupExperts": 73,
+"Dynatyze": 50,
+"Hashtag Basketball": 48
+},
+"avg": 53.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 52
+},
+{
+"name": "James Harden",
+"ranks": {
+"RotoWire": 56,
+"LineupExperts": 34,
+"Dynatyze": 62,
+"Hashtag Basketball": 65
+},
+"avg": 54.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 53
+},
+{
+"name": "Pascal Siakam",
+"ranks": {
+"RotoWire": 61,
+"LineupExperts": 36,
+"Dynatyze": 73,
+"Hashtag Basketball": 61
+},
+"avg": 57.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 54
+},
+{
+"name": "Kevin Durant",
+"ranks": {
+"RotoWire": 55,
+"LineupExperts": 37,
+"Dynatyze": 64,
+"Hashtag Basketball": 76
+},
+"avg": 58.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 55
+},
+{
+"name": "Ivica Zubac",
+"ranks": {
+"RotoWire": 53,
+"LineupExperts": 58,
+"Dynatyze": 59,
+"Hashtag Basketball": 63
+},
+"avg": 58.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 56
+},
+{
+"name": "Stephen Curry",
+"ranks": {
+"RotoWire": 60,
+"LineupExperts": 45,
+"Dynatyze": 66,
+"Hashtag Basketball": 66
+},
+"avg": 59.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 57
+},
+{
+"name": "Matas Buzelis",
+"ranks": {
+"RotoWire": 42,
+"LineupExperts": 83,
+"Dynatyze": 72,
+"Hashtag Basketball": 41
+},
+"avg": 59.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 58
+},
+{
+"name": "Walker Kessler",
+"ranks": {
+"RotoWire": 46,
+"LineupExperts": 79,
+"Dynatyze": 54,
+"Hashtag Basketball": 68
+},
+"avg": 61.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 59
+},
+{
+"name": "Derrick White",
+"ranks": {
+"RotoWire": 59,
+"LineupExperts": 53,
+"Dynatyze": 67,
+"Hashtag Basketball": 74
+},
+"avg": 63.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 60
+},
+{
+"name": "Onyeka Okongwu",
+"ranks": {
+"RotoWire": 63,
+"LineupExperts": 77,
+"Dynatyze": 55,
+"Hashtag Basketball": 60
+},
+"avg": 63.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 61
+},
+{
+"name": "De'Aaron Fox",
+"ranks": {
+"RotoWire": 89,
+"LineupExperts": 59,
+"Dynatyze": 60,
+"Hashtag Basketball": 56
+},
+"avg": 66.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 62
+},
+{
+"name": "Darius Acuff",
+"ranks": {
+"RotoWire": 65,
+"LineupExperts": 78,
+"Dynatyze": 68,
+"Hashtag Basketball": 57
+},
+"avg": 67.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 63
+},
+{
+"name": "Kel'el Ware",
+"ranks": {
+"RotoWire": 64,
+"LineupExperts": 87,
+"Dynatyze": 58,
+"Hashtag Basketball": 70
+},
+"avg": 69.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 64
+},
+{
+"name": "Zach Edey",
+"ranks": {
+"RotoWire": 66,
+"LineupExperts": 109,
+"Dynatyze": 51,
+"Hashtag Basketball": 55
+},
+"avg": 70.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 65
+},
+{
+"name": "Tyler Herro",
+"ranks": {
+"RotoWire": 72,
+"LineupExperts": 51,
+"Hashtag Basketball": 53
+},
+"avg": 70.2,
+"listed": 3,
+"onRoster": true,
+"consensus": 66
+},
+{
+"name": "Zion Williamson",
+"ranks": {
+"RotoWire": 68,
+"LineupExperts": 63,
+"Dynatyze": 70,
+"Hashtag Basketball": 81
+},
+"avg": 70.5,
+"listed": 4,
+"onRoster": true,
+"consensus": 67
+},
+{
+"name": "Brandon Ingram",
+"ranks": {
+"RotoWire": 74,
+"LineupExperts": 68,
+"Dynatyze": 63,
+"Hashtag Basketball": 79
+},
+"avg": 71.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 68
+},
+{
+"name": "Keaton Wagler",
+"ranks": {
+"RotoWire": 77,
+"LineupExperts": 107,
+"Dynatyze": 53,
+"Hashtag Basketball": 62
+},
+"avg": 74.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 69
+},
+{
+"name": "Dyson Daniels",
+"ranks": {
+"RotoWire": 67,
+"LineupExperts": 74,
+"Dynatyze": 74,
+"Hashtag Basketball": 88
+},
+"avg": 75.8,
+"listed": 4,
+"onRoster": true,
+"consensus": 70
+},
+{
+"name": "Kyrie Irving",
+"ranks": {
+"RotoWire": 79,
+"LineupExperts": 56,
+"Dynatyze": 75,
+"Hashtag Basketball": 95
+},
+"avg": 76.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 71
+},
+{
+"name": "OG Anunoby",
+"ranks": {
+"RotoWire": 87,
+"LineupExperts": 85,
+"Dynatyze": 65,
+"Hashtag Basketball": 71
+},
+"avg": 77.0,
+"listed": 4,
+"onRoster": true,
+"consensus": 72
+},
+{
+"name": "Mikel Brown",
+"ranks": {
+"RotoWire": 91,
+"LineupExperts": 115,
+"Dynatyze": 56,
+"Hashtag Basketball": 59
+},
+"avg": 80.2,
+"listed": 4,
+"onRoster": true,
+"consensus": 73
+},
+{
+"name": "Dejounte Murray",
+"ranks": {
+"RotoWire": 76,
+"LineupExperts": 55,
+"Hashtag Basketball": 86
+},
+"avg": 80.5,
+"listed": 3,
+"onRoster": true,
+"consensus": 74
+},
+{
+"name": "Michael Porter",
+"ranks": {
+"RotoWire": 73,
+"LineupExperts": 76,
+"Hashtag Basketball": 72
+},
+"avg": 81.5,
+"listed": 3,
+"onRoster": true,
+"consensus": 75
+},
+{
+"name": "Nickeil Alexander-Walker",
+"ranks": {
+"RotoWire": 69,
+"LineupExperts": 86,
+"Hashtag Basketball": 69
+},
+"avg": 82.2,
+"listed": 3,
+"onRoster": true,
+"consensus": 76
+},
+{
+"name": "Julius Randle",
+"ranks": {
+"RotoWire": 75,
+"LineupExperts": 52,
+"Hashtag Basketball": 99
+},
+"avg": 82.8,
+"listed": 3,
+"onRoster": true,
+"consensus": 77
+},
+{
+"name": "Kawhi Leonard",
+"ranks": {
+"RotoWire": 58,
+"LineupExperts": 42
+},
+"avg": 83.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 78
+},
+{
+"name": "Naz Reid",
+"ranks": {
+"RotoWire": 94,
+"LineupExperts": 62,
+"Hashtag Basketball": 75
+},
+"avg": 84.0,
+"listed": 3,
+"onRoster": true,
+"consensus": 79
+},
+{
+"name": "Joel Embiid",
+"ranks": {
+"RotoWire": 78,
+"LineupExperts": 60,
+"Hashtag Basketball": 100
+},
+"avg": 85.8,
+"listed": 3,
+"onRoster": true,
+"consensus": 80
+},
+{
+"name": "Jaden McDaniels",
+"ranks": {
+"RotoWire": 62,
+"LineupExperts": 100,
+"Hashtag Basketball": 77
+},
+"avg": 86.0,
+"listed": 3,
+"onRoster": true,
+"consensus": 81
+},
+{
+"name": "LeBron James",
+"ranks": {
+"RotoWire": 80,
+"LineupExperts": 47
+},
+"avg": 90.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 82
+},
+{
+"name": "Immanuel Quickley",
+"ranks": {
+"RotoWire": 109,
+"LineupExperts": 64,
+"Hashtag Basketball": 85
+},
+"avg": 90.8,
+"listed": 3,
+"onRoster": true,
+"consensus": 83
+},
+{
+"name": "Jalen Green",
+"ranks": {
+"RotoWire": 101,
+"LineupExperts": 65,
+"Hashtag Basketball": 98
+},
+"avg": 92.2,
+"listed": 3,
+"onRoster": true,
+"consensus": 84
+},
+{
+"name": "Derik Queen",
+"ranks": {
+"RotoWire": 97,
+"LineupExperts": 94,
+"Hashtag Basketball": 80
+},
+"avg": 94.0,
+"listed": 3,
+"onRoster": true,
+"consensus": 85
+},
+{
+"name": "Ja Morant",
+"ranks": {
+"RotoWire": 144,
+"LineupExperts": 44,
+"Hashtag Basketball": 83
+},
+"avg": 94.0,
+"listed": 3,
+"onRoster": true,
+"consensus": 86
+},
+{
+"name": "Mikal Bridges",
+"ranks": {
+"RotoWire": 86,
+"LineupExperts": 98,
+"Hashtag Basketball": 90
+},
+"avg": 94.8,
+"listed": 3,
+"onRoster": true,
+"consensus": 87
+},
+{
+"name": "Coby White",
+"ranks": {
+"RotoWire": 88,
+"LineupExperts": 70
+},
+"avg": 98.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 88
+},
+{
+"name": "Keegan Murray",
+"ranks": {
+"RotoWire": 106,
+"LineupExperts": 111,
+"Hashtag Basketball": 73
+},
+"avg": 98.8,
+"listed": 3,
+"onRoster": true,
+"consensus": 89
+},
+{
+"name": "Collin Murray-Boyles",
+"ranks": {
+"RotoWire": 71,
+"Dynatyze": 69,
+"Hashtag Basketball": 78
+},
+"avg": 99.5,
+"listed": 3,
+"onRoster": true,
+"consensus": 90
+},
+{
+"name": "Payton Pritchard",
+"ranks": {
+"RotoWire": 83,
+"LineupExperts": 80
+},
+"avg": 99.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 91
+},
+{
+"name": "Jarrett Allen",
+"ranks": {
+"RotoWire": 100,
+"LineupExperts": 66
+},
+"avg": 100.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 92
+},
+{
+"name": "Jabari Smith",
+"ranks": {
+"RotoWire": 107,
+"LineupExperts": 95,
+"Hashtag Basketball": 96
+},
+"avg": 100.8,
+"listed": 3,
+"onRoster": true,
+"consensus": 93
+},
+{
+"name": "Ausar Thompson",
+"ranks": {
+"RotoWire": 70,
+"LineupExperts": 101
+},
+"avg": 101.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 94
+},
+{
+"name": "Josh Hart",
+"ranks": {
+"RotoWire": 85,
+"LineupExperts": 89
+},
+"avg": 102.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 95
+},
+{
+"name": "Cedric Coward",
+"ranks": {
+"RotoWire": 84,
+"LineupExperts": 99
+},
+"avg": 104.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 96
+},
+{
+"name": "Rudy Gobert",
+"ranks": {
+"RotoWire": 99,
+"LineupExperts": 84
+},
+"avg": 104.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 97
+},
+{
+"name": "Ryan Rollins",
+"ranks": {
+"RotoWire": 82,
+"LineupExperts": 102
+},
+"avg": 104.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 98
+},
+{
+"name": "RJ Barrett",
+"ranks": {
+"RotoWire": 115,
+"LineupExperts": 69
+},
+"avg": 104.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 99
+},
+{
+"name": "Nicolas Claxton",
+"ranks": {
+"RotoWire": 102,
+"LineupExperts": 118,
+"Hashtag Basketball": 97
+},
+"avg": 105.5,
+"listed": 3,
+"onRoster": true,
+"consensus": 100
+},
+{
+"name": "Reed Sheppard",
+"ranks": {
+"RotoWire": 92,
+"LineupExperts": 145,
+"Hashtag Basketball": 84
+},
+"avg": 106.5,
+"listed": 3,
+"onRoster": true,
+"consensus": 101
+},
+{
+"name": "Brandin Podziemski",
+"ranks": {
+"RotoWire": 98,
+"LineupExperts": 96
+},
+"avg": 107.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 102
+},
+{
+"name": "Miles Bridges",
+"ranks": {
+"RotoWire": 119,
+"LineupExperts": 75
+},
+"avg": 107.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 103
+},
+{
+"name": "Jalen Suggs",
+"ranks": {
+"RotoWire": 108,
+"LineupExperts": 124,
+"Hashtag Basketball": 94
+},
+"avg": 107.8,
+"listed": 3,
+"onRoster": true,
+"consensus": 104
+},
+{
+"name": "Peyton Watson",
+"ranks": {
+"RotoWire": 95,
+"LineupExperts": 105
+},
+"avg": 108.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 105
+},
+{
+"name": "Egor Demin",
+"ranks": {
+"RotoWire": 90,
+"LineupExperts": 114
+},
+"avg": 109.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 106
+},
+{
+"name": "Ayo Dosunmu",
+"ranks": {
+"RotoWire": 96,
+"LineupExperts": 108
+},
+"avg": 109.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 107
+},
+{
+"name": "Ty Jerome",
+"ranks": {
+"RotoWire": 127,
+"LineupExperts": 81
+},
+"avg": 110.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 108
+},
+{
+"name": "Ace Bailey",
+"ranks": {
+"RotoWire": 93,
+"LineupExperts": 116
+},
+"avg": 111.0,
+"listed": 2,
+"onRoster": true,
+"consensus": 109
+},
+{
+"name": "Anthony Black",
+"ranks": {
+"RotoWire": 114,
+"LineupExperts": 139,
+"Hashtag Basketball": 92
+},
+"avg": 112.5,
+"listed": 3,
+"onRoster": true,
+"consensus": 110
+},
+{
+"name": "Kyshawn George",
+"ranks": {
+"RotoWire": 139,
+"LineupExperts": 113,
+"Hashtag Basketball": 93
+},
+"avg": 112.5,
+"listed": 3,
+"onRoster": true,
+"consensus": 111
+},
+{
+"name": "Ajay Mitchell",
+"ranks": {
+"RotoWire": 81,
+"Hashtag Basketball": 87
+},
+"avg": 113.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 112
+},
+{
+"name": "Andrew Nembhard",
+"ranks": {
+"RotoWire": 125,
+"LineupExperts": 93
+},
+"avg": 113.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 113
+},
+{
+"name": "Andrew Wiggins",
+"ranks": {
+"RotoWire": 122,
+"LineupExperts": 97
+},
+"avg": 113.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 114
+},
+{
+"name": "Paul George",
+"ranks": {
+"RotoWire": 105,
+"LineupExperts": 119
+},
+"avg": 114.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 115
+},
+{
+"name": "Day'Ron Sharpe",
+"ranks": {
+"RotoWire": 134,
+"LineupExperts": 91
+},
+"avg": 115.0,
+"listed": 2,
+"onRoster": true,
+"consensus": 116
+},
+{
+"name": "Kingston Flemings",
+"ranks": {
+"RotoWire": 118,
+"LineupExperts": 112
+},
+"avg": 116.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 117
+},
+{
+"name": "Toumani Camara",
+"ranks": {
+"RotoWire": 113,
+"LineupExperts": 121
+},
+"avg": 117.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 118
+},
+{
+"name": "Jaime Jaquez",
+"ranks": {
+"RotoWire": 132,
+"LineupExperts": 104
+},
+"avg": 117.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 119
+},
+{
+"name": "Jeremiah Fears",
+"ranks": {
+"RotoWire": 117,
+"LineupExperts": 120
+},
+"avg": 118.0,
+"listed": 2,
+"onRoster": true,
+"consensus": 120
+},
+{
+"name": "Isaiah Hartenstein",
+"ranks": {
+"RotoWire": 142,
+"LineupExperts": 134,
+"Hashtag Basketball": 91
+},
+"avg": 118.0,
+"listed": 3,
+"onRoster": true,
+"consensus": 121
+},
+{
+"name": "Zach LaVine",
+"ranks": {
+"RotoWire": 112,
+"LineupExperts": 126
+},
+"avg": 118.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 122
+},
+{
+"name": "Myles Turner",
+"ranks": {
+"RotoWire": 103,
+"LineupExperts": 146
+},
+"avg": 121.0,
+"listed": 2,
+"onRoster": true,
+"consensus": 123
+},
+{
+"name": "Dillon Brooks",
+"ranks": {
+"RotoWire": 121,
+"LineupExperts": 132
+},
+"avg": 122.0,
+"listed": 2,
+"onRoster": true,
+"consensus": 124
+},
+{
+"name": "P.J. Washington",
+"ranks": {
+"RotoWire": 124,
+"LineupExperts": 131
+},
+"avg": 122.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 125
+},
+{
+"name": "John Collins",
+"ranks": {
+"LineupExperts": 82
+},
+"avg": 124.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 126
+},
+{
+"name": "Yaxel Lendeborg",
+"ranks": {
+"RotoWire": 116,
+"LineupExperts": 147
+},
+"avg": 124.5,
+"listed": 2,
+"onRoster": true,
+"consensus": 127
+},
+{
+"name": "Morez Johnson",
+"ranks": {
+"RotoWire": 129,
+"LineupExperts": 135
+},
+"avg": 124.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 128
+},
+{
+"name": "Devin Vassell",
+"ranks": {
+"RotoWire": 120,
+"LineupExperts": 148
+},
+"avg": 125.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 129
+},
+{
+"name": "Saddiq Bey",
+"ranks": {
+"RotoWire": 133,
+"LineupExperts": 136
+},
+"avg": 126.0,
+"listed": 2,
+"onRoster": true,
+"consensus": 130
+},
+{
+"name": "Brayden Burries",
+"ranks": {
+"RotoWire": 137,
+"Hashtag Basketball": 82
+},
+"avg": 126.0,
+"listed": 2,
+"onRoster": true,
+"consensus": 131
+},
+{
+"name": "Norman Powell",
+"ranks": {
+"LineupExperts": 92
+},
+"avg": 126.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 132
+},
+{
+"name": "Wendell Carter",
+"ranks": {
+"RotoWire": 141,
+"LineupExperts": 133
+},
+"avg": 127.2,
+"listed": 2,
+"onRoster": true,
+"consensus": 133
+},
+{
+"name": "Christian Braun",
+"ranks": {
+"RotoWire": 126,
+"LineupExperts": 150
+},
+"avg": 127.8,
+"listed": 2,
+"onRoster": true,
+"consensus": 134
+},
+{
+"name": "Kristaps Porzingis",
+"ranks": {
+"LineupExperts": 103
+},
+"avg": 129.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 135
+},
+{
+"name": "Khaman Maluach",
+"ranks": {
+"RotoWire": 104
+},
+"avg": 129.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 136
+},
+{
+"name": "Jonathan Kuminga",
+"ranks": {
+"LineupExperts": 106
+},
+"avg": 130.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 137
+},
+{
+"name": "Jrue Holiday",
+"ranks": {
+"RotoWire": 110
+},
+"avg": 131.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 138
+},
+{
+"name": "Sandro Mamukelashvili",
+"ranks": {
+"LineupExperts": 110
+},
+"avg": 131.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 139
+},
+{
+"name": "Aaron Gordon",
+"ranks": {
+"RotoWire": 111
+},
+"avg": 131.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 140
+},
+{
+"name": "Quentin Grimes",
+"ranks": {
+"LineupExperts": 117
+},
+"avg": 133.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 141
+},
+{
+"name": "Jakob Poeltl",
+"ranks": {
+"LineupExperts": 122
+},
+"avg": 134.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 142
+},
+{
+"name": "Naji Marshall",
+"ranks": {
+"RotoWire": 123
+},
+"avg": 134.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 143
+},
+{
+"name": "De'Andre Hunter",
+"ranks": {
+"LineupExperts": 123
+},
+"avg": 134.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 144
+},
+{
+"name": "Cameron Johnson",
+"ranks": {
+"LineupExperts": 125
+},
+"avg": 135.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 145
+},
+{
+"name": "Santi Aldama",
+"ranks": {
+"LineupExperts": 127
+},
+"avg": 135.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 146
+},
+{
+"name": "Jimmy Butler",
+"ranks": {
+"RotoWire": 128
+},
+"avg": 135.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 147
+},
+{
+"name": "CJ McCollum",
+"ranks": {
+"LineupExperts": 128
+},
+"avg": 135.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 148
+},
+{
+"name": "Damian Lillard",
+"ranks": {
+"LineupExperts": 129
+},
+"avg": 136.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 149
+},
+{
+"name": "Neemias Queta",
+"ranks": {
+"RotoWire": 130
+},
+"avg": 136.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 150
+},
+{
+"name": "Fred VanVleet",
+"ranks": {
+"LineupExperts": 130
+},
+"avg": 136.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 151
+},
+{
+"name": "Gui Santos",
+"ranks": {
+"RotoWire": 131
+},
+"avg": 136.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 152
+},
+{
+"name": "Kevin Porter",
+"ranks": {
+"RotoWire": 135
+},
+"avg": 137.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 153
+},
+{
+"name": "Scoot Henderson",
+"ranks": {
+"RotoWire": 136
+},
+"avg": 137.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 154
+},
+{
+"name": "Yves Missi",
+"ranks": {
+"LineupExperts": 137
+},
+"avg": 138.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 155
+},
+{
+"name": "Collin Gillespie",
+"ranks": {
+"RotoWire": 138
+},
+"avg": 138.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 156
+},
+{
+"name": "Collin Sexton",
+"ranks": {
+"LineupExperts": 138
+},
+"avg": 138.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 157
+},
+{
+"name": "Mark Williams",
+"ranks": {
+"RotoWire": 140
+},
+"avg": 138.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 158
+},
+{
+"name": "DeMar DeRozan",
+"ranks": {
+"LineupExperts": 140
+},
+"avg": 138.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 159
+},
+{
+"name": "Bennedict Mathurin",
+"ranks": {
+"LineupExperts": 141
+},
+"avg": 139.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 160
+},
+{
+"name": "Kyle Filipowski",
+"ranks": {
+"LineupExperts": 142
+},
+"avg": 139.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 161
+},
+{
+"name": "Maxime Raynaud",
+"ranks": {
+"RotoWire": 143
+},
+"avg": 139.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 162
+},
+{
+"name": "Cam Spencer",
+"ranks": {
+"LineupExperts": 143
+},
+"avg": 139.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 163
+},
+{
+"name": "Jusuf Nurkic",
+"ranks": {
+"LineupExperts": 144
+},
+"avg": 139.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 164
+},
+{
+"name": "Cason Wallace",
+"ranks": {
+"RotoWire": 145
+},
+"avg": 140.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 165
+},
+{
+"name": "Jared McCain",
+"ranks": {
+"RotoWire": 146
+},
+"avg": 140.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 166
+},
+{
+"name": "Julian Champagnie",
+"ranks": {
+"RotoWire": 147
+},
+"avg": 140.5,
+"listed": 1,
+"onRoster": true,
+"consensus": 167
+},
+{
+"name": "Tre Johnson",
+"ranks": {
+"RotoWire": 148
+},
+"avg": 140.8,
+"listed": 1,
+"onRoster": true,
+"consensus": 168
+},
+{
+"name": "Davion Mitchell",
+"ranks": {
+"RotoWire": 149
+},
+"avg": 141.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 169
+},
+{
+"name": "Moussa Diabate",
+"ranks": {
+"LineupExperts": 149
+},
+"avg": 141.0,
+"listed": 1,
+"onRoster": true,
+"consensus": 170
+},
+{
+"name": "Zaccharie Risacher",
+"ranks": {
+"RotoWire": 150
+},
+"avg": 141.2,
+"listed": 1,
+"onRoster": true,
+"consensus": 171
+}
+],
+"picks": [
+{
+"source": "Dynatyze",
+"rank": 41,
+"label": "2027 Early 1st"
+},
+{
+"source": "Dynatyze",
+"rank": 71,
+"label": "2027 Mid 1st"
+},
+{
+"source": "Hashtag Basketball",
+"rank": 39,
+"label": "2027 Pick 1"
+},
+{
+"source": "Hashtag Basketball",
+"rank": 45,
+"label": "2027 Pick 2"
+},
+{
+"source": "Hashtag Basketball",
+"rank": 58,
+"label": "2027 Pick 3-4"
+},
+{
+"source": "Hashtag Basketball",
+"rank": 89,
+"label": "2027 Pick 5-8"
+}
+]
+}
