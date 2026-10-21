@@ -237,6 +237,56 @@ details.method ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6p
 .gpicks li { padding: 5px 0; border-bottom: 1px solid var(--line); }
 .gnote { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
 
+/* ---------- trade calculator ---------- */
+.tc-tools { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px; }
+.tc-btn { font-family: var(--mono); font-size: 12px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.tc-btn:hover { border-color: var(--muted); }
+.tc-summary { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px 14px; display: grid; gap: 10px; margin-bottom: 16px; }
+.tc-verdict { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1; text-transform: uppercase; }
+.tc-verdict.fair { color: var(--win); } .tc-verdict.lean { color: var(--warn); } .tc-verdict.lop { color: var(--loss); }
+.tc-bar { position: relative; height: 16px; border-radius: 999px; background: linear-gradient(90deg, color-mix(in oklab, var(--loss) 30%, var(--sunk)), var(--sunk) 35%, var(--sunk) 65%, color-mix(in oklab, var(--loss) 30%, var(--sunk))); }
+.tc-fair { position: absolute; left: 45%; width: 10%; top: 0; bottom: 0; background: color-mix(in oklab, var(--win) 35%, var(--sunk)); }
+.tc-mid { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; background: var(--ink); transform: translateX(-1px); }
+.tc-mark { position: absolute; top: 50%; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); border: 3px solid var(--surface); box-shadow: 0 0 0 1px var(--accent); transform: translate(-50%, -50%); }
+@media (prefers-reduced-motion: no-preference) { .tc-mark { transition: left .25s ease; } }
+.tc-ends { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); gap: 8px; }
+.tc-ends span:nth-child(2) { text-align: center; }
+.tc-ends span:last-child { text-align: right; }
+.tc-stats { display: flex; flex-wrap: wrap; gap: 4px 20px; font-size: 12.5px; color: var(--muted); }
+.tc-stats b { color: var(--ink); }
+.tc-sides { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 14px; }
+.tc-side { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.tc-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tc-team { font: inherit; font-size: 14px; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); max-width: 100%; }
+.tc-items ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.tc-items li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.tc-name { display: grid; min-width: 0; }
+.tc-name b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tc-name .muted { font-size: 12px; }
+.tc-val { font-size: 13px; white-space: nowrap; }
+.tc-x { border: 0; background: var(--sunk); color: var(--ink); width: 26px; height: 26px; border-radius: 50%; cursor: pointer; font-size: 16px; line-height: 1; }
+.tc-x:hover { background: color-mix(in oklab, var(--loss) 25%, var(--sunk)); }
+.tc-total { display: flex; justify-content: space-between; padding-top: 8px; font-size: 14px; }
+.tc-empty, .tc-hint { margin: 0; font-size: 13px; color: var(--muted); }
+.tc-search { position: relative; }
+.tc-search input { width: 100%; font: inherit; font-size: 15px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); }
+.tc-sugg { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 5; list-style: none; margin: 0; padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px color-mix(in oklab, var(--ink) 18%, transparent); max-height: 300px; overflow: auto; }
+.tc-sugg li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 10px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+.tc-sugg li[aria-selected="true"], .tc-sugg li:hover { background: var(--sunk); }
+.tc-sugg li .muted { font-size: 12px; }
+.tc-roster { display: grid; gap: 6px; }
+.tc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.tc-chip { font: inherit; font-size: 12.5px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+.tc-chip .mono { color: var(--muted); font-size: 11px; }
+.tc-chip:hover:not([disabled]) { border-color: var(--accent); }
+.tc-chip.on { opacity: .45; cursor: default; }
+.tc-chip.add { border-color: color-mix(in oklab, var(--accent) 50%, var(--line)); }
+.tc-card { margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; display: grid; gap: 10px; }
+.tc-imp { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 14px; }
+.tc-imp-h { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-weight: 600; margin-bottom: 6px; }
+.tc-imp-h .mono { font-size: 12.5px; font-weight: 500; }
+.tc-note { margin: 0; font-size: 12px; }
+
 .empty { padding: 18px; border: 1px dashed var(--line); border-radius: var(--r); color: var(--muted); font-size: 14px; }
 footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--muted); display: grid; gap: 6px; }
 #err { padding: 24px 0; }
@@ -716,8 +766,228 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       '<div style="margin-top:34px"><div class="tcap"><h3>Player rankings</h3><span class="label">Ranked by prospect score</span></div>' + board + "</div>" + method + "</section>";
   }
 
+  // ---------- trade calculator ----------
+  // Values and formula come from the league's "EDB Trade Calc Guide" sheet. Each side's assets are summed after a
+  // curve that rewards concentrated value: adj(v) = v * (0.1 + 0.04 (v/maxList)^8 + 0.11 (v/maxInTrade)^1.3 + 0.22 (v/(maxList+2000))^1.28).
+  const SHEET_ID = "11PUhYlhimmW-yDDj7Hj8ztyiZWsDqVw5PHxauyYrqTM";
+  let TV = null; // { list: [{name, value, fantrax}], byKey, max, source, updated, live }
+  const TR = { a: { team: "", items: [] }, b: { team: "", items: [] } };
+  try { const saved = JSON.parse(localStorage.getItem("edbTrade") || "null"); if (saved && saved.a && saved.b) { TR.a = saved.a; TR.b = saved.b; } } catch (e) {}
+  function saveTrade() { try { localStorage.setItem("edbTrade", JSON.stringify(TR)); } catch (e) {} }
+  function tvKey(s) {
+    s = String(s || "").normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase();
+    s = s.replace(/\b(jr|sr|ii|iii|iv)\b\.?/g, "").replace(/[.'’]/g, "").replace(/\s+/g, " ").trim();
+    return ({ "nic claxton": "nicolas claxton", "alexandre sarr": "alex sarr", "ronald holland": "ron holland" })[s] || s;
+  }
+  function setValues(list, meta) {
+    const byKey = {}; list.forEach((v) => { byKey[tvKey(v.name)] = v; });
+    TV = Object.assign({ list, byKey, max: Math.max.apply(null, list.map((v) => v.value)) }, meta);
+  }
+  function loadLiveValues() {
+    // JSONP from the public sheet so commissioner edits show up without a site update
+    return new Promise((resolve, reject) => {
+      const cb = "__edbTv" + Date.now(); const s = document.createElement("script"); let done = false;
+      const timer = setTimeout(() => { if (!done) { done = true; cleanup(); reject(new Error("timeout")); } }, 5000);
+      function cleanup() { delete window[cb]; s.remove(); clearTimeout(timer); }
+      window[cb] = (resp) => {
+        if (done) return; done = true; cleanup();
+        try {
+          const rows = (resp.table && resp.table.rows) || [];
+          const list = rows.map((r) => ({ name: r.c[1] && r.c[1].v ? String(r.c[1].v).trim() : "", value: r.c[2] && r.c[2].v != null ? +r.c[2].v : NaN })).filter((v) => v.name && !isNaN(v.value));
+          if (list.length < 50) throw new Error("short list"); resolve(list);
+        } catch (e) { reject(e); }
+      };
+      s.onerror = () => { if (!done) { done = true; cleanup(); reject(new Error("blocked")); } };
+      s.src = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:json;responseHandler:" + cb + "&headers=0&sheet=Values";
+      document.head.appendChild(s);
+    });
+  }
+  function tvOf(name) { const v = TV && TV.byKey[tvKey(name)]; return v ? v.value : 0; }
+  function pickTier(year, overall) {
+    const tiers = year === 2026 ? [[2, "1-2"], [4, "3-4"], [7, "5-7"], [12, "8-12"], [22, "13-22"], [30, "23-30"], [39, "31-39"], [60, "40-60"]]
+      : [[3, "1-3"], [8, "4-8"], [12, "9-12"], [18, "13-18"], [30, "19-30"], [45, "30-45"], [60, "46-60"]];
+    const t = tiers.find((x) => overall <= x[0]) || tiers[tiers.length - 1];
+    return (year >= 2027 ? 2027 : year) + " #" + t[1]; // later picks use the sheet's 2027 tiers
+  }
+  function adjust(v, maxInTrade) {
+    const L = TV.max; if (!v) return 0;
+    return v * (0.1 + 0.04 * Math.pow(v / L, 8) + 0.11 * Math.pow(v / maxInTrade, 1.3) + 0.22 * Math.pow(v / (L + 2000), 1.28));
+  }
+  function evaluate(a, b) {
+    const all = a.concat(b).map((x) => x.value); const mx = Math.max.apply(null, all.concat([1]));
+    const sa = a.reduce((s, x) => s + adjust(x.value, mx), 0), sb = b.reduce((s, x) => s + adjust(x.value, mx), 0);
+    const avg = (sa + sb) / 2;
+    return { mx, sa, sb, rawA: a.reduce((s, x) => s + x.value, 0), rawB: b.reduce((s, x) => s + x.value, 0), gap: sa - sb, variance: avg ? Math.abs(sa - sb) / avg : 0 };
+  }
+  // assets a team can offer: its rostered players and owned picks
+  function teamAssets(teamId) {
+    const out = [];
+    if (D.dynasty) D.dynasty.players.filter((p) => p.own === teamId).forEach((p) => {
+      out.push({ kind: "player", name: p.n, label: p.n, sub: p.t + " · " + (String(p.pos || "").split(",")[0]) + (p.ros === "Min" ? " · minors" : p.ros === "IR" ? " · IR" : ""), value: tvOf(p.n), fid: p.id });
+    });
+    if (DM) DM.picks.filter((k) => k.owner === teamId).forEach((k) => {
+      const tier = pickTier(k.year, k.slot);
+      const r = ["", "1st", "2nd", "3rd"][k.round] || k.round + "th";
+      out.push({ kind: "pick", name: tier, label: k.year + " " + r + (k.orig !== k.owner && T[k.orig] ? " (" + shortOf(T[k.orig]) + ")" : ""), sub: "proj. pick " + k.slot + " → " + tier, value: tvOf(tier) });
+    });
+    return out.sort((x, y) => y.value - x.value);
+  }
+  function verdict(e) {
+    const v = e.variance;
+    if (!e.sa && !e.sb) return { cls: "", text: "Add assets to both sides" };
+    if (v < 0.1) return { cls: "fair", text: "Fair trade" };
+    const winner = e.gap > 0 ? "B" : "A"; // the side that receives more value
+    const who = sideName(winner);
+    if (v < 0.25) return { cls: "lean", text: "Slightly favors " + who };
+    if (v < 0.5) return { cls: "lean", text: "Favors " + who };
+    return { cls: "lop", text: "Lopsided toward " + who };
+  }
+  function sideName(s) { const t = TR[s.toLowerCase()].team; return t && T[t] ? T[t].name : "Side " + s; }
+  function suggestions(e) {
+    // assets that would come closest to evening the trade if added to the side that is short
+    const short = e.gap > 0 ? "b" : "a"; const other = short === "a" ? "b" : "a";
+    const pool = TR[short].team ? teamAssets(TR[short].team) : TV.list.map((v) => ({ kind: /^\d{4} #/.test(v.name) ? "pick" : "player", name: v.name, label: v.name, value: v.value }));
+    const taken = new Set(TR.a.items.concat(TR.b.items).map((x) => tvKey(x.name)));
+    const cand = pool.filter((p) => p.value > 0 && !taken.has(tvKey(p.name))).map((p) => {
+      const sideItems = TR[short].items.concat([p]);
+      const ev = short === "a" ? evaluate(sideItems, TR.b.items) : evaluate(TR.a.items, sideItems);
+      return { p, left: Math.abs(ev.gap), variance: ev.variance };
+    }).sort((x, y) => x.left - y.left);
+    return { short, list: cand.slice(0, 5) };
+  }
+  function seasonImpact() {
+    // run the daily-lineup simulation for both teams before and after the players move (picks don't play)
+    const ta = TR.a.team, tb = TR.b.team;
+    if (!ta || !tb || ta === tb || !window.EDBModel || !D.dynasty) return null;
+    const moveA = new Set(TR.a.items.filter((x) => x.fid).map((x) => x.fid)), moveB = new Set(TR.b.items.filter((x) => x.fid).map((x) => x.fid));
+    if (!moveA.size && !moveB.size) return null;
+    const after = D.dynasty.players.map((p) => moveA.has(p.id) ? Object.assign({}, p, { own: tb }) : moveB.has(p.id) ? Object.assign({}, p, { own: ta }) : p);
+    const teams = D.teams.filter((t) => t.id === ta || t.id === tb);
+    const before = D.projWeekly || EDBModel.simulateSeason(D.dynasty.players, D.teams);
+    const nowW = EDBModel.simulateSeason(after, teams);
+    const others = (id) => Object.keys(before).filter((k) => k !== id);
+    const beats = (w, id) => others(id).filter((o) => { let x = 0, y = 0; D.cats.forEach((c) => { let p = w[c], q = before[o][c]; if (c === "TO") { p = -p; q = -q; } if (p > q) x++; else if (p < q) y++; }); return x > y; }).length;
+    const rank = (w, id, c) => 1 + others(id).filter((o) => (c === "TO" ? before[o][c] < w[c] : before[o][c] > w[c])).length;
+    return [ta, tb].map((id) => {
+      const b = before[id], a = nowW[id];
+      const moves = D.cats.map((c) => ({ c, from: rank(b, id, c), to: rank(a, id, c) })).filter((m) => m.from !== m.to);
+      return { id, from: beats(b, id), to: beats(a, id), moves };
+    });
+  }
+  function tradeSection() {
+    if (!TV) return '<section class="block" id="trade"><div class="block-head"><h2>Trade calculator</h2></div><div class="empty">Loading trade values…</div></section>';
+    return '<section class="block" id="trade"><div class="block-head"><h2>Trade calculator</h2><p>Built on the league\'s EDB Trade Calc values and formula: one great player outweighs a pile of good ones. ' +
+      (TV.live ? "Values load live from the league sheet." : "Values from the league sheet, saved " + esc(TV.snapshot || "") + ".") + "</p></div>" +
+      '<div class="tc-tools"><button type="button" id="tcSwap" class="tc-btn">⇄ Swap sides</button><button type="button" id="tcClear" class="tc-btn">Clear</button></div><div class="tc-summary" id="tcSummary"></div><div class="tc-sides">' + sideHTML("a") + sideHTML("b") + '</div><div id="tcExtra"></div>' +
+      '<details class="method"><summary>How the calculator works</summary><ul>' +
+      "<li>Each player or pick gets a value from the league's Values sheet. Players not on the sheet count as 0, the same as in the spreadsheet.</li>" +
+      "<li>Values are curved before they're added up. The curve depends on the most valuable piece in the trade, so the side with the best player gets a bonus, and depth counts for less than it looks.</li>" +
+      "<li>The bar compares the two curved totals. Within 10% is fair; the marker slides toward the side that comes out ahead.</li>" +
+      "<li>Draft picks owned in this league are priced by their projected slot, using the sheet's pick tiers.</li>" +
+      "<li>When both sides have a team picked, the Season impact panel reruns the daily-lineup simulation with the players swapped, so you can see what the trade does to each roster this season.</li></ul></details></section>";
+  }
+  function sideHTML(s) {
+    const S = s.toUpperCase();
+    const opts = '<option value="">Any team</option>' + D.teams.slice().sort((x, y) => x.name.localeCompare(y.name)).map((t) => '<option value="' + t.id + '"' + (TR[s].team === t.id ? " selected" : "") + ">" + esc(t.name) + "</option>").join("");
+    return '<div class="tc-side" data-side="' + s + '"><div class="tc-head"><span class="label">Side ' + S + ' sends</span><select id="tcTeam' + S + '" class="tc-team" data-side="' + s + '" aria-label="Side ' + S + ' team">' + opts + "</select></div>" +
+      '<div class="tc-items" id="tcItems' + S + '"></div>' +
+      '<div class="tc-search"><input id="tcSearch' + S + '" type="search" autocomplete="off" placeholder="Add a player or pick…" data-side="' + s + '" aria-label="Search players and picks for side ' + S + '"><ul class="tc-sugg" id="tcSugg' + S + '" role="listbox" hidden></ul></div>' +
+      '<div class="tc-roster" id="tcRoster' + S + '"></div></div>';
+  }
+  function itemRow(x, s, i, mx) {
+    const cr = x.kind === "player" ? consRank(x.fantrax || x.name) : null;
+    return '<li><div class="tc-name"><b>' + esc(x.label || x.name) + '</b><span class="muted">' + esc(x.sub || (x.kind === "pick" ? "draft pick" : "")) + (cr ? " · market #" + cr : "") + "</span></div>" +
+      '<span class="tc-val mono" title="Sheet value → adjusted for this trade">' + fmtV(x.value) + ' <span class="muted">→ ' + adjust(x.value, mx).toFixed(1) + "</span></span>" +
+      '<button type="button" class="tc-x" data-side="' + s + '" data-i="' + i + '" aria-label="Remove ' + esc(x.label || x.name) + '">×</button></li>';
+  }
+  function fmtV(v) { return v ? (Math.round(v * 10) / 10).toString() : "0"; }
+  function paintTrade() {
+    if (!document.getElementById("trade") || !TV) return;
+    const e = evaluate(TR.a.items, TR.b.items);
+    ["a", "b"].forEach((s) => {
+      const S = s.toUpperCase();
+      $("#tcItems" + S).innerHTML = TR[s].items.length ? "<ul>" + TR[s].items.map((x, i) => itemRow(x, s, i, e.mx)).join("") + "</ul>" +
+        '<div class="tc-total"><span>Total</span><span class="mono">' + fmtV(s === "a" ? e.rawA : e.rawB) + ' <span class="muted">→</span> <b>' + (s === "a" ? e.sa : e.sb).toFixed(1) + "</b></span></div>"
+        : '<p class="tc-empty">Nothing added yet.</p>';
+      const t = TR[s].team; const box = $("#tcRoster" + S);
+      if (!t) { box.innerHTML = '<p class="muted tc-hint">Pick a team to browse its roster and picks.</p>'; return; }
+      const taken = new Set(TR.a.items.concat(TR.b.items).map((x) => tvKey(x.name)));
+      const assets = teamAssets(t);
+      box.innerHTML = '<span class="label">' + esc(T[t].name) + "</span><div class=\"tc-chips\">" + assets.map((x, i) => '<button type="button" class="tc-chip' + (taken.has(tvKey(x.name)) ? " on" : "") + '" data-side="' + s + '" data-ai="' + i + '"' + (taken.has(tvKey(x.name)) ? " disabled" : "") + ">" + esc(x.label) + ' <span class="mono">' + fmtV(x.value) + "</span></button>").join("") + "</div>";
+      box._assets = assets;
+    });
+    // summary bar: marker slides toward the side that receives more value
+    const v = verdict(e);
+    // marker sits toward the side that comes out ahead: right when A sends more value (B wins), left when B does
+    const total = e.sa + e.sb; const pos = total ? Math.round((e.sa / total) * 1000) / 10 : 50;
+    const leftName = sideName("A"), rightName = sideName("B");
+    $("#tcSummary").innerHTML = '<div class="tc-verdict ' + v.cls + '">' + esc(v.text) + "</div>" +
+      '<div class="tc-bar" role="img" aria-label="' + esc(v.text) + '"><span class="tc-fair"></span><span class="tc-mid"></span><span class="tc-mark" style="left:' + pos + '%"></span></div>' +
+      '<div class="tc-ends"><span>' + esc(leftName) + " wins</span><span>Even</span><span>" + esc(rightName) + " wins</span></div>" +
+      '<div class="tc-stats mono"><span>Side A sends <b>' + e.sa.toFixed(1) + "</b></span><span>Side B sends <b>" + e.sb.toFixed(1) + "</b></span><span>Gap <b>" + Math.abs(e.gap).toFixed(1) + "</b> (" + Math.round(e.variance * 100) + "%)</span></div>";
+    // extras: how to even it, and season impact
+    let extra = "";
+    if (e.sa && e.sb && e.variance >= 0.1) {
+      const sg = suggestions(e);
+      extra += '<div class="tc-card"><span class="label">To even it, ' + esc(sideName(sg.short.toUpperCase())) + " adds about " + Math.abs(e.gap).toFixed(1) + ' adjusted</span><div class="tc-chips">' +
+        sg.list.map((c, i) => '<button type="button" class="tc-chip add" data-side="' + sg.short + '" data-si="' + i + '">' + esc(c.p.label || c.p.name) + ' <span class="mono">' + fmtV(c.p.value) + "</span></button>").join("") + "</div></div>";
+      window.__tcSugg = sg.list.map((c) => c.p);
+    }
+    const imp = seasonImpact();
+    if (imp) {
+      extra += '<div class="tc-card"><span class="label">Season impact</span><div class="tc-imp">' + imp.map((r) => {
+        const d = r.to - r.from;
+        return '<div><div class="tc-imp-h">' + teamCell(r.id) + ' <span class="mono ' + (d > 0 ? "pos" : d < 0 ? "neg" : "muted") + '">' + (d > 0 ? "▲" : d < 0 ? "▼" : "–") + " beats " + r.to + " of 11 (was " + r.from + ")</span></div>" +
+          '<div class="tc-moves">' + (r.moves.length ? r.moves.map((m) => '<span class="chip ' + (m.to < m.from ? "good" : "bad") + '">' + CAT_LABEL[m.c] + " " + ord(m.from) + "→" + ord(m.to) + "</span>").join("") : '<span class="muted">No category rank changes</span>') + "</div></div>";
+      }).join("") + '</div><p class="muted tc-note">“Beats” counts how many of the other 11 teams the roster would beat in an average week, from a simulated season of daily lineups.</p></div>';
+    }
+    $("#tcExtra").innerHTML = extra;
+  }
+  function addItem(s, x) {
+    if (!x) return; if (TR[s].items.length >= 8) return;
+    if (TR.a.items.concat(TR.b.items).some((y) => tvKey(y.name) === tvKey(x.name) && x.kind === "player")) return;
+    TR[s].items.push({ kind: x.kind, name: x.name, label: x.label || x.name, sub: x.sub || "", value: x.value, fid: x.fid || null, fantrax: x.fantrax || null });
+    saveTrade(); paintTrade();
+  }
+  function searchPool(q, s) {
+    q = tvKey(q); if (!q) return [];
+    const owned = {}; if (D.dynasty) D.dynasty.players.forEach((p) => { owned[tvKey(p.n)] = p; });
+    return TV.list.filter((v) => tvKey(v.name).indexOf(q) >= 0).slice(0, 8).map((v) => {
+      const p = owned[tvKey(v.name)]; const isPick = /^\d{4} #/.test(v.name);
+      return { kind: isPick ? "pick" : "player", name: v.name, label: p ? p.n : v.name, sub: isPick ? "draft pick tier" : p ? (p.t + (T[p.own] ? " · " + T[p.own].name : "")) : "not on a league roster", value: v.value, fid: p ? p.id : null, fantrax: p ? p.n : null };
+    });
+  }
+  function mountTrade() {
+    if (!document.getElementById("trade") || !TV) return;
+    const root = document.getElementById("trade");
+    root.addEventListener("change", (ev) => { const t = ev.target; if (t.classList.contains("tc-team")) { TR[t.dataset.side].team = t.value; saveTrade(); paintTrade(); } });
+    root.addEventListener("click", (ev) => {
+      const b = ev.target.closest("button"); if (!b) return;
+      const s = b.dataset.side;
+      if (b.classList.contains("tc-x")) { TR[s].items.splice(+b.dataset.i, 1); saveTrade(); paintTrade(); }
+      else if (b.dataset.ai != null) { const box = $("#tcRoster" + s.toUpperCase()); addItem(s, box._assets[+b.dataset.ai]); }
+      else if (b.dataset.si != null) { addItem(s, (window.__tcSugg || [])[+b.dataset.si]); }
+      else if (b.id === "tcClear") { TR.a.items = []; TR.b.items = []; saveTrade(); paintTrade(); }
+      else if (b.id === "tcSwap") { const t = TR.a; TR.a = TR.b; TR.b = t; saveTrade(); render(); }
+    });
+    ["a", "b"].forEach((s) => {
+      const S = s.toUpperCase(), inp = $("#tcSearch" + S), ul = $("#tcSugg" + S); let res = [], hi = -1;
+      const draw = () => { ul.hidden = !res.length; ul.innerHTML = res.map((r, i) => '<li role="option" data-i="' + i + '"' + (i === hi ? ' aria-selected="true"' : "") + "><span><b>" + esc(r.label) + '</b> <span class="muted">' + esc(r.sub) + '</span></span><span class="mono">' + fmtV(r.value) + "</span></li>").join(""); };
+      inp.addEventListener("input", () => { res = searchPool(inp.value, s); hi = res.length ? 0 : -1; draw(); });
+      inp.addEventListener("keydown", (ev) => {
+        if (ev.key === "ArrowDown") { hi = Math.min(res.length - 1, hi + 1); draw(); ev.preventDefault(); }
+        else if (ev.key === "ArrowUp") { hi = Math.max(0, hi - 1); draw(); ev.preventDefault(); }
+        else if (ev.key === "Enter" && hi >= 0) { addItem(s, res[hi]); inp.value = ""; res = []; draw(); ev.preventDefault(); }
+        else if (ev.key === "Escape") { res = []; draw(); }
+      });
+      ul.addEventListener("mousedown", (ev) => { const li = ev.target.closest("li"); if (!li) return; ev.preventDefault(); addItem(s, res[+li.dataset.i]); inp.value = ""; res = []; draw(); inp.focus(); });
+      inp.addEventListener("blur", () => setTimeout(() => { res = []; draw(); }, 150));
+    });
+    paintTrade();
+  }
+
   // ---------- render ----------
-  const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"]];
+  const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["trade", "Trade"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"]];
   const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", injuries: "league", moves: "league", history: "league", bruno: "dynasty" };
   let view = "week";
   function readRoute() {
@@ -736,7 +1006,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     $("#mastKicker").textContent = pre ? "PRESEASON · WEEK" : (wk && wk.complete ? "RECAP · WEEK" : "PREVIEW · WEEK");
     $("#mastNum").textContent = String(pre ? 1 : (selWeek || M.lastN || D.currentPeriod)).padStart(2, "0");
     $("#brand").textContent = (D.league.name || "EDB") + " · " + (D.league.season || "");
-    const titles = { standings: "Standings, power and categories", dynasty: "The long view", draft: "Rookie draft report card", league: "Injuries, moves and banners" };
+    const titles = { trade: "Trade desk", standings: "Standings, power and categories", dynasty: "The long view", draft: "Rookie draft report card", league: "Injuries, moves and banners" };
     $("#headline").textContent = isWeek ? (n.headline || (pre ? "Season preview" : "Week " + M.lastN + " in the books")) : titles[view];
     $("#dek").textContent = isWeek ? (n.dek || "") : "";
     const parts = {
@@ -744,9 +1014,11 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       standings: [powerSection(), standingsSection(), heatSection()],
       dynasty: [dynastySection()],
       draft: [draftSection()],
+      trade: [tradeSection()],
       league: [injuriesSection(), movesSection(), historySection()],
     };
     $("#main").innerHTML = parts[view].join("");
+    if (view === "trade") mountTrade();
     $("#nav").innerHTML = VIEWS.map(([id, l]) => '<a href="#' + id + '"' + (id === view ? ' aria-current="page"' : "") + ">" + l + "</a>").join("");
     document.title = isWeek ? "EDB Weekly" : "EDB Weekly · " + VIEWS.find((v) => v[0] === view)[1];
     const gen = new Date(D.generatedAt);
@@ -785,7 +1057,12 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   window.__edbInit = init; // used by tests
 
   const getJson = (u) => fetch(u, { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(u + ": HTTP " + r.status); return r.json(); });
-  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({})), getJson("consensus.json").catch(() => null)]).then(([d, p, c]) => { CONS = c; init(d, p); }).catch((e) => {
+  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({})), getJson("consensus.json").catch(() => null), getJson("tradevalues.json").catch(() => null)]).then(([d, p, c, tv]) => {
+    CONS = c;
+    if (tv) setValues(tv.values, { live: false, snapshot: tv.snapshot, updated: tv.updated });
+    init(d, p);
+    loadLiveValues().then((list) => { setValues(list, { live: true }); if (view === "trade") render(); }).catch(() => {});
+  }).catch((e) => {
     $("#headline").textContent = "The recap data didn't load";
     const er = $("#err"); er.hidden = false; er.textContent = "Couldn't read the league data (" + e.message + "). Refresh the page; if it keeps happening, the weekly update may have failed.";
   });
