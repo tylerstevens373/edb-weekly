@@ -81,7 +81,7 @@
     const d = await fx(lid, 'getPlayerStats', Object.assign({ statusOrTeamFilter: 'ALL_TAKEN', pageNumber: '1', maxResultsPerPage: '500', seasonOrProjection: code, scoringCategoryType: '5' }, extra || {}));
     const hdr = d.tableHeader.cells.map(c => c.shortName);
     return d.statsTable.map(p => {
-      const v = {}; hdr.forEach((h, j) => { v[h] = p.cells[j] ? p.cells[j].content : null; });
+      const v = {}; hdr.forEach((h, j) => { if (!(h in v)) v[h] = p.cells[j] ? p.cells[j].content : null; }); // two columns are both called "Ros"; the first is roster status
       const owner = p.cells.find(c => c && c.teamId) || {}; // the owner sits in a different column in date-range tables
       const cats = {}; CATS.forEach(cn => { cats[cn] = num(v[cn]); });
       const inj = (p.scorer.icons || []).filter(i => /return|Out|Game-time|Day-to-Day|Indefinitely|Questionable|Doubtful|season/i.test(i.tooltip) && !/^[A-Z][a-z]{2} \d+, \d/.test(i.tooltip)).map(i => i.tooltip);
