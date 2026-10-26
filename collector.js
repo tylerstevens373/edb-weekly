@@ -82,7 +82,7 @@
     const hdr = d.tableHeader.cells.map(c => c.shortName);
     return d.statsTable.map(p => {
       const v = {}; hdr.forEach((h, j) => { v[h] = p.cells[j] ? p.cells[j].content : null; });
-      const owner = p.cells[1] || {};
+      const owner = p.cells.find(c => c && c.teamId) || {}; // the owner sits in a different column in date-range tables
       const cats = {}; CATS.forEach(cn => { cats[cn] = num(v[cn]); });
       const inj = (p.scorer.icons || []).filter(i => /return|Out|Game-time|Day-to-Day|Indefinitely|Questionable|Doubtful|season/i.test(i.tooltip) && !/^[A-Z][a-z]{2} \d+, \d/.test(i.tooltip)).map(i => i.tooltip);
       return { id: p.scorer.scorerId, name: p.scorer.name, nba: p.scorer.teamShortName, pos: p.scorer.posShortNames,
