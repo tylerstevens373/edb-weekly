@@ -134,7 +134,7 @@ table.st td.rk { font-family: var(--display); font-weight: 800; font-size: 20px;
 .form i.W { background: var(--win); } .form i.L { background: var(--loss); } .form i.T { background: var(--muted); }
 .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); gap: 18px; }
 .two > * { min-width: 0; }
-.stack { display: grid; gap: 22px; }
+.stack { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); }
 .tcap { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; gap: 10px; }
 .tcap h3 { font-family: var(--display); font-weight: 800; font-size: 22px; text-transform: uppercase; }
 .move { font-family: var(--mono); font-size: 11px; }
@@ -236,6 +236,19 @@ details.method ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6p
 .gpicks { grid-column: 1 / -1; list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); font-size: 13.5px; }
 .gpicks li { padding: 5px 0; border-bottom: 1px solid var(--line); }
 .gnote { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
+
+/* ---------- awards page ---------- */
+.aw-weeks { margin: 0 0 14px; }
+.aw-block { margin-top: 22px; }
+.aw-block h3 { font-family: var(--display); font-weight: 800; font-size: 20px; text-transform: uppercase; margin: 0 0 8px; letter-spacing: .01em; }
+.aw-note { font-size: 12.5px; margin: -4px 0 8px; }
+.aw-p { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.aw-p img { width: 32px; height: 32px; border-radius: 50%; background: var(--sunk); object-fit: cover; flex: none; }
+.aw-p > span { display: grid; line-height: 1.15; }
+.aw-p .muted { font-size: 11.5px; }
+.aw-chuck-card { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; }
+.aw-big { font-family: var(--display); font-weight: 900; font-size: 34px; line-height: 1; color: var(--loss); }
+.aw-chuck .aw-note { margin-top: 8px; }
 
 /* ---------- trade calculator ---------- */
 .tc-tools { display: flex; gap: 8px; justify-content: flex-end; margin-bottom: 10px; }
@@ -986,9 +999,112 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     paintTrade();
   }
 
+  // ---------- awards ----------
+  // Same awards as the commissioner's recap: weekly Starting 5s by division, rookies of the week and the chucker,
+  // plus season-long MVP / ROY / MIP / DPOY ladders. Weekly picks rank by Fantrax's player score for that week.
+  let awWeek = null;
+  const AWC = { id: 0, owner: 1, gp: 2, FGM: 3, FGA: 4, "FG%": 5, "3PTM": 6, "FT%": 7, PTS: 8, REB: 9, AST: 10, ST: 11, BLK: 12, TO: 13, score: 14, rookie: 15, last: 16, lastGp: 17 };
+  function awRows(rows) {
+    return (rows || []).map((r) => {
+      const o = { id: r[0], owner: r[1], gp: r[2], fgm: r[3], fga: r[4], score: r[14] || 0, rookie: !!r[15], last: r[16] || null, lastGp: r[17] || 0 };
+      D.cats.forEach((c) => { o[c] = r[AWC[c]]; });
+      const m = (D.awards.meta || {})[o.id] || [];
+      o.name = m[0] || o.id; o.nba = m[1] || ""; o.img = m[2] || "";
+      o.div = T[o.owner] ? T[o.owner].division : "";
+      return o;
+    });
+  }
+  function weekAwards(n) {
+    const rows = awRows(D.awards.weeks[n]);
+    const byScore = rows.slice().sort((a, b) => b.score - a.score);
+    const divs = (D.divisions && D.divisions.length ? D.divisions : Array.from(new Set(D.teams.map((t) => t.division))));
+    const five = {}; divs.forEach((d) => { five[d] = byScore.filter((p) => p.div === d).slice(0, 5); });
+    const rookies = byScore.filter((p) => p.rookie).slice(0, 3);
+    const vol = rows.filter((p) => p.fga).sort((a, b) => b.fga - a.fga).slice(0, 30);
+    const chucker = vol.sort((a, b) => a.fgm / a.fga - b.fgm / b.fga || b.fga - a.fga)[0] || null;
+    return { five, rookies, chucker, divs };
+  }
+  function appearances(upTo) {
+    const five = {}, rook = {};
+    Object.keys(D.awards.weeks).map(Number).filter((n) => n <= upTo).forEach((n) => {
+      const w = weekAwards(n);
+      Object.values(w.five).forEach((arr) => arr.forEach((p) => { five[p.id] = (five[p.id] || 0) + 1; }));
+      w.rookies.forEach((p) => { rook[p.id] = (rook[p.id] || 0) + 1; });
+    });
+    return { five, rook };
+  }
+  function awPlayerCell(p) {
+    return '<span class="aw-p">' + (p.img ? '<img src="' + esc(p.img) + '" alt="" loading="lazy" width="32" height="32">' : "") + "<span><b>" + esc(p.name) + '</b><span class="muted">' + esc(p.nba) + "</span></span></span>";
+  }
+  function awTable(list, opts) {
+    // opts: perGame, apps (map), extra columns [{h, f}]
+    const pg = opts.perGame;
+    const v = (p, c) => { const x = p[c]; if (x == null) return "–"; if (PCT[c]) return x.toFixed(3).replace(/^0/, ""); return pg ? (x / p.gp).toFixed(1) : Math.round(x).toString(); };
+    const extra = opts.extra || [];
+    return '<div class="tscroll"><table class="st aw-t"><thead><tr><th class="l">Player</th><th class="l">Team</th>' + (opts.apps ? '<th title="Times named this season, including this week">Apps</th>' : "") + "<th>GP</th>" +
+      extra.map((e) => "<th>" + e.h + "</th>").join("") + D.cats.map((c) => "<th>" + CAT_LABEL[c] + "</th>").join("") + "</tr></thead><tbody>" +
+      list.map((p) => "<tr><td class=\"l\">" + awPlayerCell(p) + '</td><td class="l">' + teamCell(p.owner) + "</td>" + (opts.apps ? "<td>" + (opts.apps[p.id] || 1) + "</td>" : "") + "<td>" + p.gp + "</td>" +
+        extra.map((e) => "<td>" + e.f(p) + "</td>").join("") + D.cats.map((c) => "<td>" + v(p, c) + "</td>").join("") + "</tr>").join("") +
+      "</tbody></table></div>";
+  }
+  // per-game nine-category value against the season pool, used for the DPOY and MIP ladders
+  function seasonLadders() {
+    const rows = awRows(D.awards.season);
+    if (!rows.length) return null;
+    const maxGp = Math.max.apply(null, rows.map((p) => p.gp));
+    const qual = rows.filter((p) => p.gp >= Math.max(1, Math.ceil(maxGp * 0.5)));
+    const per = (p, c) => (PCT[c] ? p[c] : p[c] / p.gp);
+    const stat = {}; D.cats.forEach((c) => { const xs = qual.map((p) => per(p, c)).filter((x) => x != null); const m = xs.reduce((s, x) => s + x, 0) / xs.length; const sd = Math.sqrt(xs.reduce((s, x) => s + (x - m) * (x - m), 0) / xs.length) || 1; stat[c] = { m, sd }; });
+    const z = (val, c) => (val == null ? 0 : (LOW_BETTER[c] ? -1 : 1) * (val - stat[c].m) / stat[c].sd);
+    const value = (p) => D.cats.reduce((s, c) => s + z(per(p, c), c), 0);
+    const lastValue = (p) => D.cats.reduce((s, c, i) => s + z(p.last[i], c), 0);
+    qual.forEach((p) => { p.v = value(p); p.stocks = z(per(p, "ST"), "ST") + z(per(p, "BLK"), "BLK") + 0.35 * z(per(p, "REB"), "REB"); if (p.last && p.lastGp >= 20) p.gain = p.v - lastValue(p); });
+    const top = (arr, k) => arr.slice().sort((a, b) => b[k] - a[k]).slice(0, 5);
+    return {
+      maxGp,
+      mvp: qual.slice().sort((a, b) => b.score - a.score || b.v - a.v).slice(0, 5),
+      roy: rows.filter((p) => p.rookie).sort((a, b) => b.score - a.score).slice(0, 5),
+      mip: top(qual.filter((p) => p.gain != null && !p.rookie), "gain"),
+      dpoy: top(qual, "stocks"),
+    };
+  }
+  function awardsSection() {
+    const A = D.awards;
+    const weeks = A && A.weeks ? Object.keys(A.weeks).map(Number).filter((n) => A.weeks[n] && A.weeks[n].length).sort((a, b) => a - b) : [];
+    if (!weeks.length) return '<section class="block" id="awards"><div class="block-head"><h2>Awards</h2></div><div class="empty">Awards start once the first scoring week is in the books.</div></section>';
+    if (!awWeek || weeks.indexOf(awWeek) < 0) awWeek = weeks[weeks.length - 1];
+    const w = weekAwards(awWeek), apps = appearances(awWeek);
+    const pick = '<div class="weeks aw-weeks" role="tablist">' + weeks.map((n) => '<button type="button" data-aw="' + n + '"' + (n === awWeek ? ' aria-pressed="true"' : "") + ">Wk " + n + "</button>").join("") + "</div>";
+    const wkInfo = weekOf(awWeek);
+    let html = '<section class="block" id="awards"><div class="block-head"><h2>Week ' + awWeek + " awards</h2><p>" + esc(wkInfo ? (wkInfo.dates || "").replace(/[()]/g, "") : "") + ". Players are ranked by Fantrax's player score for the week; Apps counts how many times they've made the list this season.</p></div>" + pick;
+    w.divs.forEach((d) => {
+      html += '<div class="aw-block"><h3>' + esc(d) + " Division Starting 5 of the Week</h3>" + (w.five[d].length ? awTable(w.five[d], { apps: apps.five }) : '<p class="muted">No games.</p>') + "</div>";
+    });
+    html += '<div class="aw-block"><h3>Park 3’s Rookies of the Week</h3>' + (w.rookies.length ? awTable(w.rookies, { apps: apps.rook }) : '<p class="muted">No rostered rookies played.</p>') + "</div>";
+    if (w.chucker) {
+      const c = w.chucker;
+      html += '<div class="aw-block aw-chuck"><h3>Brown Shirt Chucker of the Week</h3><div class="aw-chuck-card">' + awPlayerCell(c) + '<span class="aw-big mono">' + c.fgm + "-" + c.fga + "</span>" +
+        '<span class="muted">' + Math.round((c.fgm / c.fga) * 100) + "% from the field for " + c.PTS + " points, for " + esc(T[c.owner] ? T[c.owner].name : "") + '.</span></div><p class="muted aw-note">Lowest field-goal percentage among the 30 rostered players with the most shot attempts this week.</p></div>';
+    }
+    html += "</section>";
+    const L = seasonLadders();
+    if (L) {
+      const ladder = (title, list, note, extra) => '<div class="aw-block"><h3>' + title + '</h3><p class="muted aw-note">' + note + "</p>" + (list.length ? awTable(list, { perGame: true, extra }) : '<p class="muted">Nobody qualifies yet.</p>') + "</div>";
+      html += '<section class="block" id="races"><div class="block-head"><h2>Award races</h2><p>Season to date, per game. Ladders other than ROY need at least half of the league-high ' + L.maxGp + " games played.</p></div>" +
+        ladder("Miso MVP Ladder", L.mvp, "Ranked by Fantrax's season player score.") +
+        ladder("Sky ROY Ladder", L.roy, "Rookies, ranked by Fantrax's season player score.") +
+        ladder("Goose MIP Ladder", L.mip, "Biggest jump in nine-category value per game over last season (at least 20 games last season).", [{ h: "Gain", f: (p) => "+" + p.gain.toFixed(1) }]) +
+        ladder("Rey-mon DPOY Ladder", L.dpoy, "Steals and blocks per game against the league, with a little credit for rebounding.") + "</section>";
+    }
+    return html;
+  }
+  function mountAwards() {
+    document.querySelectorAll("[data-aw]").forEach((b) => b.addEventListener("click", () => { awWeek = +b.dataset.aw; const y = window.scrollY; render(); window.scrollTo(0, y); }));
+  }
+
   // ---------- render ----------
-  const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["trade", "Trade"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"]];
-  const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", injuries: "league", moves: "league", history: "league", bruno: "dynasty" };
+  const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["awards", "Awards"], ["trade", "Trade"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"]];
+  const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", races: "awards", injuries: "league", moves: "league", history: "league", bruno: "dynasty" };
   let view = "week";
   function readRoute() {
     const h = (location.hash || "").slice(1);
@@ -1006,7 +1122,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     $("#mastKicker").textContent = pre ? "PRESEASON · WEEK" : (wk && wk.complete ? "RECAP · WEEK" : "PREVIEW · WEEK");
     $("#mastNum").textContent = String(pre ? 1 : (selWeek || M.lastN || D.currentPeriod)).padStart(2, "0");
     $("#brand").textContent = (D.league.name || "EDB") + " · " + (D.league.season || "");
-    const titles = { trade: "Trade desk", standings: "Standings, power and categories", dynasty: "The long view", draft: "Rookie draft report card", league: "Injuries, moves and banners" };
+    const titles = { awards: "Awards and award races", trade: "Trade desk", standings: "Standings, power and categories", dynasty: "The long view", draft: "Rookie draft report card", league: "Injuries, moves and banners" };
     $("#headline").textContent = isWeek ? (n.headline || (pre ? "Season preview" : "Week " + M.lastN + " in the books")) : titles[view];
     $("#dek").textContent = isWeek ? (n.dek || "") : "";
     const parts = {
@@ -1015,16 +1131,18 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       dynasty: [dynastySection()],
       draft: [draftSection()],
       trade: [tradeSection()],
+      awards: [awardsSection()],
       league: [injuriesSection(), movesSection(), historySection()],
     };
     $("#main").innerHTML = parts[view].join("");
     if (view === "trade") mountTrade();
+    if (view === "awards") mountAwards();
     $("#nav").innerHTML = VIEWS.map(([id, l]) => '<a href="#' + id + '"' + (id === view ? ' aria-current="page"' : "") + ">" + l + "</a>").join("");
     document.title = isWeek ? "EDB Weekly" : "EDB Weekly · " + VIEWS.find((v) => v[0] === view)[1];
     const gen = new Date(D.generatedAt);
     $("#foot").innerHTML = "<span>Updated " + esc(gen.toLocaleString("en-US", { timeZone: "America/New_York", weekday: "short", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })) + " ET from Fantrax league data. Rebuilt automatically every Monday morning after the scoring week ends.</span>" +
       "<span>Unofficial fan page. The commissioner's recap remains the paper of record; projections are estimates, not guarantees.</span>";
-    document.querySelectorAll(".weeks button").forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll(".weeks button[data-week]").forEach((b) => b.addEventListener("click", () => {
       selWeek = +b.dataset.week;
       const y = document.getElementById("scores").getBoundingClientRect().top + window.scrollY;
       try { history.replaceState(null, "", "#week-" + selWeek); } catch (e) {}
