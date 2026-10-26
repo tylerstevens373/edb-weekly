@@ -159,6 +159,48 @@
   } catch (e) { rookieDraft = null; }
   const dynasty = { lastSeason: lastCode, season: parseInt((settings.season && settings.season.displayYear) || '', 10) || new Date(now).getFullYear(), players: dynPlayers, picks: futurePicks, draft: rookieDraft };
 
+  // ---------- awards inputs: rostered players' lines for every finished week, plus season-to-date ----------
+  // Week rows: [id, owner, gp, FGM, FGA, FG%, 3PTM, FT%, PTS, REB, AST, ST, BLK, TO, fantraxScore, rookie]. FGM/FGA come
+  // from the "Standard" table (per game, so times GP). Only the top of the pool is kept to keep the file small.
+  const meta = {};
+  const keepMeta = (p) => { meta[p.id] = [p.name, p.nba, p.img]; };
+  async function lines(code, extra) {
+    const tot = await playerTable(LEAGUE, code, Object.assign({ maxResultsPerPage: '600' }, extra));
+    let std = [];
+    try {
+      const d = await fx(LEAGUE, 'getPlayerStats', Object.assign({ statusOrTeamFilter: 'ALL_TAKEN', pageNumber: '1', maxResultsPerPage: '600', seasonOrProjection: code, scoringCategoryType: '1' }, extra));
+      const hdr = d.tableHeader.cells.map(c => c.shortName);
+      std = d.statsTable.map(p => { const v = {}; hdr.forEach((h, j) => { v[h] = p.cells[j] ? p.cells[j].content : null; }); return { id: p.scorer.scorerId, fgm: num(v.FGM), fga: num(v.FGA), rookie: !!p.scorer.rookie }; });
+    } catch (e) { std = []; }
+    const sById = {}; std.forEach(s => { sById[s.id] = s; });
+    return tot.filter(p => p.gp && p.owner).map(p => {
+      const s = sById[p.id] || {}; const g = p.gp || 0;
+      return { p, row: [p.id, p.owner, g, s.fgm != null ? Math.round(s.fgm * g) : null, s.fga != null ? Math.round(s.fga * g) : null].concat(CATS.map(c => p.cats[c])).concat([p.score, s.rookie ? 1 : 0]) };
+    });
+  }
+  function prune(list, nTop) {
+    const keep = new Set();
+    list.slice().sort((a, b) => (b.p.score || 0) - (a.p.score || 0)).slice(0, nTop).forEach(x => keep.add(x.p.id));
+    list.filter(x => x.row[x.row.length - 1]).forEach(x => keep.add(x.p.id));
+    list.slice().sort((a, b) => (b.row[4] || 0) - (a.row[4] || 0)).slice(0, 30).forEach(x => keep.add(x.p.id));
+    return list.filter(x => keep.has(x.p.id)).map(x => { keepMeta(x.p); return x.row; });
+  }
+  const awardWeeks = {};
+  const etDay = (ts) => new Date(ts).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+  for (const n of completed) {
+    const p = periods.find(x => x.n === n);
+    try { awardWeeks[n] = prune(await lines('SEASON_' + seasonCode + '_BY_DATE', { timeframeTypeCode: 'BY_DATE', startDate: etDay(p.start), endDate: etDay(p.end) }), 80); } catch (e) { /* skip a week that fails */ }
+  }
+  let awardSeason = [];
+  if (lastCompleted > 0) {
+    try {
+      awardSeason = prune(await lines('SEASON_' + seasonCode + '_YEAR_TO_DATE', {}), 160).map(r => {
+        const l = last[r[0]]; return r.concat([l ? CATS.map(c => l.cats[c]) : null, l ? l.gp : 0]);
+      });
+    } catch (e) { awardSeason = []; }
+  }
+  const awards = { cols: ['id', 'owner', 'gp', 'FGM', 'FGA'].concat(CATS).concat(['score', 'rookie']), weeks: awardWeeks, season: awardSeason, meta };
+
   const injuries = rostered.filter(p => p.inj.length && p.ros !== 'Min').map(p => ({ name: p.name, nba: p.nba, owner: p.owner, ros: p.ros, img: p.img, note: p.inj[0] }));
 
   // ---------- transactions (last 10 days) ----------
@@ -197,7 +239,7 @@
   const data = {
     generatedAt: new Date(now).toISOString(), league: { id: LEAGUE, name: info.leagueName, season: settings.season ? settings.season.displayYear : '' },
     phase, currentPeriod: current, lastCompleted, lastRegular, numPlayoffTeams: info.playoffs ? info.playoffs.numPlayoffTeams : null,
-    cats: CATS, dynasty, teams, divisions: ((standingsRaw.displayedLists || {}).tabs || []).slice(0, 2).map(t => t.name), standings, schedule, proj, players, injuries,
+    cats: CATS, dynasty, awards, teams, divisions: ((standingsRaw.displayedLists || {}).tabs || []).slice(0, 2).map(t => t.name), standings, schedule, proj, players, injuries,
     transactions: { trades: trades.filter(t => t.ts >= cutoff), moves: moves.filter(m => m.ts >= cutoff && m.type !== 'Lineup Change') },
     history: { seasons, lastSeason }, notes: null
   };
