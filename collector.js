@@ -103,7 +103,8 @@
     .map(p => ({ id: p.id, name: p.name, nba: p.nba, pos: p.pos, img: p.img, owner: p.owner, age: p.age, score: p.score }));
 
   // ---------- dynasty inputs: per-game projections for every rostered player, future picks, last rookie draft ----------
-  const perGame = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_EVENT_PROJECTED_WEEKLY', { scoringCategoryType: '7' });
+  // Season-long projection, per game. (The "weekly" projection table returns whole-week totals for some players, e.g. 39 points a game.)
+  const perGame = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { scoringCategoryType: '7' });
   const gpById = {}; rostered.forEach(p => { gpById[p.id] = p.gp; });
   // Blend Fantrax's projection with last season's per-game stats. Fantrax projections sometimes miss role changes
   // (a new starter projected as a backup), so last season gets up to 60% weight, scaled down for players who
