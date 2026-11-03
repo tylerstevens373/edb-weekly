@@ -237,6 +237,62 @@ details.method ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6p
 .gpicks li { padding: 5px 0; border-bottom: 1px solid var(--line); }
 .gnote { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
 
+/* ---------- IST ---------- */
+.pos { color: var(--win); } .neg { color: var(--loss); }
+.ist-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 14px; }
+.ist-g { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; min-width: 0; display: grid; gap: 8px; align-content: start; }
+.ist-g-h { display: flex; justify-content: space-between; align-items: baseline; }
+.ist-g-h h3 { font-family: var(--display); font-weight: 900; font-size: 22px; text-transform: uppercase; margin: 0; }
+.ist-t tr.lead td { background: color-mix(in oklab, var(--accent) 10%, transparent); }
+.ist-t tr.lead td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+.mgr-t { font-size: 11.5px; font-weight: 400; }
+.ist-games { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+.ist-games li { display: grid; grid-template-columns: 40px 1fr auto 1fr; gap: 8px; align-items: center; padding: 4px 0; border-top: 1px solid var(--line); }
+.ist-games li span:nth-child(4) { text-align: right; }
+.ist-games li .w { font-weight: 700; }
+.ist-games li.proj { color: var(--muted); }
+.ist-games li .sc i { font-style: normal; font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; }
+.ist-games .wk { font-size: 11px; color: var(--muted); }
+.ist-note { font-size: 12.5px; margin: 10px 0 0; }
+.ist-bh { margin-top: 26px; }
+.ko-wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 14px; }
+.ko { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.ko-final { border-color: color-mix(in oklab, var(--accent) 50%, var(--line)); }
+.ko-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 0; border-top: 1px solid var(--line); }
+.ko-row.won { font-weight: 700; }
+.ko-n { font-size: 12.5px; }
+.ko-champ { font-family: var(--display); font-weight: 900; font-size: 20px; text-transform: uppercase; color: var(--accent); }
+.ist-past { margin-top: 16px; display: grid; gap: 6px; }
+.ist-past-b { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13.5px; }
+/* ---------- history ---------- */
+.banners { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr)); gap: 12px; }
+.banner { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--accent); border-radius: var(--r); padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.banner .yr { font-family: var(--display); font-weight: 900; font-size: 26px; line-height: 1; }
+.banner .b-d, .banner .b-x { font-size: 12.5px; }
+.badge-old { background: var(--sunk); color: var(--muted); }
+tr.former td { color: var(--muted); }
+table.h2h td { text-align: center; font-size: 12.5px; white-space: nowrap; }
+table.h2h td.self { background: var(--sunk); }
+.br { border-top: 1px solid var(--line); padding: 10px 0; }
+.br summary, .aw-season summary { cursor: pointer; font-weight: 700; }
+.br-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 10px; }
+@media (max-width: 640px) { .br-grid { grid-template-columns: minmax(0, 1fr); } }
+.br-col { display: grid; gap: 8px; align-content: start; }
+.br-g { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; font-size: 13px; }
+.br-g > div { display: grid; grid-template-columns: 18px 1fr auto; gap: 6px; padding: 6px 10px; }
+.br-g > div + div { border-top: 1px solid var(--line); }
+.br-g .won { font-weight: 700; }
+.br-g .sd { color: var(--muted); font-size: 11px; }
+.aw-season { border-top: 1px solid var(--line); padding: 10px 0; }
+.aw-season summary .muted { font-weight: 400; font-size: 13px; margin-left: 6px; }
+.aw-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr)); gap: 10px; margin: 12px 0; }
+.aw-h { display: grid; gap: 2px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.aw-h .muted { font-size: 12.5px; }
+.aw-teams { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 12px; }
+.aw-team ol { margin: 4px 0 0; padding-left: 18px; font-size: 13px; display: grid; gap: 2px; }
+.aw-team .muted { font-size: 11.5px; }
+.aw-h3 { font-family: var(--display); font-weight: 800; font-size: 20px; text-transform: uppercase; margin: 22px 0 8px; }
+
 /* ---------- awards page ---------- */
 .aw-weeks { margin: 0 0 14px; }
 .aw-block { margin-top: 22px; }
@@ -1102,9 +1158,181 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     document.querySelectorAll("[data-aw]").forEach((b) => b.addEventListener("click", () => { awWeek = +b.dataset.aw; const y = window.scrollY; render(); window.scrollTo(0, y); }));
   }
 
+  // ---------- league spreadsheet: managers, IST and history ----------
+  // league.json comes from the commissioner's spreadsheet. Managers go by first names there; MGR maps them to Fantrax teams.
+  let L = null, MGR = {}, TEAM_MGR = {};
+  function setLeague(l) { L = l; MGR = (l && l.managers) || {}; TEAM_MGR = {}; Object.keys(MGR).forEach((m) => (TEAM_MGR[MGR[m]] = m)); }
+  function mgrCell(m, opts) {
+    const id = MGR[m];
+    if (id && T[id]) return '<span class="team">' + badge(id) + '<span class="nm">' + esc(m) + (opts && opts.noTeam ? "" : ' <span class="muted mgr-t">' + esc(T[id].name) + "</span>") + "</span></span>";
+    return '<span class="team"><span class="badge badge-old">' + esc(m.slice(0, 4).toUpperCase()) + '</span><span class="nm">' + esc(m) + ' <span class="muted mgr-t">former GM</span></span></span>';
+  }
+  function sideIn(week, id) { const w = weekOf(week); if (!w) return null; for (const m of w.matchups) { if (m.away.id === id) return { me: m.away, opp: m.home }; if (m.home.id === id) return { me: m.home, opp: m.away }; } return null; }
+  function weekDone(n) { const w = weekOf(n); return !!(w && w.complete); }
+  // one IST game: result if the week is done, otherwise the page's projection for that week
+  function istGame(n, a, h) {
+    const ia = MGR[a], ih = MGR[h];
+    if (weekDone(n)) {
+      const sa = sideIn(n, ia), sh = sideIn(n, ih); if (!sa || !sh) return null;
+      let ac, hc, tie;
+      if (sa.opp && sa.opp.id === ih) { ac = sa.me.w; hc = sa.me.l; tie = sa.me.t; }
+      else { const r = h2h(sa.me.cats, sh.me.cats); ac = r.w; hc = r.l; tie = r.t; }
+      return { done: true, ac, hc, t: tie, ap: sa.me.cats.PTS || 0, hp: sh.me.cats.PTS || 0 };
+    }
+    const r = h2h(M.strength[ia] || {}, M.strength[ih] || {});
+    return { done: false, ac: r.w, hc: r.l, t: r.t, ap: (M.strength[ia] || {}).PTS || 0, hp: (M.strength[ih] || {}).PTS || 0 };
+  }
+  function istWinner(g, a, h) { if (!g) return null; if (g.ac !== g.hc) return g.ac > g.hc ? a : h; return g.ap >= g.hp ? a : h; }
+  function istTables(cfg) {
+    const out = {};
+    Object.keys(cfg.groups).forEach((G) => {
+      const rows = {}; cfg.groups[G].forEach((m) => (rows[m] = { m, w: 0, l: 0, t: 0, cats: 0, pts: 0, pw: 0, pl: 0, pt: 0, pcats: 0, ppts: 0, played: 0 }));
+      cfg.games.filter((g) => g.group === G).forEach((g) => {
+        const r = istGame(g.week, g.away, g.home); g.res = r; if (!r) return;
+        const A = rows[g.away], H = rows[g.home];
+        const add = (X, mine, theirs, pts, pre) => { const k = mine > theirs ? "w" : mine < theirs ? "l" : "t"; X[pre + k]++; X[pre === "" ? "cats" : "pcats"] += mine; X[pre === "" ? "pts" : "ppts"] += pts; };
+        add(A, r.ac, r.hc, r.ap, r.done ? "" : "p"); add(H, r.hc, r.ac, r.hp, r.done ? "" : "p");
+        if (r.done) { A.played++; H.played++; }
+      });
+      const pct = (x, proj) => { const w = x.w + (proj ? x.pw : 0), l = x.l + (proj ? x.pl : 0), t = x.t + (proj ? x.pt : 0); const g = w + l + t; return g ? (w + t / 2) / g : 0; };
+      const sorter = (proj) => (a, b) => pct(b, proj) - pct(a, proj) || (b.cats + (proj ? b.pcats : 0)) - (a.cats + (proj ? a.pcats : 0)) || (b.pts + (proj ? b.ppts : 0)) - (a.pts + (proj ? a.ppts : 0));
+      const list = Object.values(rows);
+      out[G] = { now: list.slice().sort(sorter(false)), proj: list.slice().sort(sorter(true)) };
+    });
+    return out;
+  }
+  function koGame(n, a, b) {
+    if (!a || !b) return null;
+    if (weekDone(n)) { const sa = sideIn(n, MGR[a]), sb = sideIn(n, MGR[b]); if (!sa || !sb) return null; const r = h2h(sa.me.cats, sb.me.cats); return { done: true, ac: r.w, hc: r.l, ap: sa.me.cats.PTS || 0, hp: sb.me.cats.PTS || 0 }; }
+    const r = h2h(M.strength[MGR[a]] || {}, M.strength[MGR[b]] || {}); return { done: false, ac: r.w, hc: r.l, ap: (M.strength[MGR[a]] || {}).PTS || 0, hp: (M.strength[MGR[b]] || {}).PTS || 0 };
+  }
+  function istSection() {
+    const cfg = L && L.ist && L.ist["2026-2027"];
+    if (!cfg) return '<section class="block" id="ist"><div class="block-head"><h2>In-Season Tournament</h2></div><div class="empty">Tournament data is missing.</div></section>';
+    const games = cfg.games.map((g) => Object.assign({}, g));
+    const C = Object.assign({}, cfg, { games });
+    const tabs = istTables(C);
+    const groupDone = cfg.weeks.groups.every(weekDone);
+    const played = cfg.weeks.groups.filter(weekDone).length;
+    const status = groupDone ? (weekDone(cfg.weeks.final) ? "Complete" : weekDone(cfg.weeks.semis) ? "Final, Week " + cfg.weeks.final : "Semifinals, Week " + cfg.weeks.semis) : played ? "Group play, " + played + " of 3 weeks done" : "Group play starts Week " + cfg.weeks.groups[0];
+    const leader = (G) => (groupDone ? tabs[G].now[0].m : tabs[G].proj[0].m);
+    const groupCard = (G) => {
+      const t = tabs[G], projLead = t.proj[0].m;
+      const head = '<div class="ist-g-h"><h3>Group ' + G + '</h3><span class="label">' + esc(T[MGR[cfg.groups[G][0]]] ? T[MGR[cfg.groups[G][0]]].division : "") + "</span></div>";
+      const rows = t.now.map((x, i) => '<tr class="' + (x.m === projLead ? "lead" : "") + '"><td class="l">' + mgrCell(x.m) + "</td><td>" + x.w + "-" + x.l + (x.t ? "-" + x.t : "") + "</td><td>" + x.cats + "</td><td>" + (x.pts ? Math.round(x.pts) : 0) + '</td><td class="muted">' + (x.w + x.pw) + "-" + (x.l + x.pl) + (x.t + x.pt ? "-" + (x.t + x.pt) : "") + "</td></tr>").join("");
+      const gl = games.filter((g) => g.group === G).map((g) => {
+        const r = g.res; if (!r) return "";
+        const wn = istWinner(r, g.away, g.home);
+        return '<li class="' + (r.done ? "" : "proj") + '"><span class="wk mono">Wk ' + g.week + '</span><span class="' + (wn === g.away ? "w" : "") + '">' + esc(g.away) + '</span><span class="sc mono">' + (r.done ? "" : '<i>proj</i> ') + r.ac + "–" + r.hc + (r.t ? "–" + r.t : "") + '</span><span class="' + (wn === g.home ? "w" : "") + '">' + esc(g.home) + "</span></li>";
+      }).join("");
+      return '<div class="ist-g">' + head + '<div class="tscroll"><table class="st ist-t"><thead><tr><th class="l">Team</th><th title="Record v. group">W-L</th><th title="Categories won v. group">Cats</th><th title="Points v. group (tiebreaker)">PTS</th><th title="Projected final group record">Proj</th></tr></thead><tbody>' + rows + '</tbody></table></div><ul class="ist-games">' + gl + "</ul></div>";
+    };
+    const semi = (pair, i) => {
+      const a = leader(pair[0]), b = leader(pair[1]);
+      const r = koGame(cfg.weeks.semis, a, b), wn = r ? istWinner(r, a, b) : null;
+      const sure = groupDone;
+      return { a, b, r, wn, sure, html: '<div class="ko"><span class="label">Semifinal ' + (i + 1) + " · Week " + cfg.weeks.semis + " · Group " + pair[0] + " v " + pair[1] + "</span>" +
+        [[a, r && r.ac], [b, r && r.hc]].map(([m, s]) => '<div class="ko-row ' + (wn === m && r && r.done ? "won" : "") + '">' + (m ? mgrCell(m, { noTeam: true }) : "TBD") + '<span class="mono">' + (r && r.done ? s : "") + "</span></div>").join("") +
+        (sure ? (r && !r.done ? '<span class="muted ko-n">Projects ' + Math.max(r.ac, r.hc) + "–" + Math.min(r.ac, r.hc) + " " + esc(wn) + "</span>" : "") : '<span class="muted ko-n">Projected group winners</span>') + "</div>" };
+    };
+    const s1 = semi(cfg.semis[0], 0), s2 = semi(cfg.semis[1], 1);
+    const fa = s1.wn, fb = s2.wn, fr = koGame(cfg.weeks.final, fa, fb), champ = fr && fr.done ? istWinner(fr, fa, fb) : null;
+    const final = '<div class="ko ko-final"><span class="label">Final · Week ' + cfg.weeks.final + "</span>" + [[fa, fr && fr.ac], [fb, fr && fr.hc]].map(([m, s]) => '<div class="ko-row ' + (champ === m ? "won" : "") + '">' + (m ? mgrCell(m, { noTeam: true }) : "TBD") + '<span class="mono">' + (fr && fr.done ? s : "") + "</span></div>").join("") +
+      (champ ? '<span class="ko-champ">🏆 ' + esc(champ) + " wins $" + cfg.prize + "</span>" : '<span class="muted ko-n">' + (s1.sure && s2.sure && fr ? "Projected winner: " + esc(istWinner(fr, fa, fb)) : "Winner takes $" + cfg.prize) + "</span>") + "</div>";
+    const past = L.ist["2025-2026"];
+    const pastHtml = past ? '<div class="ist-past"><span class="label">2025–26 champion</span><div class="ist-past-b">' + mgrCell(past.bracket.champion) + '<span class="muted">Semis: ' + past.bracket.semis.map((p) => esc(p[0][0]) + " " + p[0][1] + "–" + p[1][1] + " " + esc(p[1][0])).join(" · ") + ". Final over " + esc(past.bracket.final[1]) + ".</span></div></div>" : "";
+    return '<section class="block" id="ist"><div class="block-head"><h2>2026–27 In-Season Tournament</h2><p>' + esc(status) + ". Four groups of three play a round robin in Weeks 3–5; the four group winners meet in a winner-take-all bracket in Weeks 6 and 7. Every IST game also counts in the regular-season standings.</p></div>" +
+      '<div class="ist-groups">' + Object.keys(cfg.groups).map(groupCard).join("") + "</div>" +
+      '<p class="muted ist-note">Groups rank by record against the group, then categories won, then points. Proj adds the page\'s projection for games not yet played; the highlighted team is projected to win the group.</p>' +
+      '<div class="block-head ist-bh"><h2>Bracket</h2><p>Knockout games compare the two teams\' categories for that week, whoever they play in Fantrax. Ties go to points.</p></div><div class="ko-wrap">' + s1.html + s2.html + final + "</div>" + pastHtml + "</section>";
+  }
+
+  // ---------- history (from the commissioner's spreadsheet plus this season live) ----------
+  function allGames() {
+    const out = (L.games || []).map((g) => ({ season: g[0], wk: g[1], a: g[2], h: g[3], as: g[4], hs: g[5], win: g[7] || null }));
+    D.schedule.filter((s) => s.complete).forEach((s) => s.matchups.forEach((m) => {
+      if (!realSide(m.away) || !realSide(m.home)) return;
+      const a = TEAM_MGR[m.away.id], h = TEAM_MGR[m.home.id]; if (!a || !h) return;
+      out.push({ season: D.league.season ? "2026-2027" : "", wk: s.playoff ? "P" : s.n, a, h, as: m.away.w, hs: m.home.w, live: true });
+    }));
+    return out;
+  }
+  function historyRecords(games) {
+    const rec = {}, h2 = {};
+    const R = (m) => (rec[m] = rec[m] || { m, w: 0, l: 0, t: 0, cw: 0, cl: 0, pw: 0, pl: 0 });
+    games.forEach((g) => {
+      const po = typeof g.wk !== "number"; const A = R(g.a), H = R(g.h);
+      const res = g.win ? (g.win === g.a ? 1 : -1) : g.as > g.hs ? 1 : g.as < g.hs ? -1 : 0;
+      if (po) { if (res > 0) { A.pw++; H.pl++; } else if (res < 0) { H.pw++; A.pl++; } }
+      else { if (res > 0) { A.w++; H.l++; } else if (res < 0) { H.w++; A.l++; } else { A.t++; H.t++; } A.cw += g.as; A.cl += g.hs; H.cw += g.hs; H.cl += g.as; }
+      [[g.a, g.h, res], [g.h, g.a, -res]].forEach(([x, y, r]) => { const k = x + "|" + y; const o = (h2[k] = h2[k] || { w: 0, l: 0, t: 0 }); if (r > 0) o.w++; else if (r < 0) o.l++; else o.t++; });
+    });
+    return { rec, h2 };
+  }
+  function historyPage() {
+    if (!L) return '<section class="block"><div class="empty">League history is loading.</div></section>' + historySection();
+    const games = allGames(), H = historyRecords(games);
+    // champions by season from the finals
+    const seasons = Array.from(new Set((L.games || []).map((g) => g[0]))).sort().reverse();
+    const awardOf = (s) => (L.awards || []).find((a) => a.season === s);
+    const istChamp = { "2025-2026": L.ist && L.ist["2025-2026"] && L.ist["2025-2026"].bracket.champion };
+    const banners = seasons.map((s) => {
+      const f = (L.games || []).find((g) => g[0] === s && g[1] === "F"); if (!f) return "";
+      const [_, __, a, h, as, hs] = f; const champ = f[7] || (as >= hs ? a : h), ru = champ === a ? h : a; const sc = Math.max(as, hs) + "–" + Math.min(as, hs);
+      const seed = (L.seeds[s] || {})[champ]; const aw = awardOf(s);
+      return '<div class="banner"><span class="yr">' + s.slice(0, 4) + "–" + s.slice(7) + '</span><div class="b-ch">' + mgrCell(champ, { noTeam: true }) + '</div><span class="muted b-d">' + (seed ? seed + " seed · " : "") + (as === hs ? "tied " + esc(ru) + " " + sc + " in the final and won the tiebreaker" : "beat " + esc(ru) + " " + sc + " in the final") + "</span>" +
+        (aw ? '<span class="b-x">MVP <b>' + esc(aw.MVP[0]) + "</b> (" + esc(aw.MVP[1]) + ")</span>" : "") + (istChamp[s] ? '<span class="b-x">IST <b>' + esc(istChamp[s]) + "</b></span>" : "") + "</div>";
+    }).join("");
+    // franchise ledger
+    const cur = Object.keys(MGR);
+    const led = (L.ledger || []).map((x) => Object.assign({}, x, H.rec[x.mgr] || { w: 0, l: 0, t: 0, cw: 0, cl: 0, pw: 0, pl: 0 }));
+    const pct = (x) => { const g = x.w + x.l + x.t; return g ? (x.w + x.t / 2) / g : 0; };
+    led.sort((a, b) => b.titles - a.titles || b.finals - a.finals || pct(b) - pct(a));
+    const money = (v) => (v < 0 ? "−$" : "$") + Math.abs(Math.round(v));
+    const ledger = '<div class="tscroll"><table class="st"><thead><tr><th class="l">GM</th><th>Since</th><th title="Championships">Titles</th><th>Finals</th><th title="Division titles">Div</th><th title="Playoff appearances">Playoffs</th><th title="In-Season Tournament titles">IST</th><th title="Regular season, all-time">Record</th><th>Win %</th><th title="Playoff games">Playoff W-L</th><th title="Category win rate in regular-season games">Cat %</th><th title="Payouts minus dues">Net $</th></tr></thead><tbody>' +
+      led.map((x) => '<tr class="' + (cur.indexOf(x.mgr) < 0 ? "former" : "") + '"><td class="l">' + mgrCell(x.mgr) + "</td><td>" + (x.first ? String(x.first).slice(2) + "–" + String(x.first + 1).slice(2) : "") + "</td><td>" + (x.titles ? "<b>" + x.titles + "</b>" : "–") + "</td><td>" + (x.finals || "–") + "</td><td>" + (x.divs || "–") + "</td><td>" + (x.playoffs || "–") + "</td><td>" + (x.ist || "–") + "</td><td>" + x.w + "-" + x.l + (x.t ? "-" + x.t : "") + "</td><td>" + pct(x).toFixed(3).replace(/^0/, "") + "</td><td>" + (x.pw + x.pl ? x.pw + "-" + x.pl : "–") + "</td><td>" + (x.cw + x.cl ? ((x.cw / (x.cw + x.cl)) * 100).toFixed(1) + "%" : "–") + '</td><td class="' + (x.payouts - x.dues >= 0 ? "pos" : "neg") + '">' + money(x.payouts - x.dues) + "</td></tr>").join("") + "</tbody></table></div>";
+    // head-to-head grid, current GMs
+    const order = led.filter((x) => cur.indexOf(x.mgr) >= 0).map((x) => x.mgr);
+    const grid = '<div class="tscroll"><table class="st h2h"><thead><tr><th class="l">vs →</th>' + order.map((m) => '<th title="' + esc(m) + '">' + esc(m.slice(0, 4)) + "</th>").join("") + "</tr></thead><tbody>" +
+      order.map((a) => '<tr><td class="l"><b>' + esc(a) + "</b></td>" + order.map((b) => {
+        if (a === b) return '<td class="self"></td>';
+        const o = H.h2[a + "|" + b]; if (!o) return '<td class="muted">–</td>';
+        const g = o.w + o.l + o.t, p = (o.w + o.t / 2) / g; const bg = "color-mix(in oklab, " + (p >= 0.5 ? "var(--win)" : "var(--loss)") + " " + Math.round(Math.abs(p - 0.5) * 120) + "%, transparent)";
+        return '<td style="background:' + bg + '" title="' + esc(a) + " v " + esc(b) + ": " + o.w + "-" + o.l + (o.t ? "-" + o.t : "") + '">' + o.w + "-" + o.l + (o.t ? "-" + o.t : "") + "</td>";
+      }).join("") + "</tr>").join("") + "</tbody></table></div>";
+    // playoff brackets
+    const rounds = [["R1", "First round"], ["SF", "Semifinals"], ["F", "Final"]];
+    const brackets = seasons.map((s) => {
+      const sd = L.seeds[s] || {};
+      const col = (r) => '<div class="br-col"><span class="label">' + r[1] + "</span>" + (L.games || []).filter((g) => g[0] === s && g[1] === r[0]).map((g) => {
+        const w = g[7] || (g[4] >= g[5] ? g[2] : g[3]);
+        return '<div class="br-g">' + [[g[2], g[4]], [g[3], g[5]]].map(([m, sc]) => '<div class="' + (m === w ? "won" : "") + '"><span class="mono sd">' + (sd[m] || "") + "</span>" + esc(m) + '<span class="mono">' + sc + "</span></div>").join("") + "</div>";
+      }).join("") + "</div>";
+      return '<details class="br"' + (s === seasons[0] ? " open" : "") + "><summary>" + s.slice(0, 4) + "–" + s.slice(7) + " playoffs</summary><div class=\"br-grid\">" + rounds.map(col).join("") + "</div></details>";
+    }).join("");
+    // awards
+    const AW = [["MVP", "MVP"], ["MIP", "Most Improved"], ["DPOY", "Defensive POY"], ["ROY", "Rookie of the Year"], ["MEP", "Most Egregious Player"]];
+    const awardsHtml = (L.awards || []).map((a) => {
+      const top = AW.map(([k, lab]) => '<div class="aw-h"><span class="label">' + lab + "</span><b>" + esc(a[k][0]) + '</b><span class="muted">' + esc(a[k][1] || "") + "</span></div>").join("") +
+        '<div class="aw-h"><span class="label">GM of the Year</span><b>' + esc(a.GMoY[0]) + '</b><span class="muted">' + esc(a.GMoY[1] || "") + "</span></div>";
+      const teams = Object.keys(a.teams).map((k) => '<div class="aw-team"><span class="label">' + k + "</span><ol>" + a.teams[k].map((p) => "<li>" + esc(p[0]) + ' <span class="muted">' + esc(p[1] || "") + "</span></li>").join("") + "</ol></div>").join("");
+      const stars = Object.keys(a.allStars).map((k) => '<div class="aw-team"><span class="label">' + k + " All-Stars</span><ol>" + a.allStars[k].map((p) => "<li>" + (p[2] === "starter" ? "<b>" + esc(p[0]) + "</b>" : esc(p[0])) + ' <span class="muted">' + esc(p[1] || "") + "</span></li>").join("") + "</ol></div>").join("");
+      return '<details class="aw-season"' + (a === L.awards[0] ? " open" : "") + "><summary>" + a.season.slice(0, 4) + "–" + a.season.slice(7) + ' awards <span class="muted">MVP ' + esc(a.MVP[0]) + '</span></summary><div class="aw-top">' + top + '</div><div class="aw-teams">' + teams + stars + "</div></details>";
+    }).join("");
+    const tc = (L.trophies || []).slice().sort((a, b) => b.Total - a.Total);
+    const tcCols = ["MVP", "MIP", "DPOY", "ROY", "MEP", "GMoY", "All-EDB 1st", "All-EDB 2nd", "All-EDB 3rd", "All-R 1st", "All-R 2nd", "All-D 1st", "All-D 2nd", "Total"];
+    const trophy = '<div class="tscroll"><table class="st"><thead><tr><th class="l">GM</th>' + tcCols.map((c) => "<th>" + c.replace("All-", "") + "</th>").join("") + "</tr></thead><tbody>" +
+      tc.map((x) => '<tr class="' + (cur.indexOf(x.mgr) < 0 ? "former" : "") + '"><td class="l">' + mgrCell(x.mgr, { noTeam: true }) + "</td>" + tcCols.map((c) => "<td>" + (c === "Total" ? "<b>" + x[c] + "</b>" : x[c] || '<span class="muted">·</span>') + "</td>").join("") + "</tr>").join("") + "</tbody></table></div>";
+    return '<section class="block" id="banners"><div class="block-head"><h2>Banners</h2><p>Every champion since the league started in 2021–22, from the commissioner\'s spreadsheet.</p></div><div class="banners">' + banners + "</div></section>" +
+      '<section class="block" id="ledger"><div class="block-head"><h2>Franchise ledger</h2><p>All-time results by GM. Records include this season through the last finished week; Net $ is payouts minus dues paid.</p></div>' + ledger + "</section>" +
+      '<section class="block" id="h2h"><div class="block-head"><h2>Head to head</h2><p>All-time record of the row GM against the column GM, regular season and playoffs.</p></div>' + grid + "</section>" +
+      '<section class="block" id="brackets"><div class="block-head"><h2>Playoff brackets</h2><p>Seeds and category scores.</p></div>' + brackets + "</section>" +
+      '<section class="block" id="awardhist"><div class="block-head"><h2>League awards</h2><p>Voted end-of-season awards, All-EDB teams and All-Stars.</p></div>' + awardsHtml + '<h3 class="aw-h3">Trophy case</h3>' + trophy + "</section>";
+  }
+
   // ---------- render ----------
-  const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["awards", "Awards"], ["trade", "Trade"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"]];
-  const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", races: "awards", injuries: "league", moves: "league", history: "league", bruno: "dynasty" };
+  const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["awards", "Awards"], ["ist", "IST"], ["trade", "Trade"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"], ["history", "History"]];
+  const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", races: "awards", injuries: "league", moves: "league", history: "history", banners: "history", bruno: "dynasty", tournament: "ist" };
   let view = "week";
   function readRoute() {
     const h = (location.hash || "").slice(1);
@@ -1122,7 +1350,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     $("#mastKicker").textContent = pre ? "PRESEASON · WEEK" : (wk && wk.complete ? "RECAP · WEEK" : "PREVIEW · WEEK");
     $("#mastNum").textContent = String(pre ? 1 : (selWeek || M.lastN || D.currentPeriod)).padStart(2, "0");
     $("#brand").textContent = (D.league.name || "EDB") + " · " + (D.league.season || "");
-    const titles = { awards: "Awards and award races", trade: "Trade desk", standings: "Standings, power and categories", dynasty: "The long view", draft: "Rookie draft report card", league: "Injuries, moves and banners" };
+    const titles = { ist: "In-Season Tournament", history: "League history", awards: "Awards and award races", trade: "Trade desk", standings: "Standings, power and categories", dynasty: "The long view", draft: "Rookie draft report card", league: "Injuries and moves" };
     $("#headline").textContent = isWeek ? (n.headline || (pre ? "Season preview" : "Week " + M.lastN + " in the books")) : titles[view];
     $("#dek").textContent = isWeek ? (n.dek || "") : "";
     const parts = {
@@ -1132,7 +1360,9 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       draft: [draftSection()],
       trade: [tradeSection()],
       awards: [awardsSection()],
-      league: [injuriesSection(), movesSection(), historySection()],
+      league: [injuriesSection(), movesSection()],
+      ist: [istSection()],
+      history: [historyPage()],
     };
     $("#main").innerHTML = parts[view].join("");
     if (view === "trade") mountTrade();
@@ -1175,8 +1405,8 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   window.__edbInit = init; // used by tests
 
   const getJson = (u) => fetch(u, { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(u + ": HTTP " + r.status); return r.json(); });
-  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({})), getJson("consensus.json").catch(() => null), getJson("tradevalues.json").catch(() => null)]).then(([d, p, c, tv]) => {
-    CONS = c;
+  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({})), getJson("consensus.json").catch(() => null), getJson("tradevalues.json").catch(() => null), getJson("league.json").catch(() => null)]).then(([d, p, c, tv, lg]) => {
+    CONS = c; setLeague(lg);
     if (tv) setValues(tv.values, { live: false, snapshot: tv.snapshot, updated: tv.updated });
     init(d, p);
     loadLiveValues().then((list) => { setValues(list, { live: true }); if (view === "trade") render(); }).catch(() => {});
