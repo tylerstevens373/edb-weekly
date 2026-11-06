@@ -162,7 +162,7 @@
 
   // ---------- awards inputs: rostered players' lines for every finished week, plus season-to-date ----------
   // Week rows: [id, owner, gp, FGM, FGA, FG%, 3PTM, FT%, PTS, REB, AST, ST, BLK, TO, fantraxScore, rookie]. FGM/FGA come
-  // from the "Standard" table (per game, so times GP). Only the top of the pool is kept to keep the file small.
+  // from the "Standard" table (per game, so times GP). Every rostered player is kept; the player cards use these as weekly logs.
   const meta = {};
   const keepMeta = (p) => { meta[p.id] = [p.name, p.nba, p.img]; };
   async function lines(code, extra) {
@@ -190,17 +190,46 @@
   const etDay = (ts) => new Date(ts).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
   for (const n of completed) {
     const p = periods.find(x => x.n === n);
-    try { awardWeeks[n] = prune(await lines('SEASON_' + seasonCode + '_BY_DATE', { timeframeTypeCode: 'BY_DATE', startDate: etDay(p.start), endDate: etDay(p.end) }), 80); } catch (e) { /* skip a week that fails */ }
+    try { awardWeeks[n] = prune(await lines('SEASON_' + seasonCode + '_BY_DATE', { timeframeTypeCode: 'BY_DATE', startDate: etDay(p.start), endDate: etDay(p.end) }), 1000); } catch (e) { /* skip a week that fails */ }
   }
   let awardSeason = [];
   if (lastCompleted > 0) {
     try {
-      awardSeason = prune(await lines('SEASON_' + seasonCode + '_YEAR_TO_DATE', {}), 160).map(r => {
+      awardSeason = prune(await lines('SEASON_' + seasonCode + '_YEAR_TO_DATE', {}), 1000).map(r => {
         const l = last[r[0]]; return r.concat([l ? CATS.map(c => l.cats[c]) : null, l ? l.gp : 0]);
       });
     } catch (e) { awardSeason = []; }
   }
   const awards = { cols: ['id', 'owner', 'gp', 'FGM', 'FGA'].concat(CATS).concat(['score', 'rookie']), weeks: awardWeeks, season: awardSeason, meta };
+
+  // ---------- player cards: every rostered player plus the best free agents ----------
+  // c[id] = { n, t, pos, age, img, url, own, ros, inj, sc, s: season per game [GP, MIN, FGM, FGA, FTM, FTA, ...CATS],
+  //           p: projection per game [GP, ...CATS], l: last season per game [GP, ...CATS] }
+  const cards = {};
+  async function stdTable(filter, code, extra) {
+    const d = await fx(LEAGUE, 'getPlayerStats', Object.assign({ statusOrTeamFilter: filter, pageNumber: '1', maxResultsPerPage: filter === 'ALL_TAKEN' ? '600' : '150', seasonOrProjection: code, scoringCategoryType: '1' }, extra || {}));
+    const hdr = d.tableHeader.cells.map(c => c.shortName);
+    return d.statsTable.map(p => { const v = {}; hdr.forEach((h, j) => { if (!(h in v)) v[h] = p.cells[j] ? p.cells[j].content : null; }); return { p, v }; });
+  }
+  try {
+    const projFA = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150', scoringCategoryType: '7' });
+    const projFAt = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150' });
+    const projGp = {}; rostered.concat(projFAt).forEach(p => { projGp[p.id] = p.gp; });
+    const base = {}; perGame.concat(projFA).forEach(p => { base[p.id] = p; });
+    const r1 = (x) => x == null ? null : Math.round(x * 1000) / 1000;
+    Object.values(base).forEach(p => {
+      const l = last[p.id];
+      cards[p.id] = { n: p.name, t: p.nba, pos: p.pos, age: p.age, img: p.img, own: p.owner || null, ros: p.owner ? p.ros : 'FA', inj: p.inj[0] || null, sc: null,
+        p: [projGp[p.id] || null].concat(CATS.map(c => r1(p.cats[c]))), l: l ? [l.gp].concat(CATS.map(c => r1(l.cats[c]))) : null, s: null };
+    });
+    const ytdCode = 'SEASON_' + seasonCode + '_YEAR_TO_DATE';
+    const rows = (await stdTable('ALL_TAKEN', ytdCode, { timeframeTypeCode: 'YEAR_TO_DATE' })).concat(await stdTable('ALL_AVAILABLE', ytdCode, { timeframeTypeCode: 'YEAR_TO_DATE' }));
+    rows.forEach(({ p, v }) => {
+      const c = cards[p.scorer.scorerId]; if (!c) return;
+      c.url = p.scorer.urlName || null; c.sc = num(v.Score);
+      if (num(v.GP)) c.s = [num(v.GP), num(v.MIN), num(v.FGM), num(v.FGA), num(v.FTM), num(v.FTA)].concat(CATS.map(k => num(v[k])));
+    });
+  } catch (e) { /* cards are optional; the page falls back to what it has */ }
 
   const injuries = rostered.filter(p => p.inj.length && p.ros !== 'Min').map(p => ({ name: p.name, nba: p.nba, owner: p.owner, ros: p.ros, img: p.img, note: p.inj[0] }));
 
@@ -240,7 +269,7 @@
   const data = {
     generatedAt: new Date(now).toISOString(), league: { id: LEAGUE, name: info.leagueName, season: settings.season ? settings.season.displayYear : '' },
     phase, currentPeriod: current, lastCompleted, lastRegular, numPlayoffTeams: info.playoffs ? info.playoffs.numPlayoffTeams : null,
-    cats: CATS, dynasty, awards, teams, divisions: ((standingsRaw.displayedLists || {}).tabs || []).slice(0, 2).map(t => t.name), standings, schedule, proj, players, injuries,
+    cats: CATS, dynasty, awards, cards, teams, divisions: ((standingsRaw.displayedLists || {}).tabs || []).slice(0, 2).map(t => t.name), standings, schedule, proj, players, injuries,
     transactions: { trades: trades.filter(t => t.ts >= cutoff), moves: moves.filter(m => m.ts >= cutoff && m.type !== 'Lineup Change') },
     history: { seasons, lastSeason }, notes: null
   };
