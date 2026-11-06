@@ -237,6 +237,44 @@ details.method ul { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 6p
 .gpicks li { padding: 5px 0; border-bottom: 1px solid var(--line); }
 .gnote { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
 
+/* ---------- player cards ---------- */
+button.pl { font: inherit; color: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: inherit; text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--accent) 45%, transparent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+button.pl:hover { color: var(--accent); text-decoration-color: var(--accent); }
+button.pl:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+#pcard { border: 1px solid var(--line); border-radius: 12px; padding: 0; width: min(720px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); background: var(--bg); color: var(--ink); box-shadow: 0 24px 60px rgba(0,0,0,.35); }
+#pcard::backdrop { background: rgba(10, 14, 20, .55); }
+@media (max-width: 560px) { #pcard { width: 100vw; max-width: 100vw; max-height: 92dvh; margin: auto 0 0; border-radius: 14px 14px 0 0; } }
+.pc { padding: 18px 18px 14px; display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
+#pcard { overflow-x: hidden; }
+.pc-sec { min-width: 0; }
+.pc-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: start; }
+.pc-head img { width: 72px; height: 72px; border-radius: 50%; background: var(--sunk); object-fit: cover; }
+.pc-id h2 { font-family: var(--display); font-weight: 900; font-size: 30px; line-height: 1; margin: 0 0 4px; text-transform: uppercase; }
+.pc-id p { margin: 0 0 6px; }
+.pc-own { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
+.pc-inj { color: var(--loss); font-size: 13px; font-weight: 600; }
+.pc-close { border: 0; background: var(--sunk); color: var(--ink); width: 34px; height: 34px; border-radius: 50%; font-size: 20px; line-height: 1; cursor: pointer; }
+.pc-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pc-chip { display: grid; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; font-size: 11.5px; color: var(--muted); }
+.pc-chip b { font-family: var(--display); font-size: 22px; color: var(--ink); line-height: 1.1; }
+.pc-sec h3 { font-family: var(--display); font-weight: 800; font-size: 18px; text-transform: uppercase; margin: 0 0 6px; }
+.pc-sec > p.muted { font-size: 12.5px; margin: -2px 0 8px; }
+.pc-t th.l { white-space: nowrap; }
+.pc-small { font-size: 12px; margin: 6px 0 0; }
+.pc-prof { display: grid; gap: 5px; }
+.pc-p { display: grid; grid-template-columns: 44px 1fr 30px; gap: 8px; align-items: center; font-size: 12.5px; }
+.pc-p .mono { text-align: right; }
+.pc-track { height: 10px; background: var(--sunk); border-radius: 999px; overflow: hidden; }
+.pc-track b { display: block; height: 100%; background: var(--muted); border-radius: 999px; }
+.pc-track b.hi { background: var(--win); } .pc-track b.lo { background: var(--loss); }
+.pc-bars { display: flex; gap: 8px; align-items: flex-end; height: 90px; }
+.pc-bar { flex: 1; display: grid; grid-template-rows: 1fr auto; height: 100%; align-items: end; text-align: center; }
+.pc-bar b { display: block; background: color-mix(in oklab, var(--accent) 45%, var(--sunk)); border-radius: 4px 4px 0 0; }
+.pc-bar.title b { background: var(--accent); }
+.pc-bar i { font-style: normal; font-size: 11px; color: var(--muted); padding-top: 3px; }
+.pc-foot { display: flex; justify-content: flex-end; }
+.pc-fx { font-size: 13px; color: var(--accent); }
+
 /* ---------- IST ---------- */
 .pos { color: var(--win); } .neg { color: var(--loss); }
 .ist-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 14px; }
@@ -1330,6 +1368,130 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       '<section class="block" id="awardhist"><div class="block-head"><h2>League awards</h2><p>Voted end-of-season awards, All-EDB teams and All-Stars.</p></div>' + awardsHtml + '<h3 class="aw-h3">Trophy case</h3>' + trophy + "</section>";
   }
 
+  // ---------- player cards ----------
+  // Every player name on the page becomes a button that opens a card: bio, this season, projection, last season,
+  // category profile, weekly log, trade/market/dynasty value. Data comes from data.json "cards" and the awards weekly rows.
+  let NAME_RE = null, NAME_ID = {};
+  function cardIndex() {
+    NAME_ID = {};
+    const add = (name, id) => { if (name && id && !NAME_ID[name]) NAME_ID[name] = id; };
+    Object.keys(D.cards || {}).forEach((id) => add(D.cards[id].n, id));
+    ((D.dynasty && D.dynasty.players) || []).forEach((p) => add(p.n, p.id));
+    const names = Object.keys(NAME_ID).filter((n) => n.length > 4).sort((a, b) => b.length - a.length);
+    if (!names.length) { NAME_RE = null; return; }
+    const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    try { NAME_RE = new RegExp("(?<![\\p{L}\\p{M}])(" + names.map(escRe).join("|") + ")(?![\\p{L}\\p{M}])", "gu"); }
+    catch (e) { NAME_RE = new RegExp("\\b(" + names.map(escRe).join("|") + ")\\b", "g"); }
+  }
+  const NO_LINK = new Set(["BUTTON", "A", "SELECT", "OPTION", "INPUT", "TEXTAREA", "SCRIPT", "STYLE", "LABEL", "DIALOG"]);
+  function linkify(root) {
+    if (!NAME_RE || !root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(n) {
+        if (!n.nodeValue || n.nodeValue.length < 5) return NodeFilter.FILTER_REJECT;
+        for (let e = n.parentElement; e && e !== root; e = e.parentElement) if (NO_LINK.has(e.tagName) || e.classList.contains("pl")) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      } });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach((n) => {
+      const s = n.nodeValue; NAME_RE.lastIndex = 0; if (!NAME_RE.test(s)) return; NAME_RE.lastIndex = 0;
+      const frag = document.createDocumentFragment(); let i = 0, m;
+      while ((m = NAME_RE.exec(s))) {
+        if (m.index > i) frag.appendChild(document.createTextNode(s.slice(i, m.index)));
+        const b = document.createElement("button"); b.type = "button"; b.className = "pl"; b.dataset.pid = NAME_ID[m[1]]; b.textContent = m[1];
+        frag.appendChild(b); i = m.index + m[1].length;
+      }
+      if (i < s.length) frag.appendChild(document.createTextNode(s.slice(i)));
+      n.parentNode.replaceChild(frag, n);
+    });
+  }
+  let linkQueued = false;
+  function queueLinkify() { if (linkQueued) return; linkQueued = true; requestAnimationFrame(() => { linkQueued = false; linkify($("#main")); }); }
+
+  function cardPool() {
+    // per-game numbers for rostered players with real minutes, for percentiles
+    if (cardPool.cache) return cardPool.cache;
+    const rows = Object.values(D.cards || {}).filter((c) => c.own && c.s && c.s[0] >= 3).map((c) => cardLine(c));
+    const st = {}; D.cats.forEach((k) => { const xs = rows.map((r) => r[k]).filter((x) => x != null); const m = xs.reduce((a, b) => a + b, 0) / xs.length; const sd = Math.sqrt(xs.reduce((a, b) => a + (b - m) * (b - m), 0) / xs.length) || 1; st[k] = { m, sd, xs: xs.slice().sort((a, b) => a - b) }; });
+    return (cardPool.cache = st);
+  }
+  function cardLine(c) {
+    // this season if he has played 5+ games, otherwise the projection
+    const o = {}; const useS = c.s && c.s[0] >= 5;
+    D.cats.forEach((k, i) => { o[k] = useS ? c.s[6 + i] : c.p ? c.p[1 + i] : null; });
+    o.src = useS ? "this season" : "projection"; return o;
+  }
+  function pctile(k, v) { const st = cardPool()[k]; if (!st || v == null) return null; let n = 0; st.xs.forEach((x) => { if (LOW_BETTER[k] ? x >= v : x <= v) n++; }); return Math.round((n / st.xs.length) * 100); }
+  function statRow(label, arr, offset, extra) {
+    if (!arr) return "";
+    const v = (k, i) => { const x = arr[offset + i]; if (x == null) return "–"; return PCT[k] ? x.toFixed(3).replace(/^0/, "") : (+x).toFixed(1); };
+    return "<tr><th class=\"l\" scope=\"row\">" + label + "</th><td>" + (arr[0] == null ? "–" : arr[0]) + "</td>" + (extra || "") + D.cats.map((k, i) => "<td>" + v(k, i) + "</td>").join("") + "</tr>";
+  }
+  function openCard(id) {
+    const c = (D.cards || {})[id];
+    const dp = ((D.dynasty && D.dynasty.players) || []).find((p) => p.id === id);
+    if (!c && !dp) return;
+    const n = c ? c.n : dp.n, t = c ? c.t : dp.t, pos = c ? c.pos : dp.pos, age = c ? c.age : dp.age, own = c ? c.own : dp.own, ros = c ? c.ros : dp.ros;
+    const rosLabel = { Act: "Active", Res: "Reserve", IR: "Injured reserve", Min: "Minors", FA: "Free agent" }[ros] || ros || "";
+    const tv = TV ? tvOf(n) : 0, cr = consRank(n);
+    let dyn = "";
+    if (DM) {
+      const all = DM.players.slice().sort((a, b) => b.dynasty - a.dynasty); const ix = all.findIndex((p) => p.id === id);
+      if (ix >= 0) {
+        const p = all[ix]; const path = p.var || [];
+        const mx = Math.max.apply(null, all.slice(0, 1)[0].var.concat([1]));
+        const TY = (window.EDBModel && EDBModel.TITLE_YEAR) || 4, y0 = (D.dynasty && D.dynasty.season) || 2026;
+        const bars = path.map((v, i) => '<span class="pc-bar' + (i === TY ? " title" : "") + '" title="' + (y0 + i) + "–" + String(y0 + i + 1).slice(2) + ": " + v.toFixed(1) + '"><b style="height:' + Math.max(4, Math.round((Math.max(0, v) / mx) * 100)) + '%"></b><i>' + (i === 0 ? "Now" : "+" + i) + "</i></span>").join("");
+        dyn = '<div class="pc-sec"><h3>Dynasty outlook</h3><p class="muted">#' + (ix + 1) + " of " + all.length + " rostered players in the five-year dynasty model. Projected value by season, title season highlighted.</p><div class=\"pc-bars\">" + bars + "</div></div>";
+      }
+    }
+    const chips = [
+      c && c.sc != null ? '<span class="pc-chip"><b>' + c.sc.toFixed(0) + "</b>Fantrax score</span>" : "",
+      tv ? '<span class="pc-chip"><b>' + (Math.round(tv * 10) / 10) + "</b>Trade value</span>" : "",
+      cr ? '<span class="pc-chip"><b>#' + cr + "</b>Market rank</span>" : "",
+      dp && dp.gp ? '<span class="pc-chip"><b>' + dp.gp + "</b>Proj. games</span>" : "",
+    ].join("");
+    const yr = (D.dynasty && D.dynasty.season) || 2026;
+    const stats = '<div class="tscroll"><table class="st pc-t"><thead><tr><th class="l"></th><th>GP</th><th>MIN</th>' + D.cats.map((k) => "<th>" + CAT_LABEL[k] + "</th>").join("") + "</tr></thead><tbody>" +
+      (c && c.s ? statRow(yr + "–" + String(yr + 1).slice(2), c.s, 6, "<td>" + (c.s[1] != null ? c.s[1].toFixed(1) : "–") + "</td>") : "") +
+      (c && c.p ? statRow("Projection", c.p, 1, "<td>–</td>") : "") +
+      (c && c.l ? statRow(yr - 1 + "–" + String(yr).slice(2), c.l, 1, "<td>–</td>") : "") +
+      "</tbody></table></div>" + (c && c.s && c.s[3] ? '<p class="muted pc-small">Shooting this season: ' + c.s[2].toFixed(1) + "-" + c.s[3].toFixed(1) + " FG and " + (c.s[4] || 0).toFixed(1) + "-" + (c.s[5] || 0).toFixed(1) + " FT per game.</p>" : "");
+    let prof = "";
+    if (c) {
+      const line = cardLine(c);
+      prof = '<div class="pc-sec"><h3>Category profile</h3><p class="muted">Percentile among rostered players, per game (' + line.src + "). Turnovers: higher is fewer.</p><div class=\"pc-prof\">" + D.cats.map((k) => {
+        const p = pctile(k, line[k]); if (p == null) return "";
+        const cls = p >= 70 ? "hi" : p <= 30 ? "lo" : "";
+        return '<div class="pc-p"><span>' + CAT_LABEL[k] + '</span><span class="pc-track"><b class="' + cls + '" style="width:' + p + '%"></b></span><span class="mono">' + p + "</span></div>";
+      }).join("") + "</div></div>";
+    }
+    let log = "";
+    const wk = (D.awards && D.awards.weeks) || {};
+    const lines = Object.keys(wk).map(Number).sort((a, b) => b - a).map((w) => [w, (wk[w] || []).find((r) => r[0] === id)]).filter((x) => x[1]);
+    if (lines.length) {
+      log = '<div class="pc-sec"><h3>By week</h3><div class="tscroll"><table class="st pc-t"><thead><tr><th class="l">Week</th><th>GP</th><th>FGM-A</th>' + D.cats.map((k) => "<th>" + CAT_LABEL[k] + "</th>").join("") + "</tr></thead><tbody>" +
+        lines.map(([w, r]) => '<tr><th class="l" scope="row">' + w + "</th><td>" + r[2] + "</td><td>" + (r[3] != null ? r[3] + "-" + r[4] : "–") + "</td>" + D.cats.map((k, i) => "<td>" + (r[5 + i] == null ? "–" : PCT[k] ? r[5 + i].toFixed(3).replace(/^0/, "") : Math.round(r[5 + i])) + "</td>").join("") + "</tr>").join("") +
+        '</tbody></table></div><p class="muted pc-small">Weekly totals.' + (own ? " Owner shown is the current one." : "") + "</p></div>";
+    }
+    const fx = c && c.url ? '<a class="pc-fx" href="https://www.fantrax.com/player/' + encodeURIComponent(id) + "/" + encodeURIComponent((D.league && D.league.id) || "1v9ir5x1mqqv88hj") + "/" + encodeURIComponent(c.url) + '" target="_blank" rel="noopener">Open in Fantrax ↗</a>' : "";
+    const dlg = $("#pcard");
+    dlg.innerHTML = '<div class="pc"><div class="pc-head">' + (c && c.img ? '<img src="' + esc(c.img) + '" alt="" width="72" height="72">' : "") +
+      '<div class="pc-id"><h2 id="pcTitle">' + esc(n) + '</h2><p class="muted">' + esc([t, pos, age ? "age " + age : ""].filter(Boolean).join(" · ")) + "</p>" +
+      '<p class="pc-own">' + (own && T[own] ? teamCell(own) + ' <span class="chip">' + esc(rosLabel) + "</span>" : '<span class="chip good">' + esc(rosLabel || "Free agent") + "</span>") + "</p>" +
+      (c && c.inj ? '<p class="pc-inj">' + esc(c.inj) + "</p>" : "") + '</div><button type="button" class="pc-close" aria-label="Close player card">×</button></div>' +
+      '<div class="pc-chips">' + chips + "</div>" + '<div class="pc-sec"><h3>Per game</h3>' + stats + "</div>" + prof + log + dyn +
+      '<div class="pc-foot">' + fx + "</div></div>";
+    if (typeof dlg.showModal === "function") { if (!dlg.open) dlg.showModal(); } else dlg.setAttribute("open", "");
+    dlg.scrollTop = 0; const cl = dlg.querySelector(".pc-close"); if (cl) cl.focus();
+  }
+  function mountCards() {
+    if (!$("#pcard")) { const d = document.createElement("dialog"); d.id = "pcard"; d.setAttribute("aria-labelledby", "pcTitle"); document.body.appendChild(d);
+      d.addEventListener("click", (e) => { if (e.target === d || e.target.closest(".pc-close")) d.close(); }); }
+    document.addEventListener("click", (e) => { const b = e.target.closest("button.pl[data-pid]"); if (!b) return; e.preventDefault(); e.stopPropagation(); openCard(b.dataset.pid); }, true);
+    new MutationObserver(queueLinkify).observe($("#main"), { childList: true, subtree: true });
+  }
+
   // ---------- render ----------
   const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["awards", "Awards"], ["ist", "IST"], ["trade", "Trade"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"], ["history", "History"]];
   const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", races: "awards", injuries: "league", moves: "league", history: "history", banners: "history", bruno: "dynasty", tournament: "ist" };
@@ -1393,6 +1555,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       }
     } catch (e) { DM = null; DG = null; console.warn("Dynasty model failed", e); }
     view = readRoute();
+    cardIndex(); mountCards();
     render();
     const h = (location.hash || "").slice(1);
     if (ALIAS[h] && h !== "scores") { const el = document.getElementById(h); if (el) el.scrollIntoView(); }
