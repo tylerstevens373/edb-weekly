@@ -106,16 +106,19 @@
   // Projections, per game. Fantrax's projection tables have changed shape twice this season (whole-week totals passed off
   // as per-game numbers; a games column that holds minutes), so: read the "Standard" per-game table, sanity-check it
   // against last season and this season, and lean on this season's actual numbers as games pile up.
-  const perGameRaw = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { scoringCategoryType: '1' });
+  const PG = { scoringCategoryType: '1', timeframeTypeCode: 'PROJECTED_WEEKLY' }; // Fantrax's "Projected - Per Game" view
+  const perGameRaw = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_EVENT_PROJECTED_WEEKLY', PG);
   const ytdPg = await playerTable(LEAGUE, 'SEASON_' + seasonCode + '_YEAR_TO_DATE', { scoringCategoryType: '7', timeframeTypeCode: 'YEAR_TO_DATE' });
   const ytdTot = await playerTable(LEAGUE, 'SEASON_' + seasonCode + '_YEAR_TO_DATE', { timeframeTypeCode: 'YEAR_TO_DATE' });
   const ytdById = {}; ytdPg.forEach(p => { ytdById[p.id] = p; }); ytdTot.forEach(p => { if (ytdById[p.id]) ytdById[p.id].gpN = p.gp || 0; });
   const totById = {}; rostered.forEach(p => { totById[p.id] = p; });
-  // projected games: the totals table's GP column when it is sane, else projected points / points per game
+  // projected games for the season: games played so far plus the rest-of-season total divided by the per-game rate
+  // (the totals table's GP column now holds something else, so it is only used when it looks like a game count)
   const gpById = {}; perGameRaw.forEach(p => {
-    const t = totById[p.id]; let g = t && t.gp != null && t.gp <= 82 ? t.gp : null;
-    if (g == null && t && t.cats.PTS && p.cats.PTS) g = Math.min(82, Math.round(t.cats.PTS / p.cats.PTS));
-    gpById[p.id] = g || 0;
+    const t = totById[p.id], played = ytdById[p.id] ? ytdById[p.id].gpN || 0 : 0;
+    let g = t && t.gp != null && t.gp <= 82 ? t.gp : null;
+    if (g == null && t && t.cats.PTS && p.cats.PTS) g = played + Math.round(t.cats.PTS / p.cats.PTS);
+    gpById[p.id] = g == null ? 0 : Math.min(82, g);
   });
   const perGame = perGameRaw;
   // Blend Fantrax's projection with last season's per-game stats. Fantrax projections sometimes miss role changes
@@ -233,7 +236,7 @@
     return d.statsTable.map(p => { const v = {}; hdr.forEach((h, j) => { if (!(h in v)) v[h] = p.cells[j] ? p.cells[j].content : null; }); return { p, v }; });
   }
   try {
-    const projFA = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150', scoringCategoryType: '1' });
+    const projFA = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_EVENT_PROJECTED_WEEKLY', Object.assign({ statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150' }, PG));
     const projFAt = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150' });
     const projGp = Object.assign({}, gpById); const faPg = {}; projFA.forEach(p => { faPg[p.id] = p; });
     projFAt.forEach(p => { const pg = faPg[p.id]; projGp[p.id] = p.gp != null && p.gp <= 82 ? p.gp : pg && pg.cats.PTS && p.cats.PTS ? Math.min(82, Math.round(p.cats.PTS / pg.cats.PTS)) : null; });
