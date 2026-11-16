@@ -86,7 +86,7 @@
       const cats = {}; CATS.forEach(cn => { cats[cn] = num(v[cn]); });
       const inj = (p.scorer.icons || []).filter(i => /return|Out|Game-time|Day-to-Day|Indefinitely|Questionable|Doubtful|season/i.test(i.tooltip) && !/^[A-Z][a-z]{2} \d+, \d/.test(i.tooltip)).map(i => i.tooltip);
       return { id: p.scorer.scorerId, name: p.scorer.name, nba: p.scorer.teamShortName, pos: p.scorer.posShortNames,
-        img: p.scorer.headshotUrl, owner: owner.teamId, ros: v.Ros, age: num(v.Age), score: num(v.Score), gp: num(v.GP), cats, inj };
+        img: p.scorer.headshotUrl, owner: owner.teamId, ros: v.Ros === 'BN' ? 'Res' : v.Ros, age: num(v.Age), score: num(v.Score), gp: num(v.GP), cats, inj };
     });
   }
   const rostered = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', {});
@@ -103,9 +103,21 @@
     .map(p => ({ id: p.id, name: p.name, nba: p.nba, pos: p.pos, img: p.img, owner: p.owner, age: p.age, score: p.score }));
 
   // ---------- dynasty inputs: per-game projections for every rostered player, future picks, last rookie draft ----------
-  // Season-long projection, per game. (The "weekly" projection table returns whole-week totals for some players, e.g. 39 points a game.)
-  const perGame = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { scoringCategoryType: '7' });
-  const gpById = {}; rostered.forEach(p => { gpById[p.id] = p.gp; });
+  // Projections, per game. Fantrax's projection tables have changed shape twice this season (whole-week totals passed off
+  // as per-game numbers; a games column that holds minutes), so: read the "Standard" per-game table, sanity-check it
+  // against last season and this season, and lean on this season's actual numbers as games pile up.
+  const perGameRaw = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { scoringCategoryType: '1' });
+  const ytdPg = await playerTable(LEAGUE, 'SEASON_' + seasonCode + '_YEAR_TO_DATE', { scoringCategoryType: '7', timeframeTypeCode: 'YEAR_TO_DATE' });
+  const ytdTot = await playerTable(LEAGUE, 'SEASON_' + seasonCode + '_YEAR_TO_DATE', { timeframeTypeCode: 'YEAR_TO_DATE' });
+  const ytdById = {}; ytdPg.forEach(p => { ytdById[p.id] = p; }); ytdTot.forEach(p => { if (ytdById[p.id]) ytdById[p.id].gpN = p.gp || 0; });
+  const totById = {}; rostered.forEach(p => { totById[p.id] = p; });
+  // projected games: the totals table's GP column when it is sane, else projected points / points per game
+  const gpById = {}; perGameRaw.forEach(p => {
+    const t = totById[p.id]; let g = t && t.gp != null && t.gp <= 82 ? t.gp : null;
+    if (g == null && t && t.cats.PTS && p.cats.PTS) g = Math.min(82, Math.round(t.cats.PTS / p.cats.PTS));
+    gpById[p.id] = g || 0;
+  });
+  const perGame = perGameRaw;
   // Blend Fantrax's projection with last season's per-game stats. Fantrax projections sometimes miss role changes
   // (a new starter projected as a backup), so last season gets up to 60% weight, scaled down for players who
   // played fewer than 50 games. Rookies and players with under 10 games keep the pure projection.
@@ -123,11 +135,20 @@
     lpg.forEach(p => { if ((lgp[p.id] || 0) >= 10) last[p.id] = { gp: lgp[p.id], cats: p.cats }; });
   }
   const dynPlayers = perGame.filter(p => p.owner).map(p => {
-    const l = last[p.id];
-    const w = l ? 0.6 * Math.min(1, l.gp / 50) : 0;
+    const l = last[p.id], y = ytdById[p.id], yg = y ? y.gpN || 0 : 0;
+    // a projection far above anything he has actually done is a data glitch: drop it
+    const ref = Math.max(l ? l.cats.PTS || 0 : 0, yg >= 3 ? y.cats.PTS || 0 : 0);
+    const projOk = p.cats.PTS != null && !(ref && p.cats.PTS > 1.5 * ref + 6);
+    const w = l ? (projOk ? 0.6 * Math.min(1, l.gp / 50) : 1) : 0;
+    const wy = yg ? yg / (yg + 15) : 0;
     const cats = {};
-    CATS.forEach(c => { const pr = p.cats[c] || 0; cats[c] = l ? +(w * (l.cats[c] || 0) + (1 - w) * pr).toFixed(3) : pr; });
-    return Object.assign({ id: p.id, n: p.name, t: p.nba, pos: p.pos, own: p.owner, ros: p.ros, age: p.age, gp: gpById[p.id] || 0, sc: p.score, w: +w.toFixed(2), lastGp: l ? l.gp : 0 }, cats);
+    CATS.forEach(c => {
+      let v = projOk ? (p.cats[c] || 0) : (l ? 0 : (y ? y.cats[c] || 0 : 0));
+      if (l) v = w * (l.cats[c] || 0) + (1 - w) * v;
+      if (wy && y && y.cats[c] != null) v = wy * y.cats[c] + (1 - wy) * v;
+      cats[c] = +v.toFixed(3);
+    });
+    return Object.assign({ id: p.id, n: p.name, t: p.nba, pos: p.pos, own: p.owner, ros: p.ros, age: p.age, gp: gpById[p.id] || 0, sc: p.score, w: +w.toFixed(2), wy: +wy.toFixed(2), lastGp: l ? l.gp : 0 }, cats);
   });
   // projected team strength (used for previews and preseason power rankings): each team's top 10 (the starting lineup) by blended production, over projected games
   const proj = {};
@@ -212,9 +233,10 @@
     return d.statsTable.map(p => { const v = {}; hdr.forEach((h, j) => { if (!(h in v)) v[h] = p.cells[j] ? p.cells[j].content : null; }); return { p, v }; });
   }
   try {
-    const projFA = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150', scoringCategoryType: '7' });
+    const projFA = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150', scoringCategoryType: '1' });
     const projFAt = await playerTable(LEAGUE, 'PROJECTION_0_' + seasonCode + '_SEASON', { statusOrTeamFilter: 'ALL_AVAILABLE', maxResultsPerPage: '150' });
-    const projGp = {}; rostered.concat(projFAt).forEach(p => { projGp[p.id] = p.gp; });
+    const projGp = Object.assign({}, gpById); const faPg = {}; projFA.forEach(p => { faPg[p.id] = p; });
+    projFAt.forEach(p => { const pg = faPg[p.id]; projGp[p.id] = p.gp != null && p.gp <= 82 ? p.gp : pg && pg.cats.PTS && p.cats.PTS ? Math.min(82, Math.round(p.cats.PTS / pg.cats.PTS)) : null; });
     const base = {}; perGame.concat(projFA).forEach(p => { base[p.id] = p; });
     const r1 = (x) => x == null ? null : Math.round(x * 1000) / 1000;
     Object.values(base).forEach(p => {
