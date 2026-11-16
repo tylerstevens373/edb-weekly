@@ -118,7 +118,7 @@
     const t = totById[p.id], played = ytdById[p.id] ? ytdById[p.id].gpN || 0 : 0;
     let g = t && t.gp != null && t.gp <= 82 ? t.gp : null;
     if (g == null && t && t.cats.PTS && p.cats.PTS) g = played + Math.round(t.cats.PTS / p.cats.PTS);
-    gpById[p.id] = g == null ? 0 : Math.min(82, g);
+    gpById[p.id] = g == null || !p.gp ? 55 : Math.min(82, g); // out this week (injured): assume a typical 55 games
   });
   const perGame = perGameRaw;
   // Blend Fantrax's projection with last season's per-game stats. Fantrax projections sometimes miss role changes
@@ -141,7 +141,8 @@
     const l = last[p.id], y = ytdById[p.id], yg = y ? y.gpN || 0 : 0;
     // a projection far above anything he has actually done is a data glitch: drop it
     const ref = Math.max(l ? l.cats.PTS || 0 : 0, yg >= 3 ? y.cats.PTS || 0 : 0);
-    const projOk = p.cats.PTS != null && !(ref && p.cats.PTS > 1.5 * ref + 6);
+    // ...and a near-zero one usually means he is hurt this week, which says nothing about his per-game value
+    const projOk = p.cats.PTS != null && p.gp > 0 && !(ref && p.cats.PTS > 1.5 * ref + 6) && !(ref > 8 && p.cats.PTS < 0.4 * ref);
     const w = l ? (projOk ? 0.6 * Math.min(1, l.gp / 50) : 1) : 0;
     const wy = yg ? yg / (yg + 15) : 0;
     const cats = {};
