@@ -275,6 +275,16 @@ button.pl:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px;
 .pc-foot { display: flex; justify-content: flex-end; }
 .pc-fx { font-size: 13px; color: var(--accent); }
 
+/* ---------- lines / ATS ---------- */
+.line-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; padding-top: 2px; }
+.line-row b { font-weight: 600; }
+.ats-hist { margin-top: 12px; }
+.ats-wk { border-top: 1px solid var(--line); padding: 8px 0; }
+.ats-wk summary { cursor: pointer; font-weight: 700; font-size: 14px; }
+.ats-wk ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; font-size: 13px; }
+.ats-wk li { display: grid; grid-template-columns: minmax(0, 1.6fr) 1fr 0.7fr 1.2fr; gap: 8px; }
+@media (max-width: 560px) { .ats-wk li { grid-template-columns: 1fr auto; } }
+
 /* ---------- IST ---------- */
 .pos { color: var(--win); } .neg { color: var(--loss); }
 .ist-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 14px; }
@@ -574,7 +584,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       const a = m.away, h = m.home;
       const row = (s, o) => '<div class="row ' + (s.w > o.w ? "won" : s.w < o.w ? "lost" : "") + '">' + teamCell(s.id) + '<span class="score">' + s.w + "</span></div>";
       const note = noteFor(a.id, h.id);
-      return '<article class="game">' + row(a, h) + row(h, a) + stripHTML(a.id, h.id, { a: a.cats, h: h.cats }) +
+      return '<article class="game">' + row(a, h) + row(h, a) + lineChip(wk.n, m, true) + stripHTML(a.id, h.id, { a: a.cats, h: h.cats }) +
         (note ? '<div class="note">' + esc(note) + "</div>" : "") +
         "<details><summary>Box score</summary>" + boxTable(a.id, h.id, a.cats, h.cats, false) + "</details></article>";
     }).join("");
@@ -618,7 +628,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
       const r = h2h(sa, sh);
       const row = (id, sc, o) => '<div class="row ' + (sc > o ? "won" : sc < o ? "lost" : "") + '">' + teamCell(id) + '<span class="score">' + sc + "</span></div>";
       const note = noteFor(a, h);
-      return '<article class="game"><span class="label">Projected</span>' + row(a, r.w, r.l) + row(h, r.l, r.w) + stripHTML(a, h, { a: sa, h: sh }) +
+      return '<article class="game"><span class="label">Projected</span>' + row(a, r.w, r.l) + row(h, r.l, r.w) + lineChip(wk.n, m, false) + stripHTML(a, h, { a: sa, h: sh }) +
         (note ? '<div class="note">' + esc(note) + "</div>" : "") +
         "<details><summary>Projected weekly averages</summary>" + boxTable(a, h, sa, sh, true) + "</details></article>";
     }).join("");
@@ -911,10 +921,28 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   }
   function tvOf(name) { const v = TV && TV.byKey[tvKey(name)]; return v ? v.value : 0; }
   function pickTier(year, overall) {
-    const tiers = year === 2026 ? [[2, "1-2"], [4, "3-4"], [7, "5-7"], [12, "8-12"], [22, "13-22"], [30, "23-30"], [39, "31-39"], [60, "40-60"]]
-      : [[3, "1-3"], [8, "4-8"], [12, "9-12"], [18, "13-18"], [30, "19-30"], [45, "30-45"], [60, "46-60"]];
+    const tiers = [[3, "1-3"], [8, "4-8"], [12, "9-12"], [18, "13-18"], [30, "19-30"], [45, "30-45"], [60, "46-60"]];
     const t = tiers.find((x) => overall <= x[0]) || tiers[tiers.length - 1];
-    return (year >= 2027 ? 2027 : year) + " #" + t[1]; // later picks use the sheet's 2027 tiers
+    // the value sheet prices the next two drafts; anything further out uses the latest year it lists
+    const years = TV ? Array.from(new Set(TV.list.map((v) => (/^(\d{4}) #/.exec(v.name) || [])[1]).filter(Boolean))).map(Number) : [year];
+    const y = years.indexOf(year) >= 0 ? year : Math.max.apply(null, years.filter((x) => x <= year).concat([Math.min.apply(null, years)]));
+    return y + " #" + t[1];
+  }
+  // Fantrax only carries next year's draft. Later years come from the commissioner's Draft Picks tab (league.json),
+  // projected to slot by each team's model strength the season before that draft (weakest picks first).
+  function allPicks() {
+    const out = DM ? DM.picks.slice() : [];
+    const have = new Set(out.map((k) => k.year));
+    if (L && L.picks && DM) {
+      L.picks.filter((p) => !have.has(p.year)).forEach((p) => {
+        const owner = MGR[p.owner], orig = MGR[p.orig]; if (!owner || !orig) return;
+        const yi = Math.max(0, Math.min(DM.horizon || 5, p.year - ((D.dynasty && D.dynasty.season) || 2026) - 1));
+        const order = DM.teams.slice().sort((a, b) => (a.strength[yi] || 0) - (b.strength[yi] || 0)).map((t) => t.id);
+        const slot = (p.round - 1) * order.length + order.indexOf(orig) + 1;
+        out.push({ year: p.year, round: p.round, owner, orig, slot });
+      });
+    }
+    return out;
   }
   function adjust(v, maxInTrade) {
     const L = TV.max; if (!v) return 0;
@@ -932,7 +960,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     if (D.dynasty) D.dynasty.players.filter((p) => p.own === teamId).forEach((p) => {
       out.push({ kind: "player", name: p.n, label: p.n, sub: p.t + " · " + (String(p.pos || "").split(",")[0]) + (p.ros === "Min" ? " · minors" : p.ros === "IR" ? " · IR" : ""), value: tvOf(p.n), fid: p.id });
     });
-    if (DM) DM.picks.filter((k) => k.owner === teamId).forEach((k) => {
+    allPicks().filter((k) => k.owner === teamId).forEach((k) => {
       const tier = pickTier(k.year, k.slot);
       const r = ["", "1st", "2nd", "3rd"][k.round] || k.round + "th";
       out.push({ kind: "pick", name: tier, label: k.year + " " + r + (k.orig !== k.owner && T[k.orig] ? " (" + shortOf(T[k.orig]) + ")" : ""), sub: "proj. pick " + k.slot + " → " + tier, value: tvOf(tier) });
@@ -984,7 +1012,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   function tradeSection() {
     if (!TV) return '<section class="block" id="trade"><div class="block-head"><h2>Trade calculator</h2></div><div class="empty">Loading trade values…</div></section>';
     return '<section class="block" id="trade"><div class="block-head"><h2>Trade calculator</h2><p>Built on the league\'s EDB Trade Calc values and formula: one great player outweighs a pile of good ones. ' +
-      (TV.live ? "Values load live from the league sheet." : "Values from the league sheet, saved " + esc(TV.snapshot || "") + ".") + "</p></div>" +
+      "Values from the league\'s trade calculator sheet, updated " + esc(TV.updated ? new Date(TV.updated + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "") + "." + "</p></div>" +
       '<div class="tc-tools"><button type="button" id="tcSwap" class="tc-btn">⇄ Swap sides</button><button type="button" id="tcClear" class="tc-btn">Clear</button></div><div class="tc-summary" id="tcSummary"></div><div class="tc-sides">' + sideHTML("a") + sideHTML("b") + '</div><div id="tcExtra"></div>' +
       '<details class="method"><summary>How the calculator works</summary><ul>' +
       "<li>Each player or pick gets a value from the league's Values sheet. Players not on the sheet count as 0, the same as in the spreadsheet.</li>" +
@@ -1492,9 +1520,68 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     new MutationObserver(queueLinkify).observe($("#main"), { childList: true, subtree: true });
   }
 
+  // ---------- betting lines and ATS ----------
+  // lines.json is frozen each week before games start (tools/lines.js). The line is the away team's expected category
+  // margin: each category moves it 1 toward the better team if the projected gap is over half a standard deviation, else 0.5.
+  let LINES = null;
+  function lineFor(n, a, h) { const w = LINES && LINES.weeks && LINES.weeks[n]; return w ? w.games.find((g) => g.away === a && g.home === h) || null : null; }
+  function lineText(g) {
+    if (!g) return "";
+    if (!g.line) return "Pick'em";
+    const fav = g.line > 0 ? g.away : g.home;
+    return (T[fav] ? T[fav].name : "") + " −" + Math.abs(g.line);
+  }
+  function atsOf(g, m) {
+    const margin = m.away.w - m.home.w;
+    return margin === g.line ? "push" : margin > g.line ? "away" : "home";
+  }
+  function lineChip(n, m, done) {
+    const g = lineFor(n, m.away.id, m.home.id); if (!g) return "";
+    let res = "";
+    if (done) {
+      const r = atsOf(g, m);
+      res = r === "push" ? ' <span class="chip">Push</span>' : ' <span class="chip good">' + esc(T[r === "away" ? m.away.id : m.home.id].name) + " covers</span>";
+    }
+    const why = D.cats.filter((c) => g.cats[c]).map((c) => CAT_LABEL[c] + " " + (g.cats[c] > 0 ? shortOf(T[g.away]) : shortOf(T[g.home])) + (Math.abs(g.cats[c]) === 1 ? " +1" : " +½")).join(", ");
+    return '<div class="line-row" title="' + esc(why) + '"><span class="label">Line</span><b class="mono">' + esc(lineText(g)) + "</b>" + res + "</div>";
+  }
+  function atsTable() {
+    if (!LINES || !LINES.weeks) return null;
+    const rec = {}; D.teams.forEach((t) => (rec[t.id] = { id: t.id, w: 0, l: 0, p: 0, fw: 0, fl: 0, uw: 0, ul: 0, edge: 0, g: 0 }));
+    const weeks = [];
+    D.schedule.filter((s) => s.complete).forEach((s) => {
+      const L = LINES.weeks[s.n]; if (!L) return;
+      const rows = [];
+      L.games.forEach((g) => {
+        const m = s.matchups.find((x) => x.away.id === g.away && x.home.id === g.home); if (!m) return;
+        const r = atsOf(g, m), margin = m.away.w - m.home.w;
+        [[g.away, 1], [g.home, -1]].forEach(([id, sgn]) => {
+          const X = rec[id]; if (!X) return; X.g++; X.edge += sgn * (margin - g.line);
+          const fav = sgn * g.line > 0, dog = sgn * g.line < 0;
+          if (r === "push") X.p++; else if ((r === "away") === (sgn === 1)) { X.w++; if (fav) X.fw++; if (dog) X.uw++; } else { X.l++; if (fav) X.fl++; if (dog) X.ul++; }
+        });
+        rows.push({ g, m, r });
+      });
+      weeks.push({ n: s.n, rows });
+    });
+    return { rec, weeks };
+  }
+  function atsSection() {
+    const A = atsTable(); if (!A || !A.weeks.length) return "";
+    const list = Object.values(A.rec).sort((a, b) => (b.w + b.p / 2) / Math.max(1, b.g) - (a.w + a.p / 2) / Math.max(1, a.g) || b.edge - a.edge);
+    const rec3 = (w, l, p) => w + "-" + l + (p ? "-" + p : "");
+    const table = '<div class="tscroll"><table class="st"><thead><tr><th class="l">#</th><th class="l">Team</th><th title="Against the spread">ATS</th><th>Cover %</th><th title="ATS record when favored">As fav.</th><th title="ATS record as the underdog">As dog</th><th title="Average category margin beyond the line">+/− line</th></tr></thead><tbody>' +
+      list.map((x, i) => '<tr><td class="rk l">' + (i + 1) + '</td><td class="l">' + teamCell(x.id) + "</td><td><b>" + rec3(x.w, x.l, x.p) + "</b></td><td>" + (x.w + x.l ? Math.round((x.w / (x.w + x.l)) * 100) + "%" : "–") + "</td><td>" + (x.fw + x.fl ? x.fw + "-" + x.fl : "–") + "</td><td>" + (x.uw + x.ul ? x.uw + "-" + x.ul : "–") + '</td><td class="' + (x.edge > 0 ? "pos" : x.edge < 0 ? "neg" : "") + '">' + (x.g ? (x.edge > 0 ? "+" : "") + (x.edge / x.g).toFixed(1) : "–") + "</td></tr>").join("") + "</tbody></table></div>";
+    const favs = A.weeks.flatMap((w) => w.rows).filter((r) => r.g.line);
+    const favCover = favs.filter((r) => (r.g.line > 0) === (r.r === "away") && r.r !== "push").length, favPush = favs.filter((r) => r.r === "push").length;
+    const hist = A.weeks.slice().reverse().map((w) => '<details class="ats-wk"><summary>Week ' + w.n + " lines</summary><ul>" + w.rows.map(({ g, m, r }) =>
+      "<li><span>" + esc(T[g.away].name) + " @ " + esc(T[g.home].name) + '</span><span class="mono">' + esc(lineText(g)) + '</span><span class="mono">' + m.away.w + "–" + m.home.w + (m.away.t ? "–" + m.away.t : "") + "</span><span>" + (r === "push" ? "Push" : esc(T[r === "away" ? g.away : g.home].name) + " covered") + "</span></li>").join("") + "</ul></details>").join("");
+    return '<section class="block" id="ats"><div class="block-head"><h2>Against the spread</h2><p>Each week\'s line is set before games start: every category moves it one whole category toward the team projected better by more than half a standard deviation, or half a category when the edge is smaller. Favorites have covered ' + favCover + " of " + (favs.length - favPush) + " decided lines" + (favPush ? " (" + favPush + " pushes)" : "") + ".</p></div>" + table + '<div class="ats-hist">' + hist + "</div></section>";
+  }
+
   // ---------- render ----------
   const VIEWS = [["week", "This Week"], ["standings", "Standings"], ["awards", "Awards"], ["ist", "IST"], ["trade", "Trade"], ["dynasty", "Dynasty"], ["draft", "Draft"], ["league", "League"], ["history", "History"]];
-  const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", races: "awards", injuries: "league", moves: "league", history: "history", banners: "history", bruno: "dynasty", tournament: "ist" };
+  const ALIAS = { scores: "week", storylines: "week", players: "week", power: "standings", categories: "standings", ats: "standings", lines: "standings", races: "awards", injuries: "league", moves: "league", history: "history", banners: "history", bruno: "dynasty", tournament: "ist" };
   let view = "week";
   function readRoute() {
     const h = (location.hash || "").slice(1);
@@ -1517,7 +1604,7 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
     $("#dek").textContent = isWeek ? (n.dek || "") : "";
     const parts = {
       week: [storiesHTML(), scoresSection(), playersSection()],
-      standings: [powerSection(), standingsSection(), heatSection()],
+      standings: [powerSection(), standingsSection(), atsSection(), heatSection()],
       dynasty: [dynastySection()],
       draft: [draftSection()],
       trade: [tradeSection()],
@@ -1568,11 +1655,10 @@ footer { margin-top: 56px; padding-top: 14px; border-top: 1px solid var(--line);
   window.__edbInit = init; // used by tests
 
   const getJson = (u) => fetch(u, { cache: "no-store" }).then((r) => { if (!r.ok) throw new Error(u + ": HTTP " + r.status); return r.json(); });
-  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({})), getJson("consensus.json").catch(() => null), getJson("tradevalues.json").catch(() => null), getJson("league.json").catch(() => null)]).then(([d, p, c, tv, lg]) => {
-    CONS = c; setLeague(lg);
+  Promise.all([getJson("data.json"), getJson("pedigree.json").catch(() => ({})), getJson("consensus.json").catch(() => null), getJson("tradevalues.json").catch(() => null), getJson("league.json").catch(() => null), getJson("lines.json").catch(() => null)]).then(([d, p, c, tv, lg, ln]) => {
+    CONS = c; setLeague(lg); LINES = ln;
     if (tv) setValues(tv.values, { live: false, snapshot: tv.snapshot, updated: tv.updated });
     init(d, p);
-    loadLiveValues().then((list) => { setValues(list, { live: true }); if (view === "trade") render(); }).catch(() => {});
   }).catch((e) => {
     $("#headline").textContent = "The recap data didn't load";
     const er = $("#err"); er.hidden = false; er.textContent = "Couldn't read the league data (" + e.message + "). Refresh the page; if it keeps happening, the weekly update may have failed.";

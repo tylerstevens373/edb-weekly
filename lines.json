@@ -1,0 +1,515 @@
+{
+ "rule": "1 category per category edge over 0.5 SD, 0.5 otherwise",
+ "weeks": {
+  "1": {
+   "set": "2026-11-16T18:05:35.186Z",
+   "basis": "/tmp/claude-0/-home-claude/884d9292-e0e6-5ee5-bd3e-c2aa27a3d714/scratchpad/snap/data_1.json",
+   "games": [
+    {
+     "away": "070oazg4mqqv88in",
+     "home": "b33iacngmqqv88in",
+     "line": 0,
+     "cats": {
+      "FG%": -1,
+      "3PTM": 1,
+      "FT%": -0.5,
+      "PTS": 1,
+      "REB": 1,
+      "AST": 1,
+      "ST": -0.5,
+      "BLK": -1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "n3z2eshxmqqv88in",
+     "home": "saydaqzgmqqv88in",
+     "line": -5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -1,
+      "REB": -1,
+      "AST": -1,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "ygisq4rlmqqv88in",
+     "home": "rufupenmmqqv88in",
+     "line": -1.5,
+     "cats": {
+      "FG%": -1,
+      "3PTM": 0.5,
+      "FT%": 1,
+      "PTS": -0.5,
+      "REB": -1,
+      "AST": 1,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 0.5
+     }
+    },
+    {
+     "away": "auysoygrmqqv88in",
+     "home": "d91prsm4mqqv88in",
+     "line": -3.5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -0.5,
+      "FT%": -1,
+      "PTS": -0.5,
+      "REB": -0.5,
+      "AST": -1,
+      "ST": -0.5,
+      "BLK": -1,
+      "TO": 0.5
+     }
+    },
+    {
+     "away": "mizl2op8mqqv88im",
+     "home": "cipchrpimqqv88in",
+     "line": -2,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -0.5,
+      "REB": -0.5,
+      "AST": -1,
+      "ST": 0.5,
+      "BLK": 1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "ctvglb6gmqqv88in",
+     "home": "xoe774vlmqqv88in",
+     "line": -4,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -0.5,
+      "REB": 0.5,
+      "AST": -1,
+      "ST": -1,
+      "BLK": -0.5,
+      "TO": -0.5
+     }
+    }
+   ]
+  },
+  "2": {
+   "set": "2026-11-16T18:05:35.341Z",
+   "basis": "/tmp/claude-0/-home-claude/884d9292-e0e6-5ee5-bd3e-c2aa27a3d714/scratchpad/snap/data_2.json",
+   "games": [
+    {
+     "away": "rufupenmmqqv88in",
+     "home": "070oazg4mqqv88in",
+     "line": -4.5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -1,
+      "REB": -1,
+      "AST": -1,
+      "ST": -0.5,
+      "BLK": -1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "b33iacngmqqv88in",
+     "home": "ctvglb6gmqqv88in",
+     "line": -1,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -1,
+      "REB": 0.5,
+      "AST": -1,
+      "ST": 1,
+      "BLK": 1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "cipchrpimqqv88in",
+     "home": "n3z2eshxmqqv88in",
+     "line": 6.5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": 1,
+      "FT%": 0.5,
+      "PTS": 1,
+      "REB": 1,
+      "AST": 1,
+      "ST": 1,
+      "BLK": 1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "saydaqzgmqqv88in",
+     "home": "auysoygrmqqv88in",
+     "line": -3.5,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -0.5,
+      "FT%": 0.5,
+      "PTS": -1,
+      "REB": -1,
+      "AST": 0.5,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "xoe774vlmqqv88in",
+     "home": "mizl2op8mqqv88im",
+     "line": 0,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": 1,
+      "FT%": 1,
+      "PTS": 1,
+      "REB": -1,
+      "AST": 1,
+      "ST": -0.5,
+      "BLK": -1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "d91prsm4mqqv88in",
+     "home": "ygisq4rlmqqv88in",
+     "line": -6,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -1,
+      "FT%": -0.5,
+      "PTS": -1,
+      "REB": -1,
+      "AST": -0.5,
+      "ST": 0.5,
+      "BLK": -1,
+      "TO": -0.5
+     }
+    }
+   ]
+  },
+  "3": {
+   "set": "2026-11-16T18:05:35.496Z",
+   "basis": "/tmp/claude-0/-home-claude/884d9292-e0e6-5ee5-bd3e-c2aa27a3d714/scratchpad/snap/data_3.json",
+   "games": [
+    {
+     "away": "saydaqzgmqqv88in",
+     "home": "070oazg4mqqv88in",
+     "line": -7,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -1,
+      "REB": -1,
+      "AST": -1,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "rufupenmmqqv88in",
+     "home": "b33iacngmqqv88in",
+     "line": 0.5,
+     "cats": {
+      "FG%": -1,
+      "3PTM": 1,
+      "FT%": 0.5,
+      "PTS": 0.5,
+      "REB": 1,
+      "AST": -0.5,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "n3z2eshxmqqv88in",
+     "home": "auysoygrmqqv88in",
+     "line": -6.5,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -0.5,
+      "FT%": -1,
+      "PTS": -1,
+      "REB": -1,
+      "AST": -1,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "ctvglb6gmqqv88in",
+     "home": "mizl2op8mqqv88im",
+     "line": -1,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": 1,
+      "FT%": 1,
+      "PTS": 1,
+      "REB": -1,
+      "AST": 0.5,
+      "ST": -1,
+      "BLK": -1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "d91prsm4mqqv88in",
+     "home": "cipchrpimqqv88in",
+     "line": -2.5,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -1,
+      "FT%": 1,
+      "PTS": -0.5,
+      "REB": -1,
+      "AST": 0.5,
+      "ST": -0.5,
+      "BLK": 1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "ygisq4rlmqqv88in",
+     "home": "xoe774vlmqqv88in",
+     "line": -1,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -0.5,
+      "REB": 0.5,
+      "AST": -1,
+      "ST": -0.5,
+      "BLK": 0.5,
+      "TO": 1
+     }
+    }
+   ]
+  },
+  "4": {
+   "set": "2026-11-16T18:05:35.642Z",
+   "basis": "/tmp/claude-0/-home-claude/884d9292-e0e6-5ee5-bd3e-c2aa27a3d714/scratchpad/snap/data_4.json",
+   "games": [
+    {
+     "away": "070oazg4mqqv88in",
+     "home": "n3z2eshxmqqv88in",
+     "line": 7,
+     "cats": {
+      "FG%": 1,
+      "3PTM": 1,
+      "FT%": 1,
+      "PTS": 1,
+      "REB": 1,
+      "AST": 1,
+      "ST": 1,
+      "BLK": 1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "auysoygrmqqv88in",
+     "home": "b33iacngmqqv88in",
+     "line": -4.5,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -1,
+      "FT%": 0.5,
+      "PTS": -0.5,
+      "REB": -0.5,
+      "AST": -0.5,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 0.5
+     }
+    },
+    {
+     "away": "saydaqzgmqqv88in",
+     "home": "rufupenmmqqv88in",
+     "line": -4.5,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": -1,
+      "FT%": -0.5,
+      "PTS": -1,
+      "REB": -1,
+      "AST": 0.5,
+      "ST": -0.5,
+      "BLK": -1,
+      "TO": 0.5
+     }
+    },
+    {
+     "away": "cipchrpimqqv88in",
+     "home": "mizl2op8mqqv88im",
+     "line": 1,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": 1,
+      "FT%": -0.5,
+      "PTS": 0.5,
+      "REB": 1,
+      "AST": 0.5,
+      "ST": 0.5,
+      "BLK": -1,
+      "TO": -0.5
+     }
+    },
+    {
+     "away": "ctvglb6gmqqv88in",
+     "home": "ygisq4rlmqqv88in",
+     "line": -6,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -0.5,
+      "FT%": -1,
+      "PTS": 0.5,
+      "REB": -0.5,
+      "AST": -0.5,
+      "ST": -1,
+      "BLK": -1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "xoe774vlmqqv88in",
+     "home": "d91prsm4mqqv88in",
+     "line": 0,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": 1,
+      "FT%": 1,
+      "PTS": 0.5,
+      "REB": -1,
+      "AST": 0.5,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 0.5
+     }
+    }
+   ]
+  },
+  "5": {
+   "set": "2026-11-16T18:11:36.606Z",
+   "basis": "2026-11-16T18:11:16.249Z",
+   "games": [
+    {
+     "away": "auysoygrmqqv88in",
+     "home": "070oazg4mqqv88in",
+     "line": -4.5,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": -1,
+      "FT%": 0.5,
+      "PTS": -1,
+      "REB": -1,
+      "AST": -1,
+      "ST": -1,
+      "BLK": -0.5,
+      "TO": 1
+     }
+    },
+    {
+     "away": "b33iacngmqqv88in",
+     "home": "saydaqzgmqqv88in",
+     "line": 5.5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -0.5,
+      "FT%": 1,
+      "PTS": 1,
+      "REB": 1,
+      "AST": 1,
+      "ST": 1,
+      "BLK": 1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "n3z2eshxmqqv88in",
+     "home": "rufupenmmqqv88in",
+     "line": -5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -1,
+      "REB": -1,
+      "AST": -1,
+      "ST": -1,
+      "BLK": -1,
+      "TO": 1
+     }
+    },
+    {
+     "away": "mizl2op8mqqv88im",
+     "home": "d91prsm4mqqv88in",
+     "line": 0.5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": 0.5,
+      "FT%": -0.5,
+      "PTS": -0.5,
+      "REB": 0.5,
+      "AST": -1,
+      "ST": -1,
+      "BLK": 0.5,
+      "TO": 1
+     }
+    },
+    {
+     "away": "xoe774vlmqqv88in",
+     "home": "ctvglb6gmqqv88in",
+     "line": 1,
+     "cats": {
+      "FG%": -1,
+      "3PTM": 1,
+      "FT%": 1,
+      "PTS": -1,
+      "REB": -0.5,
+      "AST": 0.5,
+      "ST": 1,
+      "BLK": -0.5,
+      "TO": 0.5
+     }
+    },
+    {
+     "away": "cipchrpimqqv88in",
+     "home": "ygisq4rlmqqv88in",
+     "line": -1,
+     "cats": {
+      "FG%": -1,
+      "3PTM": 1,
+      "FT%": -1,
+      "PTS": -0.5,
+      "REB": 0.5,
+      "AST": -0.5,
+      "ST": 1,
+      "BLK": -1,
+      "TO": 0.5
+     }
+    }
+   ]
+  }
+ }
+}

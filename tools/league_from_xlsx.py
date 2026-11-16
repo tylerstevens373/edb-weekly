@@ -46,6 +46,16 @@ for g in games:
         ch=champions[g[0]]
         if ch==g[2] and g[4]<g[5] or ch==g[3] and g[5]<g[4]: g[4],g[5]=g[5],g[4]
         g.append(ch)
+# ---- future picks the commissioner tracks (Fantrax only carries next year's draft): Draft Picks tab, holder rows, original-owner cells
+picks=[]
+ws=wb['Draft Picks']; rows_=list(ws.iter_rows(values_only=True))
+for r in rows_[2:]:
+    holder=nm(r[0]) if r[0] else None
+    if not holder or holder=='Forfeited': continue
+    for year,start in ((2027,2),(2028,15)):
+        for rnd,(c0,c1) in enumerate(((start,start+6 if year==2027 else start+3),(start+6 if year==2027 else start+3,start+9 if year==2027 else start+6),(start+9 if year==2027 else start+6,start+13 if year==2027 else start+9)),1):
+            for v in r[c0:c1]:
+                if v: picks.append({'year':year,'round':rnd,'owner':holder,'orig':nm(v)})
 # ---- franchise ledger
 ws=wb['Dues PaidTeam Results']; hdr=[c.value for c in ws[1]]; ledger=[]
 for r in ws.iter_rows(min_row=2,values_only=True):
@@ -102,5 +112,5 @@ g26,games26,_=ist_sheet('2026-2027 IST')
 g25,games25,br25=ist_sheet('2025-2026 IST')
 ist={'2026-2027':{'groups':g26,'games':[{k:v for k,v in x.items() if k in('week','group','away','home')} for x in games26],'semis':[['A','B'],['C','D']],'weeks':{'groups':[3,4,5],'semis':6,'final':7},'prize':60},
      '2025-2026':{'groups':g25,'games':games25,'bracket':{'semis':[[['Yash',1],['Zach',8]],[['Ethan',5],['Stevie',4]]],'final':['Zach','Ethan'],'champion':'Zach'},'raw':br25}}
-json.dump({'source':'Egregious Dynasty Basketball league spreadsheet (commissioner)','managers':MANAGERS,'aliases':ALIAS,'games':games,'seeds':seeds,'champions':champions,'ledger':ledger,'awards':awards,'trophies':trophies,'ist':ist},open(OUT,'w'),separators=(',',':'))
+json.dump({'source':'Egregious Dynasty Basketball league spreadsheet (commissioner)','managers':MANAGERS,'aliases':ALIAS,'games':games,'seeds':seeds,'champions':champions,'picks':picks,'ledger':ledger,'awards':awards,'trophies':trophies,'ist':ist},open(OUT,'w'),separators=(',',':'))
 print(len(games),'games', {s:sum(1 for x in games if x[0]==s) for s in sorted(set(x[0] for x in games))}); print(seeds); print(ist['2025-2026']['raw']); print([b['season']+' '+b['MVP'][0] for b in awards]); print(trophies[:2]); print(ledger[:3])
