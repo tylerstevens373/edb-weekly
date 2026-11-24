@@ -510,6 +510,108 @@
      }
     }
    ]
+  },
+  "6": {
+   "set": "2026-11-24T15:11:14.729Z",
+   "basis": "2026-11-24T15:10:54.112Z",
+   "games": [
+    {
+     "away": "070oazg4mqqv88in",
+     "home": "rufupenmmqqv88in",
+     "line": 4.5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": 1,
+      "FT%": 0.5,
+      "PTS": 1,
+      "REB": -0.5,
+      "AST": 1,
+      "ST": 1,
+      "BLK": 0.5,
+      "TO": -1
+     }
+    },
+    {
+     "away": "ygisq4rlmqqv88in",
+     "home": "cipchrpimqqv88in",
+     "line": 1,
+     "cats": {
+      "FG%": 1,
+      "3PTM": -1,
+      "FT%": 1,
+      "PTS": 0.5,
+      "REB": -0.5,
+      "AST": 0.5,
+      "ST": -1,
+      "BLK": 1,
+      "TO": -0.5
+     }
+    },
+    {
+     "away": "b33iacngmqqv88in",
+     "home": "n3z2eshxmqqv88in",
+     "line": 5.5,
+     "cats": {
+      "FG%": 1,
+      "3PTM": 1,
+      "FT%": -0.5,
+      "PTS": 1,
+      "REB": 1,
+      "AST": 1,
+      "ST": 1,
+      "BLK": 1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "d91prsm4mqqv88in",
+     "home": "ctvglb6gmqqv88in",
+     "line": 0.5,
+     "cats": {
+      "FG%": -1,
+      "3PTM": -0.5,
+      "FT%": -0.5,
+      "PTS": -0.5,
+      "REB": 1,
+      "AST": 1,
+      "ST": 1,
+      "BLK": 1,
+      "TO": -1
+     }
+    },
+    {
+     "away": "saydaqzgmqqv88in",
+     "home": "xoe774vlmqqv88in",
+     "line": -5.5,
+     "cats": {
+      "FG%": -0.5,
+      "3PTM": -1,
+      "FT%": -1,
+      "PTS": -1,
+      "REB": -0.5,
+      "AST": -1,
+      "ST": -1,
+      "BLK": -0.5,
+      "TO": 1
+     }
+    },
+    {
+     "away": "mizl2op8mqqv88im",
+     "home": "auysoygrmqqv88in",
+     "line": 3,
+     "cats": {
+      "FG%": 0.5,
+      "3PTM": 1,
+      "FT%": -1,
+      "PTS": 0.5,
+      "REB": 0.5,
+      "AST": 0.5,
+      "ST": -0.5,
+      "BLK": 1,
+      "TO": 0.5
+     }
+    }
+   ]
   }
  }
 }
